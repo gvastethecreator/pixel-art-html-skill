@@ -1,0 +1,38 @@
+{
+  "title": "Signal at Midnight — Atlantic Weather Station No. 07",
+  "width": 16,
+  "height": 16,
+  "background": "night",
+  "palette": {
+    "night": "#101525",
+    "seaDark": "#183047",
+    "sea": "#23627A",
+    "foam": "#BEE9E8",
+    "stone": "#CBD5DC",
+    "shade": "#697586",
+    "roof": "#9D3D49",
+    "light": "#FFD166",
+    "glow": "#FFF1B8"
+  },
+  "rects": [
+    {"x": 0, "y": 11, "width": 16, "height": 5, "color": "seaDark"},
+    {"x": 7, "y": 5, "width": 3, "height": 8, "color": "stone"},
+    {"x": 6, "y": 4, "width": 5, "height": 2, "color": "roof"},
+    {"x": 7, "y": 3, "width": 3, "height": 2, "color": "shade"}
+  ],
+  "runs": [
+    {"x": 1, "y": 12, "length": 5, "color": "sea"},
+    {"x": 10, "y": 13, "length": 5, "color": "sea"},
+    {"x": 2, "y": 14, "length": 4, "color": "foam"},
+    {"x": 8, "y": 15, "length": 5, "color": "foam"},
+    {"x": 6, "y": 13, "length": 5, "color": "shade"}
+  ],
+  "pixels": [
+    {"x": 8, "y": 3, "color": "glow"},
+    {"x": 8, "y": 4, "color": "light"},
+    {"x": 8, "y": 7, "color": "shade"},
+    {"x": 8, "y": 10, "color": "shade"},
+    {"x": 12, "y": 2, "color": "foam"},
+    {"x": 3, "y": 4, "color": "foam"}
+  ]
+}

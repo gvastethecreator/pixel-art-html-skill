@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pixel Art Library</title>
+  <style>
+    :root{color-scheme:dark;--bg:#050605;--surface:#0b0d0b;--surface-2:#101210;--text:#c4c8c2;--muted:#777c76;--line:rgba(104,110,101,.28);--noise:url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width='96' height='96'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E")}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:ui-monospace,SFMono-Regular,Consolas,monospace}body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:var(--noise);opacity:.5}
+    .shell{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:42px 0 56px}.header{display:flex;justify-content:space-between;align-items:end;gap:24px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+    .eyebrow,.meta{color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}.eyebrow{margin:0 0 8px}h1{margin:0;font-size:clamp(22px,3vw,38px);font-weight:500;letter-spacing:-.04em}.count{font-size:12px;color:#959a94;white-space:nowrap}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-top:22px}.card{min-width:0;overflow:hidden;border:1px solid var(--line);background-color:var(--surface);background-image:var(--noise);text-decoration:none;color:inherit;transition:border-color .15s ease,background-color .15s ease}.card:hover,.card:focus-visible{outline:none;border-color:rgba(155,161,151,.52);background-color:var(--surface-2)}
+    .preview{display:grid;place-items:center;aspect-ratio:16/10;background:#070807;border-bottom:1px solid var(--line);overflow:hidden}.preview img{width:min(66%,240px);height:66%;object-fit:contain;image-rendering:pixelated}.body{padding:15px}.title{margin:0 0 12px;font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.row{display:flex;justify-content:space-between;gap:12px}.meta{letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.empty{grid-column:1/-1;padding:72px 20px;text-align:center;border:1px solid var(--line);color:var(--muted);background-color:var(--surface);background-image:var(--noise)}
+    @media(max-width:820px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.shell{padding-top:28px}}@media(max-width:520px){.shell{width:min(100% - 20px,1180px)}.header{align-items:start;flex-direction:column}.grid{grid-template-columns:1fr}.preview{aspect-ratio:16/9}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="header"><div><p class="eyebrow">Project archive / auto-indexed</p><h1>Pixel Art Library</h1></div><div class="count" id="count"></div></header>
+    <section class="grid" id="grid" aria-label="Pixel art iterations"></section>
+  </main>
+  <script>
+    const catalog=__HUB_JSON__;
+    const grid=document.querySelector('#grid');
+    document.querySelector('#count').textContent=`${catalog.count} ${catalog.count===1?'iteration':'iterations'}`;
+    const esc=value=>String(value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+    if(!catalog.items.length){grid.innerHTML='<div class="empty">No iterations yet. The next managed build will appear here.</div>'}
+    else grid.innerHTML=catalog.items.map(item=>`<a class="card" href="${encodeURI(item.entry)}"><div class="preview"><img src="${encodeURI(item.thumbnail)}" alt="" loading="lazy"></div><div class="body"><h2 class="title">${esc(item.title)}</h2><div class="row"><span class="meta">${esc(item.sizes.join(' · '))}</span><span class="meta">${esc(item.kind)}</span></div></div></a>`).join('');
+  </script>
+</body>
+</html>

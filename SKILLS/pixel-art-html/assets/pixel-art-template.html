@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="data:,">
+  <title>__TITLE_TEXT__</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Bahnschrift, "Arial Narrow", "Helvetica Neue", sans-serif;
+      --paper: #080907;
+      --paper-raised: #11130f;
+      --ink: #f2efe6;
+      --muted: #aaa69b;
+      --line: rgba(102, 108, 97, .34);
+      --edge: rgba(78, 84, 74, .30);
+      --edge-strong: rgba(96, 102, 91, .42);
+      --stage: #020302;
+      --signal: #4a4f49;
+      --signal-text: #92988f;
+      --control: #626861;
+      --button: #0d0f0c;
+      --button-hover: #1a1d18;
+      --button-text: #aeb3ac;
+      --focus: #90968e;
+      --shadow: #000000;
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C%2Ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'%2F%3E%3C%2Fsvg%3E");
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--shadow); }
+    body { margin: 0; min-height: 100vh; color: var(--ink); background-color: var(--paper); background-image: var(--noise), radial-gradient(var(--line) .7px, transparent .7px); background-size: 160px 160px, 14px 14px; }
+    button, input { font: inherit; }
+    button, input[type="range"], input[type="checkbox"] { cursor: pointer; }
+    button:focus-visible, input:focus-visible, canvas:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    .skip-link { position: absolute; z-index: 20; top: 0; left: 10px; padding: 10px 14px; border: 1px solid var(--edge-strong); color: var(--ink); background: var(--paper-raised); transform: translateY(-120%); }
+    .skip-link:focus { transform: none; }
+    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 42px; }
+    .masthead { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; margin-bottom: 18px; }
+    .kicker { margin: 0 0 7px; color: var(--signal-text); font: 800 12px/1 ui-monospace, "Cascadia Mono", monospace; letter-spacing: .13em; text-transform: uppercase; }
+    h1 { max-width: 18ch; margin: 0; font-size: clamp(30px, 5vw, 58px); font-weight: 780; line-height: .95; letter-spacing: -.055em; overflow-wrap: anywhere; text-wrap: balance; }
+    .spec-stamp { min-width: 176px; max-width: 100%; padding: 10px 12px; border: 2px solid var(--edge-strong); background: var(--paper-raised); font: 700 12px/1.45 ui-monospace, "Cascadia Mono", monospace; box-shadow: 4px 4px 0 var(--shadow); overflow-wrap: anywhere; }
+    .spec-stamp strong { display: block; font-size: 15px; }
+    .workbench { display: grid; grid-template-columns: minmax(0, 1fr) 300px; min-height: 650px; border: 2px solid var(--edge-strong); background: var(--paper-raised); box-shadow: 10px 10px 0 var(--shadow); }
+    .preview { min-width: 0; display: grid; grid-template-rows: auto minmax(430px, 1fr) auto; border-right: 2px solid var(--edge); }
+    .preview-bar, .preview-foot { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 12px 16px; font: 700 12px/1.3 ui-monospace, "Cascadia Mono", monospace; }
+    .preview-bar { border-bottom: 2px solid var(--edge); }
+    .preview-foot { border-top: 2px solid var(--edge); color: var(--muted); }
+    .preview-foot strong { color: var(--ink); }
+    .status { display: inline-flex; align-items: center; gap: 8px; }
+    .status::before { width: 9px; height: 9px; content: ""; border-radius: 50%; background: var(--control); box-shadow: 0 0 0 2px var(--paper-raised), 0 0 0 3px var(--edge-strong); }
+    .stage { min-width: 0; min-height: 430px; display: grid; place-items: center; padding: 58px; overflow: auto; background-color: var(--stage); background-image: linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px); background-size: 20px 20px; scrollbar-color: var(--control) var(--stage); }
+    .proof-frame { position: relative; padding: 14px; border: 2px solid var(--edge-strong); background-color: #20231d; background-image: linear-gradient(45deg, #171914 25%, transparent 25%), linear-gradient(-45deg, #171914 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #171914 75%), linear-gradient(-45deg, transparent 75%, #171914 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0; }
+    canvas { display: block; max-width: none; image-rendering: pixelated; image-rendering: crisp-edges; background: transparent; }
+    .inspector { display: flex; flex-direction: column; min-width: 0; background: var(--paper); }
+    .panel { padding: 18px; border-bottom: 2px solid var(--edge); }
+    .panel:last-child { border-bottom: 0; }
+    .panel-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 15px; font-size: 15px; line-height: 1; letter-spacing: -.02em; }
+    .panel-index { color: var(--signal-text); font: 800 12px/1 ui-monospace, "Cascadia Mono", monospace; }
+    .control-label { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; font-size: 13px; font-weight: 750; }
+    output { min-width: 48px; padding: 3px 6px; border: 1px solid var(--edge-strong); color: var(--ink); background: var(--paper-raised); text-align: center; font: 700 12px/1.25 ui-monospace, "Cascadia Mono", monospace; }
+    input[type="range"] { width: 100%; margin: 3px 0 14px; accent-color: var(--control); }
+    .check-row { display: flex; align-items: center; gap: 10px; min-height: 38px; font-size: 13px; font-weight: 700; }
+    .check-row input { width: 18px; height: 18px; accent-color: var(--control); }
+    button { min-height: 42px; padding: 10px 12px; border: 2px solid var(--edge-strong); border-radius: 0; color: var(--button-text); background: var(--button); font-size: 13px; font-weight: 760; }
+    button:hover { border-color: var(--control); color: #c8ccc6; background: var(--button-hover); }
+    button.primary { border-color: #3b4039; color: #bdc2bb; background: #181b17; }
+    button.primary:hover { border-color: var(--control); color: #d0d4ce; background: #232720; }
+    .fit-button { width: 100%; margin-top: 8px; }
+    .color-tape { display: flex; height: 14px; margin-bottom: 14px; overflow: hidden; border: 2px solid var(--edge-strong); background: var(--paper-raised); }
+    .tape-segment { min-width: 3px; }
+    .palette { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+    .color-card { min-width: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: center; gap: 8px; padding: 5px; border: 1px solid var(--line); background: var(--paper-raised); }
+    .swatch { width: 28px; aspect-ratio: 1; border: 1px solid var(--edge-strong); }
+    .color-copy { min-width: 0; display: grid; gap: 2px; font: 700 12px/1.15 ui-monospace, "Cascadia Mono", monospace; }
+    .color-copy small { color: var(--muted); font-size: 12px; }
+    .facts { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 9px 12px; margin: 0; font: 700 12px/1.25 ui-monospace, "Cascadia Mono", monospace; }
+    .facts dt { color: var(--muted); }
+    .facts dd { min-width: 0; margin: 0; text-align: right; overflow-wrap: anywhere; }
+    .exports { display: grid; gap: 9px; margin-top: auto; }
+    .exports button { width: 100%; }
+    .spec-stamp, .workbench, .inspector, .panel, output, button, .color-card { background-image: var(--noise); background-size: 160px 160px; }
+    @media (width <= 52.5rem) {
+      main { width: min(100% - 20px, 720px); padding-top: 16px; }
+      .masthead { grid-template-columns: 1fr; gap: 14px; }
+      h1 { max-width: 100%; font-size: clamp(32px, 12vw, 48px); }
+      .spec-stamp { min-width: 0; width: fit-content; }
+      .workbench { grid-template-columns: 1fr; box-shadow: 6px 6px 0 var(--shadow); }
+      .preview { border-right: 0; border-bottom: 2px solid var(--edge); grid-template-rows: auto minmax(380px, 56vh) auto; }
+      .stage { min-height: 380px; padding: 46px; }
+      .inspector { display: grid; grid-template-columns: 1fr 1fr; }
+      .panel { border-right: 2px solid var(--edge); }
+      .panel:nth-child(even) { border-right: 0; }
+      .exports { margin-top: 0; }
+    }
+    @media (width <= 32rem) {
+      .preview-bar, .preview-foot { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .inspector { grid-template-columns: 1fr; }
+      .panel { border-right: 0; }
+      .palette { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .color-card { grid-template-columns: 24px minmax(0, 1fr); gap: 6px; }
+      .swatch { width: 24px; }
+      .color-copy span { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#art">Skip to artwork</a>
+  <main>
+    <header class="masthead">
+      <div><p class="kicker">Pixel proof / offline master</p><h1 id="title"></h1></div>
+      <div class="spec-stamp" aria-label="Artifact specification"><strong id="stamp-size"></strong><span id="stamp-colors"></span></div>
+    </header>
+    <section class="workbench" aria-label="Pixel art proofing workbench">
+      <section class="preview" aria-label="Artwork preview">
+        <div class="preview-bar"><span class="status">Master ready</span><span id="source-label"></span></div>
+        <div class="stage" id="stage">
+          <div class="proof-frame"><canvas id="art" tabindex="0" aria-label="Pixel art canvas"></canvas></div>
+        </div>
+        <div class="preview-foot"><span>Painted cells <strong id="painted-count"></strong></span><span>Hard edges / exact grid</span></div>
+      </section>
+      <aside class="inspector" aria-label="Artifact controls and metadata">
+        <section class="panel">
+          <h2 class="panel-title"><span>View</span><span class="panel-index">01</span></h2>
+          <label class="control-label" for="zoom"><span>Cell scale</span><output id="zoom-value" for="zoom"></output></label>
+          <input id="zoom" type="range" min="4" max="32" step="1" value="16">
+          <label class="check-row" for="grid"><input id="grid" type="checkbox" checked><span>Show grid overlay</span></label>
+          <button class="fit-button" id="fit" type="button">Fit artwork to stage</button>
+        </section>
+        <section class="panel">
+          <h2 class="panel-title"><span>Color ledger</span><span class="panel-index">02</span></h2>
+          <div class="color-tape" id="color-tape" aria-label="Color usage distribution"></div>
+          <div class="palette" id="palette"></div>
+        </section>
+        <section class="panel">
+          <h2 class="panel-title"><span>Artifact</span><span class="panel-index">03</span></h2>
+          <dl class="facts" id="facts"></dl>
+        </section>
+        <section class="panel exports">
+          <h2 class="panel-title"><span>Export master</span><span class="panel-index">04</span></h2>
+          <button class="primary" id="download-png" type="button">Download PNG</button>
+          <button id="download-json" type="button">Download JSON</button>
+        </section>
+      </aside>
+    </section>
+  </main>
+  <script id="pixel-art-data" type="application/json">__ARTIFACT_JSON__</script>
+  <script>
+    function templateDemo() {
+      const colors = { n:'#101525', s:'#CBD5DC', d:'#697586', r:'#9D3D49', l:'#FFD166', w:'#BEE9E8', b:'#183047', c:'#23627A' };
+      const grid = Array.from({ length:16 }, () => Array(16).fill(colors.n));
+      const rect = (x, y, width, height, color) => { for (let yy=y; yy<y+height; yy++) for (let xx=x; xx<x+width; xx++) grid[yy][xx] = color; };
+      rect(0,11,16,5,colors.b); rect(7,5,3,8,colors.s); rect(6,4,5,2,colors.r); rect(7,3,3,2,colors.d);
+      rect(1,12,5,1,colors.c); rect(10,13,5,1,colors.c); rect(2,14,4,1,colors.w); rect(8,15,5,1,colors.w); rect(6,13,5,1,colors.d);
+      grid[3][8]=colors.l; grid[2][12]=colors.w; grid[4][3]=colors.w; grid[7][8]=colors.d; grid[10][8]=colors.d;
+      return { schema_version:1, title:'Pixel proof template', width:16, height:16, background:'#101525', palette:Object.values(colors), grid, source:{kind:'template preview'} };
+    }
+    const rawData = document.querySelector('#pixel-art-data').textContent.trim();
+    const data = rawData.startsWith('__') ? templateDemo() : JSON.parse(rawData);
+    const canvas = document.querySelector('#art');
+    const stage = document.querySelector('#stage');
+    const proofFrame = document.querySelector('.proof-frame');
+    const ctx = canvas.getContext('2d', { alpha: true });
+    const zoom = document.querySelector('#zoom');
+    const gridToggle = document.querySelector('#grid');
+    const colors = data.palette || [];
+    const flat = data.grid.flat();
+    const painted = flat.filter(Boolean).length;
+    const usage = new Map(colors.map(color => [color, flat.filter(cell => cell === color).length]));
+    let manualZoom = false;
+    document.title = data.title || 'Pixel art proof';
+    document.querySelector('#title').textContent = data.title || 'Untitled pixel art';
+    document.querySelector('#stamp-size').textContent = `${data.width} x ${data.height}`;
+    document.querySelector('#stamp-colors').textContent = `${colors.length} colors / ${data.grid.flat().some(value => value === null) ? 'alpha' : 'opaque'}`;
+    document.querySelector('#source-label').textContent = `Source: ${data.source?.kind || 'spec'}`;
+    document.querySelector('#painted-count').textContent = `${painted} / ${data.width * data.height}`;
+
+    const tape = document.querySelector('#color-tape');
+    const palette = document.querySelector('#palette');
+    colors.forEach((color, index) => {
+      const count = usage.get(color) || 0;
+      const segment = document.createElement('span');
+      segment.className = 'tape-segment';
+      segment.style.background = color;
+      segment.style.flexGrow = String(Math.max(1, count));
+      segment.title = `${color}: ${count} cells`;
+      tape.appendChild(segment);
+
+      const card = document.createElement('div');
+      card.className = 'color-card';
+      card.setAttribute('aria-label', `Color ${index + 1}, ${color}, ${count} cells`);
+      const swatch = document.createElement('span');
+      swatch.className = 'swatch';
+      swatch.style.background = color;
+      const copy = document.createElement('span');
+      copy.className = 'color-copy';
+      const value = document.createElement('span');
+      value.textContent = color;
+      const amount = document.createElement('small');
+      amount.textContent = `${count} px`;
+      copy.append(value, amount);
+      card.append(swatch, copy);
+      palette.appendChild(card);
+    });
+
+    const facts = document.querySelector('#facts');
+    [['Schema', `v${data.schema_version}`], ['Source', data.source?.kind || 'spec'], ['Alpha', data.grid.flat().some(value => value === null) ? 'yes' : 'no']].forEach(([term, value]) => {
+      const dt = document.createElement('dt'); dt.textContent = term;
+      const dd = document.createElement('dd'); dd.textContent = value;
+      facts.append(dt, dd);
+    });
+
+    function render() {
+      const cell = Number(zoom.value);
+      const showGrid = gridToggle.checked && cell >= 7;
+      document.querySelector('#zoom-value').textContent = `${cell}x`;
+      canvas.width = data.width * cell;
+      canvas.height = data.height * cell;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      data.grid.forEach((row, y) => row.forEach((color, x) => { if (color) { ctx.fillStyle = color; ctx.fillRect(x * cell, y * cell, cell, cell); } }));
+      if (showGrid) {
+        ctx.strokeStyle = 'rgba(255,255,255,.16)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let x = 0; x <= data.width; x++) { ctx.moveTo(x * cell + .5, 0); ctx.lineTo(x * cell + .5, canvas.height); }
+        for (let y = 0; y <= data.height; y++) { ctx.moveTo(0, y * cell + .5); ctx.lineTo(canvas.width, y * cell + .5); }
+        ctx.stroke();
+      }
+      window.__PIXEL_ART_METRICS__ = { width:data.width, height:data.height, colors:colors.length, painted, zoom:cell };
+      window.__PIXEL_ART_READY__ = true;
+    }
+
+    function fitCanvas() {
+      const stageStyles = getComputedStyle(stage);
+      const frameStyles = getComputedStyle(proofFrame);
+      const horizontalChrome = parseFloat(stageStyles.paddingLeft) + parseFloat(stageStyles.paddingRight) + parseFloat(frameStyles.paddingLeft) + parseFloat(frameStyles.paddingRight) + parseFloat(frameStyles.borderLeftWidth) + parseFloat(frameStyles.borderRightWidth);
+      const verticalChrome = parseFloat(stageStyles.paddingTop) + parseFloat(stageStyles.paddingBottom) + parseFloat(frameStyles.paddingTop) + parseFloat(frameStyles.paddingBottom) + parseFloat(frameStyles.borderTopWidth) + parseFloat(frameStyles.borderBottomWidth);
+      const availableWidth = Math.max(64, stage.clientWidth - horizontalChrome);
+      const availableHeight = Math.max(64, stage.clientHeight - verticalChrome);
+      zoom.value = String(Math.max(4, Math.min(32, Math.floor(Math.min(availableWidth / data.width, availableHeight / data.height)))));
+      render();
+    }
+
+    function exportCanvas(scale = 16) {
+      const output = document.createElement('canvas');
+      output.width = data.width * scale;
+      output.height = data.height * scale;
+      const outputContext = output.getContext('2d');
+      outputContext.imageSmoothingEnabled = false;
+      data.grid.forEach((row, y) => row.forEach((color, x) => { if (color) { outputContext.fillStyle = color; outputContext.fillRect(x * scale, y * scale, scale, scale); } }));
+      return output;
+    }
+
+    function download(blob, name) {
+      const anchor = document.createElement('a');
+      anchor.href = URL.createObjectURL(blob);
+      anchor.download = name;
+      anchor.click();
+      setTimeout(() => URL.revokeObjectURL(anchor.href), 1000);
+    }
+
+    document.querySelector('#download-png').addEventListener('click', () => exportCanvas().toBlob(blob => download(blob, 'pixel-art.png'), 'image/png'));
+    document.querySelector('#download-json').addEventListener('click', () => download(new Blob([JSON.stringify(data, null, 2)], { type:'application/json' }), 'pixel-art.json'));
+    document.querySelector('#fit').addEventListener('click', () => { manualZoom = false; fitCanvas(); });
+    zoom.addEventListener('input', () => { manualZoom = true; render(); });
+    gridToggle.addEventListener('change', render);
+    new ResizeObserver(() => { if (!manualZoom) fitCanvas(); }).observe(stage);
+    requestAnimationFrame(fitCanvas);
+  </script>
+</body>
+</html>

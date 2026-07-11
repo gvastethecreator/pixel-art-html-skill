@@ -1,0 +1,16 @@
+{
+  "name": "pixel-art-html-skill",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Codex skill for deterministic pixel-art conversion and standalone HTML artifact libraries.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "validate": "node scripts/validate-skill-pack.mjs",
+    "test": "python SKILLS/pixel-art-html/scripts/test_build_pixel_art.py",
+    "check": "npm run validate && npm test"
+  }
+}
+
