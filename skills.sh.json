@@ -4,11 +4,10 @@
   "groupings": [
     {
       "title": "Creative Tools",
-      "description": "Deterministic pixel-art conversion, HTML proofs, and project libraries.",
+      "description": "Authored pixel-art craft, deterministic conversion, native-scale proofs, and project libraries.",
       "skills": [
         "pixel-art-html"
       ]
     }
   ]
 }
-

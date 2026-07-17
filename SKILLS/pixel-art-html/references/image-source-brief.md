@@ -1,0 +1,84 @@
+# Image-source brief and repixelization
+
+Use this reference for Codex ImageGen, an attached image, a local render, or a photo/reference that will become exact-grid pixel art. A source image supplies composition and shape evidence; it does not satisfy the final pixel-art contract.
+
+## Build the source brief
+
+Specify the target before generating or choosing a source:
+
+```text
+Final use and exact grid:
+Subject, pose, orientation, and crop:
+Projection and camera height:
+Dominant silhouette and one identity cue:
+Three or four broad value groups:
+Palette mood and accent placement:
+Single light direction and shadow hardness:
+Large material regions:
+Background and negative-space requirement:
+Details that must survive / details to omit:
+```
+
+For generation, describe the image using craft properties instead of an artist name:
+
+```text
+[subject and action], [projection and crop], centered readable silhouette with [identity cue],
+large connected shape groups, [light direction] with three broad value bands,
+controlled [palette mood] palette, [material regions] separated clearly,
+quiet [transparent/removable/flat] background, no text, no watermark,
+no tiny decorative clutter, composition designed to survive a [W]x[H] exact pixel grid
+```
+
+Hard pixel edges in the source can help, but never trust a model-generated image to contain a correct grid, palette, or cluster topology.
+
+## Conversion is a draft
+
+1. Preserve the accepted source inside the project.
+2. Crop and choose `contain` or `cover` based on use; use `stretch` only for intentional distortion.
+3. Convert every target size directly from the original source.
+4. Inspect silhouette, crop, alpha fringe, value groups, palette, and focal cue.
+5. Open the canonical grid or reconstruct it as a spec. Merge noisy colors, repair stair steps, replace source texture with cluster motifs, and remove accidental singletons.
+6. Rebuild and compare at native 1x, 2x, and 4x.
+
+Image quantization preserves photographic/model noise surprisingly well. Manual repixelization must reassert the same pass order as text authoring: silhouette -> projection -> value/palette -> directional light -> material clusters -> focus/cleanup.
+
+## Source-specific checks
+
+### Character or creature
+
+- Pose and line of action survive the crop.
+- Head, hands, weapon, hair, horns, or other identity cue have enough cell budget.
+- Limbs do not merge into the torso or background.
+- Costume detail can collapse into large equipment/color regions.
+
+### Object, vehicle, or building
+
+- Functional components remain distinguishable.
+- Projection and visible faces are unambiguous.
+- Highlights and stripes follow volume rather than image-space decoration.
+- Repeated modules can become motifs instead of unique noisy detail.
+
+### Landscape or background
+
+- Depth planes are already separated by value and scale.
+- The source leaves a quiet action/focal area.
+- Distant details can be removed cleanly.
+- Haze and sky-color shifts survive palette reduction.
+
+### Transparent icon
+
+- There is real breathing room on every required side.
+- The background is flat/removable with no glow or color spill.
+- Semi-transparent edge halos are absent or easy to replace.
+- The silhouette works before interior texture.
+
+## Reject or regenerate the source when
+
+- the identity depends on detail smaller than the target grid;
+- limbs, props, or focal features are clipped;
+- the source mixes projections or multiple incompatible lights;
+- the background contaminates subject edges;
+- every surface has photographic texture or micro-contrast;
+- palette reduction merges the subject into the background;
+- a cleaner source would cost less than manually rescuing the conversion.
+

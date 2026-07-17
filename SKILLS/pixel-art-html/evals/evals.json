@@ -1,0 +1,44 @@
+{
+  "skill_name": "pixel-art-html",
+  "evals": [
+    {
+      "id": "text-authored-lighthouse-16",
+      "prompt": "Create a 16x16 exact-grid pixel-art lighthouse in a night storm. It must read at native size, use one warm lantern focal point against cool water, and ship as standalone HTML, editable JSON, and PNG.",
+      "expected_output": "A self-contained 16x16 artifact whose lighthouse silhouette, directional light, waves, and warm focal cue survive native-scale review.",
+      "files": [],
+      "assertions": [
+        "The artifact contains index.html, pixel-art.json, and pixel-art.png with exact 16x16 canonical dimensions.",
+        "The source spec records projection, light, and focal intent and uses semantic palette roles.",
+        "At native 1x a human reviewer identifies a lighthouse without reading the title.",
+        "The tower silhouette is shaped rather than left as a plain rectangle, and same-color clusters dominate over accidental single pixels.",
+        "The browser proof exposes 1x, 2x, and 4x samples and no remote requests or console errors."
+      ]
+    },
+    {
+      "id": "image-derived-character-32",
+      "prompt": "Convert the supplied full-body character reference into a transparent 32x32 exact pixel master with at most 16 colors. Preserve the pose and oversized red scarf, remove source noise, and provide editable HTML/JSON/PNG proof.",
+      "expected_output": "A manually cleaned character master derived directly from the source, with a readable pose, intact scarf cue, clean alpha, controlled ramps, and authored clusters.",
+      "files": [
+        "evals/fixtures/character-source.ppm"
+      ],
+      "assertions": [
+        "Conversion uses contain and targets the original source directly at 32x32.",
+        "The final grid is manually repixelized beyond raw quantization: silhouette stair steps, alpha fringe, value groups, and singleton noise are reviewed.",
+        "Palette count is at most 16 and the red scarf remains the focal identity cue at native 1x.",
+        "The artifact passes deterministic validation and warnings are resolved or explicitly justified with visual evidence."
+      ]
+    },
+    {
+      "id": "seamless-top-down-grass-16",
+      "prompt": "Author a reusable 16x16 top-down grass tile and two restrained variants. Keep the palette compact, avoid an obvious repeated landmark, and prove the base plus variants in a repeated 3x3 context before packaging exact-grid outputs.",
+      "expected_output": "A compact tile collection with seamless edges, coherent repeated cluster grammar, negative space, palette consistency, and browser-visible repetition proof.",
+      "files": [],
+      "assertions": [
+        "All tile edges loop without seams and every variant preserves the same projection, palette roles, and cluster grammar.",
+        "The repeated 3x3 proof has no dominant cross, diagonal, isolated landmark, or busy-on-busy noise.",
+        "Motifs or an equally reviewable exact-grid representation reuse cluster topology instead of scattering independent pixels.",
+        "Each canonical grid and PNG matches its declared dimensions and the proof HTML remains standalone."
+      ]
+    }
+  ]
+}

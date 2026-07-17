@@ -1,0 +1,66 @@
+[
+  {
+    "query": "Turn this 16x16 character sketch into a self-contained HTML pixel grid with editable palette JSON.",
+    "should_trigger": true
+  },
+  {
+    "query": "Create a 32x32 pixel-art potion icon as exact cells and export both standalone HTML and PNG.",
+    "should_trigger": true
+  },
+  {
+    "query": "Convert this local image into a deterministic multi-resolution pixel-art HTML artifact without calling an image model.",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare three palette variants of the same exact-grid sprite in one portable HTML page.",
+    "should_trigger": true
+  },
+  {
+    "query": "Repair the broken color indexes in this pixel-art JSON and verify the rendered grid matches its declared dimensions.",
+    "should_trigger": true
+  },
+  {
+    "query": "Package these hand-authored pixels as a standalone HTML file with nearest-neighbor scaling and no runtime dependencies.",
+    "should_trigger": true
+  },
+  {
+    "query": "Use the attached ImageGen result only as reference, then reconstruct a precise 24x24 editable pixel grid.",
+    "should_trigger": true
+  },
+  {
+    "query": "Audit this pixel-art HTML for off-grid cells, palette drift, transparent pixels, and PNG export parity.",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate a painterly fantasy portrait with the image generation tool.",
+    "should_trigger": false
+  },
+  {
+    "query": "Build an animated fighting-game spritesheet with idle, walk, attack, and runtime frame registration.",
+    "should_trigger": false
+  },
+  {
+    "query": "Replace this SVG icon with a CSS mask in the existing React component.",
+    "should_trigger": false
+  },
+  {
+    "query": "Upscale this photograph and remove compression artifacts.",
+    "should_trigger": false
+  },
+  {
+    "query": "Create a tile atlas with extraction metadata, seam checks, and collision slots.",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how nearest-neighbor interpolation works; do not create an artifact.",
+    "should_trigger": false
+  },
+  {
+    "query": "Design a responsive dashboard using a pixel-inspired visual style.",
+    "should_trigger": false
+  },
+  {
+    "query": "Edit this existing PNG's colors in an image editor and keep its original resolution.",
+    "should_trigger": false
+  }
+]
