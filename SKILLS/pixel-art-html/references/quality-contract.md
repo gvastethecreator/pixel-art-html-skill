@@ -18,8 +18,9 @@ The artifact must pass all applicable rows. Record `N/A` only with a concrete re
 | Materials | texture grammar matches material and scales down with distance/resolution |
 | Focus | highest contrast/chroma/detail supports the intended focal point or gameplay read |
 | Edges | hard pixel edges, integer scaling, clean alpha, no automatic anti-aliasing or fringe |
-| Context | tiles loop, repeated props avoid obvious landmarks, backgrounds do not compete, as applicable |
-| Output | canonical JSON, PNG, and standalone HTML agree exactly and use no network requests |
+| Context | tiles loop, repeated props avoid obvious landmarks, backgrounds do not compete, as applicable; tile/texture specs expose the automatic 3x repeat proof |
+| Animation handoff | frame masters preserve identity and native cell scale; state workflow, order, durations, loop, runtime cell, safe margin, and ground/contact pivot are explicit before atlas extraction |
+| Output | canonical JSON, PNG, and standalone HTML agree exactly and use no network requests; validation checks PNG dimensions and RGBA cell parity |
 
 ## Resolution ladder
 
@@ -52,6 +53,8 @@ Read [image-source-brief.md](image-source-brief.md) before generation or convers
 - a soft fog scene may correctly use low boundary contrast;
 - a scene background may intentionally touch every edge;
 - a report without warnings can still describe weak composition or anatomy.
+
+`subject_cells` excludes the declared opaque background but includes every painted cell when the background is transparent. Do not compare that count across different background modes as if it were a normalized density score.
 
 Resolve every warning through visual inspection or state why it is intentional.
 

@@ -14,7 +14,8 @@ Create authored pixel art, not merely valid low-resolution files. Keep model gen
 - Codex ImageGen: generate a clean source with `$imagegen`, save it in the project, then follow the image route.
 - Existing artifact: edit its source spec or canonical grid, rebuild, and compare the final render.
 - Resolution set: author each text master independently, or convert every size from the original image, then clean each size.
-- Animation/spritesheet request: use this skill for individual frame masters; hand atlas, sequencing, and runtime registration to `$spritesheet-expert`.
+- Same-size asset set: author each item independently, then compile the specs with `pack` so names, proofs, and canonical files stay together.
+- Animation/spritesheet request: use this skill for individual frame masters; hand atlas, sequencing, and runtime registration to `$spritesheet-expert` with explicit state workflow, frame order/timing, runtime cell, pivot/baseline, and pose geometry.
 
 Do not use an OpenAI API key, image API script, `$openai-image-gen`, or an external converter service. If native ImageGen is unavailable, continue from text or a supplied image.
 
@@ -47,6 +48,7 @@ Do not use an OpenAI API key, image API script, `$openai-image-gen`, or an exter
 5. Critique and repair.
    - Run `critique`; inspect bounds, singleton clusters, value span, and low-contrast boundaries as risk signals, not a score.
    - Open the HTML in a browser. Inspect native 1x, 2x, 4x, silhouette, value hierarchy, crop, alpha edges, cluster rhythm, focal contrast, and subject-specific context.
+   - Tile, texture, and seamless specs automatically add a 3x repeat proof when their direction card identifies that use. Inspect the repeated proof for seams, landmarks, diagonals, and visual fatigue.
    - Resolve every warning visually or record why it is intentional. Remove details that help only while zoomed in.
    - Use `$browser-ui-verification` for live proof; a successful CLI exit or non-empty canvas does not prove art quality.
    - Done when the final generated artifact, not an earlier preview, passes [quality-contract.md](references/quality-contract.md).
@@ -57,7 +59,19 @@ Do not use an OpenAI API key, image API script, `$openai-image-gen`, or an exter
    - Compare every master at native size. Never downscale the largest grid and call the results responsive masters.
    - Done when every requested size communicates the same identity with resolution-appropriate information.
 
-7. Hand back reproducible proof.
+7. Package related assets deliberately.
+   - Use `pack` for icons, pickups, props, palette variants, tile variants, or other sets that may share dimensions.
+   - Keep a shared direction card for projection, light, palette roles, baseline, padding, and material grammar; preserve item-specific silhouettes and focal cues.
+   - Review both each exact proof and the pack overview. Same dimensions are valid in a pack and invalid in a resolution collection.
+   - Done when the set reads as one family without making the individual assets interchangeable.
+
+8. Hand animation frames over without losing authored geometry.
+   - Keep identity palette, light, outline, focal cues, and native cell size stable across frame specs. Name the animation workflow and key phase represented by every frame.
+   - Supply frame order, unequal durations when intentional, loop intent, runtime cell, safe margin, and the ground/contact pivot. For grounded rows, declare the receiving sprite contract as grounded rather than allowing extraction to recenter each changing bbox.
+   - Require `$spritesheet-expert` to prove `frame_layout`, baseline/root alignment, identity consistency, exact timing, and live runtime playback. Deterministic/scripted animation remains a labeled fixture unless its source provenance satisfies the production-art contract.
+   - Done when the final atlas reproduces the authored baseline and timing rather than merely containing all frames.
+
+9. Hand back reproducible proof.
    - Report paths to `index.html`, `pixel-art.json`, `pixel-art.png`, source spec/image, and screenshots or browser evidence.
    - For managed output, also report the project hub and iteration path.
    - Done when another agent can inspect, edit, rebuild, critique, and verify the artifact without hidden state.
@@ -92,6 +106,12 @@ Text-derived resolution set:
 
 ```bash
 python <skill-dir>/scripts/build_pixel_art.py collection <16.json> <24.json> <32.json> <40.json> <48.json> <64.json> --project-root <project> --slug <request-slug> --title "Resolution set"
+```
+
+Same-size or mixed-size asset pack:
+
+```bash
+python <skill-dir>/scripts/build_pixel_art.py pack <potion.json> <key.json> <shield.json> <crystal.json> --project-root <project> --slug pickups --title "RPG pickups"
 ```
 
 Validate structure, then emit craft-risk signals:
@@ -132,4 +152,12 @@ manifest.json
 64x64/{index.html,pixel-art.json,pixel-art.png}
 ```
 
-Managed mode also writes `iteration.json` and regenerates `pixel-art/catalog.json` plus `pixel-art/index.html`; read [project-library.md](references/project-library.md) for that contract. Every proof HTML remains standalone and network-free. `pixel-art.json` is the canonical editable grid; `pixel-art.png` is its nearest-neighbor preview/export.
+Asset pack:
+
+```text
+index.html
+manifest.json
+<asset-slug>/{index.html,pixel-art.json,pixel-art.png}
+```
+
+Managed mode also writes `iteration.json` and regenerates `pixel-art/catalog.json` plus `pixel-art/index.html`; read [project-library.md](references/project-library.md) for that contract. Every proof HTML remains standalone and network-free. `pixel-art.json` is the canonical editable grid; `pixel-art.png` is its nearest-neighbor preview/export, and validation proves its dimensions and every RGBA cell still match the canonical grid.

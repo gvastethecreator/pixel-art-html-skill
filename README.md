@@ -9,6 +9,8 @@ Pixel Art HTML turns text-authored grids, local images, or accepted Codex ImageG
 - Reuse exact cluster motifs with flips and palette maps instead of scattering one-off pixels.
 - Surface bounds, cluster, singleton, value-span, and boundary-contrast risks without pretending to score subjective quality.
 - Review every artifact at native 1x, 2x, 4x, flat silhouette, and grayscale value inside the standalone proof workbench.
+- Review tile/texture intent in an automatic 3x repetition proof, and group same-size icons or variants into named asset packs.
+- Validate PNG dimensions and every nearest-neighbor RGBA cell against the canonical JSON grid.
 - Keep ImageGen optional and separate from deterministic pixel processing.
 - Produce standalone proof pages with no external runtime or network requests.
 - Maintain `pixel-art/YYYY/MM/NNN-slug/` iterations and a generated project hub.
@@ -44,6 +46,12 @@ After each build, run the structural validator and craft-risk report:
 ```powershell
 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py validate .\output
 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py critique .\output
+```
+
+Package related same-size assets without pretending they are a resolution ladder:
+
+```powershell
+python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py pack .\potion.json .\key.json .\shield.json .\crystal.json --output .\pickup-pack --title "RPG pickups"
 ```
 
 ## Develop And Verify

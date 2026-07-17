@@ -48,7 +48,7 @@ Author a JSON object. Dimensions must be integers from 8 through 128.
 - `grid`: optional full grid. Each row may be a whitespace-separated string or a JSON array. Use `.`, `..`, `null`, or `transparent` for clear cells.
 - `rects`: filled rectangles with `x`, `y`, `width`, `height`, `color`.
 - `runs`: horizontal runs with `x`, `y`, `length`, `color`.
-- `motifs`: reusable local cluster patterns. Each value is an equal-width row list; rows may be whitespace-separated strings, compact one-character strings, or JSON arrays. Clear tokens are transparent/no-op inside a motif.
+- `motifs`: reusable local cluster patterns. Each value is an equal-width row list; rows may be whitespace-separated strings, compact one-character strings, or JSON arrays. A row string that exactly matches a semantic palette alias is one cell, so a one-column motif may use `"grass"`; use arrays to remove ambiguity. Clear tokens are transparent/no-op inside a motif.
 - `stamps`: motif placements with `motif`, `x`, and `y`; optional `flip_x`, `flip_y`, and `map` recolor aliases while preserving cluster topology.
 - `pixels`: individual cells with `x`, `y`, `color`.
 
@@ -56,7 +56,9 @@ Apply order: background, `grid`, `rects`, `runs`, `stamps`, `pixels`. Later oper
 
 Use rectangles and runs for scaffolding and broad planes. Use motifs for repeated foliage, clouds, brick chips, foam, lights, panel marks, or other coherent cluster grammar. Use a full grid when the silhouette needs one-off local control; do not force a complex subject into rectangles.
 
-The compiler emits canonical JSON with a complete `grid` of `#RRGGBB` or `null` cells, source metadata, and a deterministic `quality` risk report. Do not hand-author canonical output when a compact source spec is easier to review. The report is diagnostic and never a semantic quality score.
+The compiler emits canonical JSON with a complete `grid` of `#RRGGBB` or `null` cells, source metadata, derived proof intent, and a deterministic `quality` risk report. `proofs.repeat_3x` is true only when `art_direction.use` identifies a tile, tileset, texture, or seamless master. Do not hand-author canonical output when a compact source spec is easier to review. The report is diagnostic and never a semantic quality score.
+
+Canonical palette arrays follow first raster appearance, not source declaration order. Compare palette sets or semantic source aliases when order is not itself part of the test.
 
 ## Resolution collections
 
@@ -68,3 +70,13 @@ Recommended square masters: `16`, `24`, `32`, `40`, `48`, and `64`. Single artif
 - Change detail density intentionally. Do not mechanically cascade from the largest grid.
 
 The collection compiler writes `manifest.json`, a standalone comparison `index.html`, and one exact artifact directory per dimension.
+
+## Asset packs
+
+Use `pack` when related artifacts share a resolution or when item identity matters more than a resolution ladder. Each spec remains an independent master with its own title, direction card, canonical grid, PNG, and exact proof. The pack compiler derives Unicode-safe, accent-normalized stable item folders from titles and adds numeric suffixes only when titles collide.
+
+```bash
+python scripts/build_pixel_art.py pack potion.json key.json shield.json crystal.json --output pickup-pack --title "RPG pickups"
+```
+
+The pack writes a `kind: pack` manifest and a standalone overview. Same dimensions are expected; shared projection, lighting, palette roles, baseline, and padding must be reviewed as a set-level contract.

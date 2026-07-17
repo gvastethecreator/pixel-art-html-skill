@@ -39,6 +39,18 @@
         "Motifs or an equally reviewable exact-grid representation reuse cluster topology instead of scattering independent pixels.",
         "Each canonical grid and PNG matches its declared dimensions and the proof HTML remains standalone."
       ]
+    },
+    {
+      "id": "same-size-rpg-pickup-pack-16",
+      "prompt": "Author a coherent pack of four transparent 16x16 RPG pickups: health potion, key, shield, and crystal. Share one upper-left light, baseline, padding language, and compact palette roles while keeping every silhouette distinct.",
+      "expected_output": "A named same-size asset pack with four independently editable exact masters, a standalone overview, distinct native-size reads, and validated PNG parity.",
+      "files": [],
+      "assertions": [
+        "The pack manifest has kind pack and four unique title-derived item paths even though every master is 16x16.",
+        "Every item contains index.html, pixel-art.json, and pixel-art.png and validation proves PNG dimensions and RGBA cells match its canonical grid.",
+        "A human reviewer identifies all four items at native 1x without labels and sees one coherent light, baseline, palette-role, and padding system.",
+        "The overview is standalone, exposes every item, and links to each exact proof without remote requests or console errors."
+      ]
     }
   ]
 }
