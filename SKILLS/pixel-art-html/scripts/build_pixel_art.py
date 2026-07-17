@@ -3,12 +3,14 @@ from __future__ import annotations
 
 import argparse
 import binascii
+from collections.abc import Iterator
 from datetime import datetime, timezone
 import html
 import json
 import re
 import struct
 import sys
+import unicodedata
 import zlib
 from collections import Counter
 from pathlib import Path
@@ -20,6 +22,7 @@ COLLECTION_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-collection-template
 PROJECT_HUB_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-project-hub-template.html"
 CLEAR_TOKENS = {None, "", ".", "..", "none", "null", "transparent", "clear"}
 RECOMMENDED_SIZES = (16, 24, 32, 40, 48, 64)
+WINDOWS_RESERVED_NAMES = {"CON", "PRN", "AUX", "NUL", *(f"COM{index}" for index in range(1, 10)), *(f"LPT{index}" for index in range(1, 10))}
 
 
 class ArtifactError(ValueError):
@@ -60,14 +63,18 @@ def checked_int(value: Any, name: str) -> int:
         raise ArtifactError(f"{name} must be an integer") from exc
 
 
-def pattern_rows(value: Any, name: str) -> list[list[Any]]:
+def pattern_rows(value: Any, name: str, palette: dict[str, str | None] | None = None) -> list[list[Any]]:
     if not isinstance(value, list) or not value:
         raise ArtifactError(f"{name} must be a non-empty row list")
     rows: list[list[Any]] = []
     width: int | None = None
     for index, row in enumerate(value):
         if isinstance(row, str):
-            cells = row.split() if any(char.isspace() for char in row.strip()) else list(row)
+            text = row.strip()
+            if (palette and text in palette) or text.lower() in CLEAR_TOKENS:
+                cells = [text]
+            else:
+                cells = text.split() if any(char.isspace() for char in text) else list(text)
         else:
             cells = row
         if not isinstance(cells, list) or not cells:
@@ -138,7 +145,7 @@ def compile_spec(spec: dict[str, Any]) -> dict[str, Any]:
     raw_motifs = spec.get("motifs", {})
     if not isinstance(raw_motifs, dict):
         raise ArtifactError("motifs must be an object")
-    motifs = {str(name): pattern_rows(rows, f"motifs.{name}") for name, rows in raw_motifs.items()}
+    motifs = {str(name): pattern_rows(rows, f"motifs.{name}", palette) for name, rows in raw_motifs.items()}
     for index, stamp in enumerate(spec.get("stamps", [])):
         if not isinstance(stamp, dict):
             raise ArtifactError(f"stamps[{index}] must be an object")
@@ -176,6 +183,14 @@ def compile_spec(spec: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+def source_requires_repeat_proof(source: dict[str, Any]) -> bool:
+    art_direction = source.get("art_direction", {})
+    if not isinstance(art_direction, dict):
+        return False
+    use = str(art_direction.get("use", "")).lower()
+    return bool(re.search(r"\b(tile|tileset|texture|seamless)\b", use))
+
+
 def canonical_artifact(*, title: str, grid: list[list[str | None]], background: str | None, source: dict[str, Any]) -> dict[str, Any]:
     if not grid or not grid[0]:
         raise ArtifactError("grid cannot be empty")
@@ -204,6 +219,7 @@ def canonical_artifact(*, title: str, grid: list[list[str | None]], background: 
         "palette": colors,
         "grid": normalized_grid,
         "source": source,
+        "proofs": {"repeat_3x": source_requires_repeat_proof(source)},
     }
     artifact["quality"] = artifact_quality_report(artifact)
     return artifact
@@ -296,13 +312,13 @@ def artifact_quality_report(artifact: dict[str, Any]) -> dict[str, Any]:
 
 def critique_output(output: Path) -> dict[str, Any]:
     result = validate_output(output)
-    if result.get("kind") == "collection":
+    if result.get("kind") in {"collection", "pack"}:
         return {
             "status": "ok",
-            "kind": "collection",
+            "kind": result["kind"],
             "output": str(output.resolve()),
             "items": [
-                {"path": item["path"], "quality": artifact_quality_report(validate_output(output / item["path"]))}
+                {"path": item["path"], "quality": artifact_quality_report(json.loads((output / item["path"] / "pixel-art.json").read_text(encoding="utf-8")))}
                 for item in result["items"]
             ],
         }
@@ -334,6 +350,159 @@ def write_png(artifact: dict[str, Any], path: Path, scale: int) -> None:
     path.write_bytes(signature + png_chunk(b"IHDR", ihdr) + png_chunk(b"IDAT", zlib.compress(b"".join(rows), 9)) + png_chunk(b"IEND", b""))
 
 
+def paeth_predictor(left: int, above: int, upper_left: int) -> int:
+    estimate = left + above - upper_left
+    left_distance = abs(estimate - left)
+    above_distance = abs(estimate - above)
+    upper_left_distance = abs(estimate - upper_left)
+    if left_distance <= above_distance and left_distance <= upper_left_distance:
+        return left
+    if above_distance <= upper_left_distance:
+        return above
+    return upper_left
+
+
+def read_png_rgba(path: Path) -> tuple[int, int, Iterator[bytes]]:
+    payload = path.read_bytes()
+    if payload[:8] != b"\x89PNG\r\n\x1a\n":
+        raise ArtifactError(f"{path.name} is not a PNG")
+    position = 8
+    header: tuple[int, int, int, int, int, int, int] | None = None
+    compressed_chunks: list[bytes] = []
+    saw_end = False
+    while position + 12 <= len(payload):
+        length = struct.unpack(">I", payload[position:position + 4])[0]
+        kind = payload[position + 4:position + 8]
+        start = position + 8
+        end = start + length
+        if end + 4 > len(payload):
+            raise ArtifactError(f"{path.name} contains a truncated PNG chunk")
+        chunk = payload[start:end]
+        expected_crc = struct.unpack(">I", payload[end:end + 4])[0]
+        if binascii.crc32(kind + chunk) & 0xFFFFFFFF != expected_crc:
+            raise ArtifactError(f"{path.name} contains a corrupt PNG chunk")
+        if kind == b"IHDR":
+            if length != 13:
+                raise ArtifactError(f"{path.name} has an invalid PNG header")
+            header = struct.unpack(">IIBBBBB", chunk)
+        elif kind == b"IDAT":
+            compressed_chunks.append(chunk)
+        elif kind == b"IEND":
+            saw_end = True
+            break
+        position = end + 4
+    if header is None or not compressed_chunks or not saw_end:
+        raise ArtifactError(f"{path.name} is missing required PNG chunks")
+    width, height, bit_depth, color_type, compression, filter_method, interlace = header
+    if (bit_depth, color_type, compression, filter_method, interlace) != (8, 6, 0, 0, 0):
+        raise ArtifactError(f"{path.name} must be a non-interlaced 8-bit RGBA PNG")
+    stride = width * 4
+
+    def decoded_rows() -> Iterator[bytes]:
+        previous = bytearray(stride)
+        buffer = bytearray()
+        row_count = 0
+        decompressor = zlib.decompressobj()
+        stream_ended = False
+        row_size = stride + 1
+
+        def decode(row_payload: bytes) -> bytes:
+            nonlocal previous
+            filter_type = row_payload[0]
+            encoded = row_payload[1:]
+            if filter_type > 4:
+                raise ArtifactError(f"{path.name} uses an unsupported PNG row filter")
+            decoded = bytearray(stride)
+            if filter_type == 0:
+                decoded[:] = encoded
+            else:
+                for index, value in enumerate(encoded):
+                    left = decoded[index - 4] if index >= 4 else 0
+                    above = previous[index]
+                    upper_left = previous[index - 4] if index >= 4 else 0
+                    if filter_type == 1:
+                        predictor = left
+                    elif filter_type == 2:
+                        predictor = above
+                    elif filter_type == 3:
+                        predictor = (left + above) // 2
+                    else:
+                        predictor = paeth_predictor(left, above, upper_left)
+                    decoded[index] = (value + predictor) & 0xFF
+            previous = decoded
+            return bytes(decoded)
+
+        try:
+            for compressed in compressed_chunks:
+                if stream_ended:
+                    if compressed:
+                        raise ArtifactError(f"{path.name} contains compressed data after the PNG pixel stream")
+                    continue
+                pending = compressed
+                while pending:
+                    pending_size = len(pending)
+                    emitted = decompressor.decompress(pending, row_size - len(buffer))
+                    buffer.extend(emitted)
+                    pending = decompressor.unconsumed_tail
+                    if decompressor.unused_data:
+                        raise ArtifactError(f"{path.name} contains an extra compressed stream")
+                    if len(buffer) == row_size:
+                        if row_count >= height:
+                            raise ArtifactError(f"{path.name} pixel payload exceeds its header")
+                        row_count += 1
+                        yield decode(bytes(buffer))
+                        buffer.clear()
+                    if decompressor.eof:
+                        if pending:
+                            raise ArtifactError(f"{path.name} contains compressed data after the PNG pixel stream")
+                        stream_ended = True
+                        break
+                    if not pending:
+                        break
+                    if len(pending) == pending_size and not emitted:
+                        raise ArtifactError(f"{path.name} compressed pixel stream made no progress")
+        except zlib.error as exc:
+            raise ArtifactError(f"{path.name} contains invalid compressed pixels") from exc
+        if row_count != height or buffer or not stream_ended or not decompressor.eof or decompressor.unused_data:
+            raise ArtifactError(f"{path.name} pixel payload size does not match its header")
+
+    return width, height, decoded_rows()
+
+
+def validate_png_parity(artifact: dict[str, Any], path: Path) -> int:
+    png_width, png_height, png_rows = read_png_rgba(path)
+    width = artifact["width"]
+    height = artifact["height"]
+    if png_width % width or png_height % height:
+        raise ArtifactError("pixel-art.png dimensions are not an integer scale of the canonical grid")
+    scale_x = png_width // width
+    scale_y = png_height // height
+    if scale_x != scale_y or not 1 <= scale_x <= 32:
+        raise ArtifactError("pixel-art.png must use one integer scale from 1 through 32")
+    scale = scale_x
+    row_iterator = iter(png_rows)
+    for source_row in artifact["grid"]:
+        expected = bytearray()
+        for color in source_row:
+            rgba = bytes((int(color[1:3], 16), int(color[3:5], 16), int(color[5:7], 16), 255)) if color else b"\x00\x00\x00\x00"
+            expected.extend(rgba * scale)
+        expected_row = bytes(expected)
+        for _ in range(scale):
+            try:
+                png_row = next(row_iterator)
+            except StopIteration as exc:
+                raise ArtifactError("pixel-art.png ended before the canonical grid") from exc
+            if png_row != expected_row:
+                raise ArtifactError("pixel-art.png pixels do not match the canonical grid")
+    try:
+        next(row_iterator)
+    except StopIteration:
+        pass
+    else:
+        raise ArtifactError("pixel-art.png contains rows beyond the canonical grid")
+    return scale
+
+
 def render_html(artifact: dict[str, Any], path: Path) -> None:
     template = TEMPLATE_PATH.read_text(encoding="utf-8")
     payload = json.dumps(artifact, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c").replace("&", "\\u0026")
@@ -344,9 +513,9 @@ def render_html(artifact: dict[str, Any], path: Path) -> None:
     path.write_text(result, encoding="utf-8", newline="\n")
 
 
-def render_collection_html(title: str, items: list[dict[str, Any]], path: Path) -> None:
+def render_collection_html(title: str, items: list[dict[str, Any]], path: Path, kind: str = "collection") -> None:
     template = COLLECTION_TEMPLATE_PATH.read_text(encoding="utf-8")
-    payload = json.dumps({"title": title, "items": items}, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c").replace("&", "\\u0026")
+    payload = json.dumps({"kind": kind, "title": title, "items": items}, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c").replace("&", "\\u0026")
     result = template.replace("__TITLE_TEXT__", html.escape(title)).replace("__COLLECTION_JSON__", payload)
     if "__COLLECTION_JSON__" in result or "__TITLE_TEXT__" in result:
         raise ArtifactError("collection template placeholder replacement failed")
@@ -360,18 +529,26 @@ def write_artifact(artifact: dict[str, Any], output: Path, scale: int) -> None:
     write_png(artifact, output / "pixel-art.png", scale)
 
 
-def write_collection(artifacts: list[dict[str, Any]], output: Path, scale: int, title: str) -> dict[str, Any]:
+def write_collection(artifacts: list[dict[str, Any]], output: Path, scale: int, title: str, kind: str = "collection") -> dict[str, Any]:
     if len(artifacts) < 2:
-        raise ArtifactError("a collection needs at least two artifacts")
+        raise ArtifactError("a collection or pack needs at least two artifacts")
+    if kind not in {"collection", "pack"}:
+        raise ArtifactError(f"unsupported collection kind: {kind}")
     output.mkdir(parents=True, exist_ok=True)
     manifest_items: list[dict[str, Any]] = []
     html_items: list[dict[str, Any]] = []
     used_paths: set[str] = set()
     for artifact in artifacts:
         validate_artifact(artifact)
-        relative_path = f"{artifact['width']}x{artifact['height']}"
+        relative_path = f"{artifact['width']}x{artifact['height']}" if kind == "collection" else slugify(artifact["title"])
         if relative_path in used_paths:
-            raise ArtifactError(f"duplicate collection dimensions: {relative_path}")
+            if kind == "collection":
+                raise ArtifactError(f"duplicate collection dimensions: {relative_path}")
+            suffix = 2
+            base_path = relative_path
+            while relative_path in used_paths:
+                relative_path = f"{base_path}-{suffix}"
+                suffix += 1
         used_paths.add(relative_path)
         write_artifact(artifact, output / relative_path, scale)
         manifest_items.append({
@@ -382,9 +559,9 @@ def write_collection(artifacts: list[dict[str, Any]], output: Path, scale: int, 
             "colors": len(artifact["palette"]),
         })
         html_items.append({"path": relative_path, "artifact": artifact})
-    manifest = {"schema_version": 1, "kind": "collection", "title": title, "items": manifest_items}
+    manifest = {"schema_version": 1, "kind": kind, "title": title, "items": manifest_items}
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
-    render_collection_html(title, html_items, output / "index.html")
+    render_collection_html(title, html_items, output / "index.html", kind)
     return manifest
 
 
@@ -504,6 +681,10 @@ def validate_artifact(artifact: dict[str, Any]) -> None:
         raise ArtifactError("canonical grid contains no painted pixels")
     if "quality" in artifact and artifact["quality"] != artifact_quality_report(artifact):
         raise ArtifactError("canonical quality report does not match grid")
+    if "proofs" in artifact:
+        expected_proofs = {"repeat_3x": source_requires_repeat_proof(artifact.get("source", {}))}
+        if artifact["proofs"] != expected_proofs:
+            raise ArtifactError("canonical proof intents do not match source direction")
 
 
 def validate_standalone_html(path: Path, placeholders: tuple[str, ...]) -> None:
@@ -515,6 +696,17 @@ def validate_standalone_html(path: Path, placeholders: tuple[str, ...]) -> None:
         raise ArtifactError("HTML contains a remote URL")
 
 
+def read_embedded_json(path: Path, element_id: str) -> Any:
+    html_text = path.read_text(encoding="utf-8")
+    match = re.search(rf'<script\s+id="{re.escape(element_id)}"[^>]*>(.*?)</script>', html_text, flags=re.DOTALL)
+    if not match:
+        raise ArtifactError(f"HTML is missing embedded payload: {element_id}")
+    try:
+        return json.loads(match.group(1))
+    except json.JSONDecodeError as exc:
+        raise ArtifactError(f"HTML contains invalid embedded JSON: {element_id}") from exc
+
+
 def validate_output(output: Path) -> dict[str, Any]:
     manifest_path = output / "manifest.json"
     if manifest_path.is_file():
@@ -522,22 +714,40 @@ def validate_output(output: Path) -> dict[str, Any]:
         if not index_path.is_file():
             raise ArtifactError("collection is missing index.html")
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest.get("schema_version") != 1 or manifest.get("kind") != "collection":
-            raise ArtifactError("invalid collection manifest")
+        if manifest.get("schema_version") != 1 or manifest.get("kind") not in {"collection", "pack"}:
+            raise ArtifactError("invalid collection or pack manifest")
         items = manifest.get("items")
         if not isinstance(items, list) or len(items) < 2:
             raise ArtifactError("collection manifest needs at least two items")
         validate_standalone_html(index_path, ("__COLLECTION_JSON__", "__TITLE_TEXT__"))
+        embedded = read_embedded_json(index_path, "collection-data")
+        if not isinstance(embedded, dict) or embedded.get("kind") != manifest["kind"] or embedded.get("title") != manifest.get("title"):
+            raise ArtifactError("collection overview metadata does not match manifest.json")
+        embedded_items = embedded.get("items")
+        if not isinstance(embedded_items, list) or len(embedded_items) != len(items):
+            raise ArtifactError("collection overview item count does not match manifest.json")
         seen: set[str] = set()
-        for item in items:
+        for item, embedded_item in zip(items, embedded_items):
             if not isinstance(item, dict) or not isinstance(item.get("path"), str):
                 raise ArtifactError("invalid collection manifest item")
+            relative = Path(item["path"])
+            if relative.is_absolute() or len(relative.parts) != 1 or relative.name != item["path"] or item["path"] in {".", ".."}:
+                raise ArtifactError(f"invalid collection path: {item['path']}")
             if item["path"] in seen:
                 raise ArtifactError(f"duplicate collection path: {item['path']}")
             seen.add(item["path"])
             artifact = validate_output(output / item["path"])
-            if artifact["width"] != item.get("width") or artifact["height"] != item.get("height"):
-                raise ArtifactError(f"collection dimensions do not match: {item['path']}")
+            expected_metadata = {
+                "path": item["path"],
+                "title": artifact["title"],
+                "width": artifact["width"],
+                "height": artifact["height"],
+                "colors": len(artifact["palette"]),
+            }
+            if item != expected_metadata:
+                raise ArtifactError(f"collection manifest item does not match child: {item['path']}")
+            if not isinstance(embedded_item, dict) or embedded_item.get("path") != item["path"] or embedded_item.get("artifact") != artifact:
+                raise ArtifactError(f"collection overview item does not match child: {item['path']}")
         return manifest
 
     expected = [output / "index.html", output / "pixel-art.json", output / "pixel-art.png"]
@@ -547,24 +757,27 @@ def validate_output(output: Path) -> dict[str, Any]:
     artifact = json.loads((output / "pixel-art.json").read_text(encoding="utf-8"))
     validate_artifact(artifact)
     validate_standalone_html(output / "index.html", ("__ARTIFACT_JSON__", "__TITLE_TEXT__"))
-    if (output / "pixel-art.png").read_bytes()[:8] != b"\x89PNG\r\n\x1a\n":
-        raise ArtifactError("pixel-art.png is not a PNG")
+    if read_embedded_json(output / "index.html", "pixel-art-data") != artifact:
+        raise ArtifactError("HTML embedded artifact does not match pixel-art.json")
+    validate_png_parity(artifact, output / "pixel-art.png")
     return artifact
 
 
 def result_summary(result: dict[str, Any], output: Path) -> dict[str, Any]:
     summary: dict[str, Any] = {"status": "ok", "output": str(output.resolve())}
-    if result.get("kind") == "collection":
+    if result.get("kind") in {"collection", "pack"}:
         summary["count"] = len(result["items"])
         summary["sizes"] = [f"{item['width']}x{item['height']}" for item in result["items"]]
+        summary["kind"] = result["kind"]
     else:
         summary.update(width=result["width"], height=result["height"], colors=len(result["palette"]))
     return summary
 
 
 def slugify(value: str) -> str:
-    slug = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
-    return slug[:64].rstrip("-") or "pixel-art"
+    normalized = "".join(character for character in unicodedata.normalize("NFKD", value.casefold()) if not unicodedata.combining(character))
+    slug = re.sub(r"[_\W]+", "-", normalized, flags=re.UNICODE).strip("-")[:64].rstrip("-") or "pixel-art"
+    return f"pixel-{slug}" if slug.upper() in WINDOWS_RESERVED_NAMES else slug
 
 
 def resolve_output(args: argparse.Namespace, title: str, now: datetime | None = None) -> tuple[Path, Path | None]:
@@ -586,11 +799,11 @@ def resolve_output(args: argparse.Namespace, title: str, now: datetime | None = 
 def iteration_metadata(result: dict[str, Any], output: Path, library: Path, created_at: datetime | None = None) -> dict[str, Any]:
     moment = created_at or datetime.now(timezone.utc)
     relative = output.relative_to(library).as_posix()
-    if result.get("kind") == "collection":
+    if result.get("kind") in {"collection", "pack"}:
         sizes = [f"{item['width']}x{item['height']}" for item in result["items"]]
         preferred = next((item for item in result["items"] if item["width"] == 32 and item["height"] == 32), result["items"][0])
         thumbnail = f"{relative}/{preferred['path']}/pixel-art.png"
-        source_kind = "collection"
+        source_kind = result["kind"]
     else:
         sizes = [f"{result['width']}x{result['height']}"]
         thumbnail = f"{relative}/pixel-art.png"
@@ -668,6 +881,12 @@ def parse_args() -> argparse.Namespace:
     collection_parser.add_argument("--title", default="Pixel art resolution set")
     collection_parser.add_argument("--scale", type=int, default=16)
 
+    pack_parser = subparsers.add_parser("pack", help="Compile several same-size or mixed-size specs into one named asset set.")
+    pack_parser.add_argument("specs", nargs="+", type=Path)
+    add_output_options(pack_parser)
+    pack_parser.add_argument("--title", default="Pixel art asset pack")
+    pack_parser.add_argument("--scale", type=int, default=16)
+
     image_parser = subparsers.add_parser("from-image", help="Convert a local image with Pillow.")
     image_parser.add_argument("image", type=Path)
     add_output_options(image_parser)
@@ -715,6 +934,17 @@ def main() -> int:
                 artifacts.append(compile_spec(spec))
             output, library = resolve_output(args, args.title)
             write_collection(artifacts, output, args.scale, args.title)
+            result = validate_output(output)
+            print(json.dumps(finish_managed(result, output, library), ensure_ascii=False))
+        elif args.command == "pack":
+            artifacts = []
+            for spec_path in args.specs:
+                spec = json.loads(spec_path.read_text(encoding="utf-8"))
+                if not isinstance(spec, dict):
+                    raise ArtifactError(f"spec root must be an object: {spec_path}")
+                artifacts.append(compile_spec(spec))
+            output, library = resolve_output(args, args.title)
+            write_collection(artifacts, output, args.scale, args.title, kind="pack")
             result = validate_output(output)
             print(json.dumps(finish_managed(result, output, library), ensure_ascii=False))
         elif args.command == "from-image":

@@ -54,6 +54,18 @@ class PixelArtBuilderTests(unittest.TestCase):
         self.assertEqual(artifact["grid"][1][5], "#AABBCC")
         self.assertEqual(artifact["quality"]["clusters"], 4)
 
+    def test_one_column_motif_accepts_a_semantic_palette_alias(self) -> None:
+        artifact = module.compile_spec({
+            "width": 8,
+            "height": 8,
+            "palette": {"grass": "#385A3A"},
+            "motifs": {"stem": ["grass", "grass", "."]},
+            "stamps": [{"motif": "stem", "x": 2, "y": 1}],
+        })
+        self.assertEqual(artifact["grid"][1][2], "#385A3A")
+        self.assertEqual(artifact["grid"][2][2], "#385A3A")
+        self.assertIsNone(artifact["grid"][3][2])
+
     def test_quality_report_surfaces_orphan_pixel_risk_without_scoring_art(self) -> None:
         artifact = module.compile_spec({
             "width": 8,
@@ -112,6 +124,86 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertNotIn("https://", (output / "index.html").read_text(encoding="utf-8"))
             critique = module.critique_output(output)
             self.assertEqual([item["path"] for item in critique["items"]], ["8x8", "12x12"])
+
+    def test_write_and_validate_same_size_asset_pack(self) -> None:
+        first = module.compile_spec({"title": "Copper key", "width": 8, "height": 8, "background": "#123"})
+        second = module.compile_spec({"title": "Moon key", "width": 8, "height": 8, "background": "#456"})
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)
+            module.write_collection([first, second], output, 4, "Key set", kind="pack")
+            manifest = module.validate_output(output)
+            self.assertEqual(manifest["kind"], "pack")
+            self.assertEqual([item["path"] for item in manifest["items"]], ["copper-key", "moon-key"])
+            self.assertTrue((output / "copper-key" / "pixel-art.png").is_file())
+            self.assertEqual(module.critique_output(output)["kind"], "pack")
+
+    def test_validation_rejects_png_pixels_that_drift_from_grid(self) -> None:
+        artifact = module.compile_spec({"width": 8, "height": 8, "background": "#123"})
+        drifted = module.compile_spec({"width": 8, "height": 8, "background": "#456"})
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)
+            module.write_artifact(artifact, output, 4)
+            module.write_png(drifted, output / "pixel-art.png", 4)
+            with self.assertRaisesRegex(module.ArtifactError, "pixels do not match"):
+                module.validate_output(output)
+
+    def test_validation_rejects_a_second_compressed_png_stream(self) -> None:
+        artifact = module.compile_spec({"width": 8, "height": 8, "background": "#123"})
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)
+            module.write_artifact(artifact, output, 1)
+            png_path = output / "pixel-art.png"
+            payload = png_path.read_bytes()
+            position = 8
+            rebuilt = bytearray(payload[:8])
+            while position < len(payload):
+                length = module.struct.unpack(">I", payload[position:position + 4])[0]
+                kind = payload[position + 4:position + 8]
+                chunk = payload[position + 8:position + 8 + length]
+                if kind == b"IDAT":
+                    chunk += module.zlib.compress(b"unexpected second stream")
+                rebuilt.extend(module.png_chunk(kind, chunk))
+                position += 12 + length
+            png_path.write_bytes(bytes(rebuilt))
+            with self.assertRaisesRegex(module.ArtifactError, "extra compressed stream"):
+                module.validate_output(output)
+
+    def test_tile_artifacts_include_automatic_repeat_proof(self) -> None:
+        artifact = module.compile_spec({
+            "title": "Grass tile",
+            "width": 8,
+            "height": 8,
+            "art_direction": {"use": "top-down tile"},
+            "background": "#385A3A",
+        })
+        non_tile = module.compile_spec({"width": 8, "height": 8, "art_direction": {"use": "item"}, "background": "#385A3A"})
+        self.assertTrue(artifact["proofs"]["repeat_3x"])
+        self.assertFalse(non_tile["proofs"]["repeat_3x"])
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)
+            module.write_artifact(artifact, output, 4)
+            embedded = module.read_embedded_json(output / "index.html", "pixel-art-data")
+            self.assertTrue(embedded["proofs"]["repeat_3x"])
+
+    def test_validation_rejects_stale_single_and_pack_html(self) -> None:
+        first = module.compile_spec({"title": "First", "width": 8, "height": 8, "background": "#123"})
+        second = module.compile_spec({"title": "Second", "width": 8, "height": 8, "background": "#456"})
+        replacement = module.compile_spec({"title": "Replacement", "width": 8, "height": 8, "background": "#789"})
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)
+            module.write_collection([first, second], output, 4, "Pair", kind="pack")
+            module.write_artifact(replacement, output / "first", 4)
+            with self.assertRaisesRegex(module.ArtifactError, "manifest item does not match child"):
+                module.validate_output(output)
+            module.write_artifact(first, output / "first", 4)
+            (output / "first" / "pixel-art.json").write_text(json.dumps(replacement), encoding="utf-8")
+            with self.assertRaisesRegex(module.ArtifactError, "HTML embedded artifact does not match"):
+                module.validate_output(output / "first")
+
+    def test_slugify_preserves_international_title_identity(self) -> None:
+        self.assertEqual(module.slugify("Poción mágica"), "pocion-magica")
+        self.assertEqual(module.slugify("生命水晶"), "生命水晶")
+        self.assertEqual(module.slugify("CON"), "pixel-con")
 
     def test_image_route_when_pillow_is_available(self) -> None:
         try:

@@ -225,6 +225,7 @@
       { label:'Silhouette', scale:4, mode:'silhouette' },
       { label:'Value', scale:4, mode:'value' }
     ];
+    if (data.proofs?.repeat_3x === true) proofModes.push({ label:'3x repeat', scale:2, mode:'repeat' });
     const proofColor = (color, mode) => {
       if (!color) return null;
       if (mode === 'silhouette') return color === data.background ? null : '#F2EFE6';
@@ -242,18 +243,21 @@
       shell.className = 'proof-canvas-shell';
       const proof = document.createElement('canvas');
       proof.className = 'proof-canvas';
-      proof.width = data.width * scale;
-      proof.height = data.height * scale;
+      const repeat = mode === 'repeat' ? 3 : 1;
+      proof.width = data.width * scale * repeat;
+      proof.height = data.height * scale * repeat;
       proof.setAttribute('aria-label', `${proofLabel} artwork proof`);
       const proofContext = proof.getContext('2d', { alpha: true });
       proofContext.imageSmoothingEnabled = false;
-      data.grid.forEach((row, y) => row.forEach((sourceColor, x) => {
-        const color = proofColor(sourceColor, mode);
-        if (color) {
-          proofContext.fillStyle = color;
-          proofContext.fillRect(x * scale, y * scale, scale, scale);
-        }
-      }));
+      for (let tileY = 0; tileY < repeat; tileY += 1) for (let tileX = 0; tileX < repeat; tileX += 1) {
+        data.grid.forEach((row, y) => row.forEach((sourceColor, x) => {
+          const color = proofColor(sourceColor, mode);
+          if (color) {
+            proofContext.fillStyle = color;
+            proofContext.fillRect((tileX * data.width + x) * scale, (tileY * data.height + y) * scale, scale, scale);
+          }
+        }));
+      }
       shell.appendChild(proof);
       sample.append(label, shell);
       proofStrip.appendChild(sample);
