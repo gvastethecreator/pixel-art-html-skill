@@ -60,6 +60,28 @@ def checked_int(value: Any, name: str) -> int:
         raise ArtifactError(f"{name} must be an integer") from exc
 
 
+def pattern_rows(value: Any, name: str) -> list[list[Any]]:
+    if not isinstance(value, list) or not value:
+        raise ArtifactError(f"{name} must be a non-empty row list")
+    rows: list[list[Any]] = []
+    width: int | None = None
+    for index, row in enumerate(value):
+        if isinstance(row, str):
+            cells = row.split() if any(char.isspace() for char in row.strip()) else list(row)
+        else:
+            cells = row
+        if not isinstance(cells, list) or not cells:
+            raise ArtifactError(f"{name} row {index} must contain cells")
+        if any(cell is not None and not isinstance(cell, str) for cell in cells):
+            raise ArtifactError(f"{name} row {index} cells must be strings or null")
+        if width is None:
+            width = len(cells)
+        elif len(cells) != width:
+            raise ArtifactError(f"{name} rows must have equal width")
+        rows.append(cells)
+    return rows
+
+
 def compile_spec(spec: dict[str, Any]) -> dict[str, Any]:
     width = checked_dimension(spec.get("width", 32), "width")
     height = checked_dimension(spec.get("height", 32), "height")
@@ -113,16 +135,44 @@ def compile_spec(spec: dict[str, Any]) -> dict[str, Any]:
         for xx in range(x, x + length):
             paint(xx, y, run.get("color"))
 
+    raw_motifs = spec.get("motifs", {})
+    if not isinstance(raw_motifs, dict):
+        raise ArtifactError("motifs must be an object")
+    motifs = {str(name): pattern_rows(rows, f"motifs.{name}") for name, rows in raw_motifs.items()}
+    for index, stamp in enumerate(spec.get("stamps", [])):
+        if not isinstance(stamp, dict):
+            raise ArtifactError(f"stamps[{index}] must be an object")
+        motif_name = str(stamp.get("motif", ""))
+        if motif_name not in motifs:
+            raise ArtifactError(f"unknown motif: {motif_name!r}")
+        x = checked_int(stamp.get("x"), "stamp.x")
+        y = checked_int(stamp.get("y"), "stamp.y")
+        color_map = stamp.get("map", {})
+        if not isinstance(color_map, dict):
+            raise ArtifactError(f"stamps[{index}].map must be an object")
+        rows = motifs[motif_name]
+        if stamp.get("flip_y", False):
+            rows = list(reversed(rows))
+        for offset_y, source_row in enumerate(rows):
+            row = list(reversed(source_row)) if stamp.get("flip_x", False) else source_row
+            for offset_x, source_color in enumerate(row):
+                mapped_color = color_map.get(source_color, source_color)
+                if normalize_color(mapped_color, palette) is not None:
+                    paint(x + offset_x, y + offset_y, mapped_color)
+
     for index, pixel in enumerate(spec.get("pixels", [])):
         if not isinstance(pixel, dict):
             raise ArtifactError(f"pixels[{index}] must be an object")
         paint(checked_int(pixel.get("x"), "pixel.x"), checked_int(pixel.get("y"), "pixel.y"), pixel.get("color"))
 
+    art_direction = spec.get("art_direction", {})
+    if not isinstance(art_direction, dict) or any(not isinstance(key, str) or not isinstance(value, str) for key, value in art_direction.items()):
+        raise ArtifactError("art_direction must be a string-to-string object")
     return canonical_artifact(
         title=str(spec.get("title") or "Untitled pixel art"),
         grid=grid,
         background=background,
-        source={"kind": "spec"},
+        source={"kind": "spec", "art_direction": art_direction},
     )
 
 
@@ -145,7 +195,7 @@ def canonical_artifact(*, title: str, grid: list[list[str | None]], background: 
                 colors.append(color)
                 seen.add(color)
         normalized_grid.append(normalized_row)
-    return {
+    artifact = {
         "schema_version": 1,
         "title": title,
         "width": width,
@@ -155,6 +205,108 @@ def canonical_artifact(*, title: str, grid: list[list[str | None]], background: 
         "grid": normalized_grid,
         "source": source,
     }
+    artifact["quality"] = artifact_quality_report(artifact)
+    return artifact
+
+
+def color_luminance(color: str) -> float:
+    channels = [int(color[index:index + 2], 16) / 255 for index in (1, 3, 5)]
+    linear = [channel / 12.92 if channel <= 0.04045 else ((channel + 0.055) / 1.055) ** 2.4 for channel in channels]
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2]
+
+
+def artifact_quality_report(artifact: dict[str, Any]) -> dict[str, Any]:
+    grid = artifact["grid"]
+    width = artifact["width"]
+    height = artifact["height"]
+    background = normalize_color(artifact.get("background"))
+    subject = {(x, y) for y, row in enumerate(grid) for x, color in enumerate(row) if color is not None and color != background}
+    colors = sorted({color for row in grid for color in row if color})
+    luminances = [color_luminance(color) for color in colors]
+    visited: set[tuple[int, int]] = set()
+    clusters: list[int] = []
+    for start in subject:
+        if start in visited:
+            continue
+        target = grid[start[1]][start[0]]
+        pending = [start]
+        visited.add(start)
+        size = 0
+        while pending:
+            x, y = pending.pop()
+            size += 1
+            for neighbor in (
+                (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
+                (x - 1, y),                     (x + 1, y),
+                (x - 1, y + 1), (x, y + 1), (x + 1, y + 1),
+            ):
+                nx, ny = neighbor
+                if 0 <= nx < width and 0 <= ny < height and neighbor not in visited and grid[ny][nx] == target:
+                    visited.add(neighbor)
+                    pending.append(neighbor)
+        clusters.append(size)
+
+    boundary_contrasts: list[float] = []
+    for y, row in enumerate(grid):
+        for x, color in enumerate(row):
+            if not color:
+                continue
+            for nx, ny in ((x + 1, y), (x, y + 1)):
+                if nx >= width or ny >= height:
+                    continue
+                adjacent = grid[ny][nx]
+                if adjacent and adjacent != color:
+                    boundary_contrasts.append(abs(color_luminance(color) - color_luminance(adjacent)))
+
+    if subject:
+        xs = [point[0] for point in subject]
+        ys = [point[1] for point in subject]
+        bbox: list[int] | None = [min(xs), min(ys), max(xs), max(ys)]
+        padding: list[int] | None = [min(xs), min(ys), width - 1 - max(xs), height - 1 - max(ys)]
+    else:
+        bbox = None
+        padding = None
+
+    singleton_count = sum(size == 1 for size in clusters)
+    warnings: list[str] = []
+    if background and not subject:
+        warnings.append("No cells differ from the declared background.")
+    if len(colors) > 16 and max(width, height) <= 32:
+        warnings.append("More than 16 colors on a small grid may weaken palette economy.")
+    if len(clusters) >= 4 and singleton_count / len(clusters) > 0.35:
+        warnings.append("Many same-color clusters are single pixels; inspect for orphan-pixel noise.")
+    value_span = round(max(luminances) - min(luminances), 4) if luminances else 0.0
+    if len(colors) > 1 and value_span < 0.18:
+        warnings.append("Palette value span is narrow; inspect silhouette and volume readability.")
+    low_contrast_ratio = round(sum(value < 0.08 for value in boundary_contrasts) / len(boundary_contrasts), 4) if boundary_contrasts else 0.0
+    if len(boundary_contrasts) >= 6 and low_contrast_ratio > 0.6:
+        warnings.append("Most color boundaries have low luminance contrast; inspect focal hierarchy.")
+
+    return {
+        "subject_cells": len(subject),
+        "bbox": bbox,
+        "padding": padding,
+        "clusters": len(clusters),
+        "single_pixel_clusters": singleton_count,
+        "value_span": value_span,
+        "low_contrast_boundary_ratio": low_contrast_ratio,
+        "warnings": warnings,
+    }
+
+
+def critique_output(output: Path) -> dict[str, Any]:
+    result = validate_output(output)
+    if result.get("kind") == "collection":
+        return {
+            "status": "ok",
+            "kind": "collection",
+            "output": str(output.resolve()),
+            "items": [
+                {"path": item["path"], "quality": artifact_quality_report(validate_output(output / item["path"]))}
+                for item in result["items"]
+            ],
+        }
+    return {"status": "ok", "kind": "single", "output": str(output.resolve()), "quality": artifact_quality_report(result)}
 
 
 def png_chunk(kind: bytes, payload: bytes) -> bytes:
@@ -350,6 +502,8 @@ def validate_artifact(artifact: dict[str, Any]) -> None:
         raise ArtifactError("canonical palette contains duplicate colors")
     if not emitted:
         raise ArtifactError("canonical grid contains no painted pixels")
+    if "quality" in artifact and artifact["quality"] != artifact_quality_report(artifact):
+        raise ArtifactError("canonical quality report does not match grid")
 
 
 def validate_standalone_html(path: Path, placeholders: tuple[str, ...]) -> None:
@@ -532,6 +686,9 @@ def parse_args() -> argparse.Namespace:
     validate_parser = subparsers.add_parser("validate", help="Validate a generated output directory.")
     validate_parser.add_argument("output", type=Path)
 
+    critique_parser = subparsers.add_parser("critique", help="Validate an output and report craft-risk signals without assigning a quality score.")
+    critique_parser.add_argument("output", type=Path)
+
     hub_parser = subparsers.add_parser("hub", help="Rebuild a project's pixel-art library hub from iteration metadata.")
     hub_parser.add_argument("--project-root", type=Path, default=Path.cwd())
     return parser.parse_args()
@@ -586,6 +743,8 @@ def main() -> int:
             library = args.project_root / "pixel-art"
             catalog = rebuild_project_hub(library)
             print(json.dumps({"status": "ok", "hub": str((library / "index.html").resolve()), "count": catalog["count"]}, ensure_ascii=False))
+        elif args.command == "critique":
+            print(json.dumps(critique_output(args.output), ensure_ascii=False))
         else:
             result = validate_output(args.output)
             print(json.dumps(result_summary(result, args.output), ensure_ascii=False))

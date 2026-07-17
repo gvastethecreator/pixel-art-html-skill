@@ -2,37 +2,67 @@
   "title": "Signal at Midnight — Atlantic Weather Station No. 07",
   "width": 16,
   "height": 16,
+  "art_direction": {
+    "use": "compact scene",
+    "projection": "side view",
+    "silhouette": "tapered lighthouse on a low rock shelf",
+    "light": "cool night ambient with one warm lantern",
+    "focus": "gold lantern chamber",
+    "texture": "two compact wave motifs and one broken rock mass"
+  },
   "background": "night",
   "palette": {
-    "night": "#101525",
-    "seaDark": "#183047",
-    "sea": "#23627A",
-    "foam": "#BEE9E8",
-    "stone": "#CBD5DC",
-    "shade": "#697586",
-    "roof": "#9D3D49",
-    "light": "#FFD166",
-    "glow": "#FFF1B8"
+    "night": "#0B1020",
+    "waterDark": "#193446",
+    "water": "#286276",
+    "foam": "#A7D8D4",
+    "outline": "#202334",
+    "rock": "#435466",
+    "stoneShadow": "#71879A",
+    "stone": "#B7C6C9",
+    "stoneLight": "#E6E0C9",
+    "roof": "#713044",
+    "roofLight": "#B94C55",
+    "lantern": "#FFB84D",
+    "glow": "#FFE3A1"
   },
   "rects": [
-    {"x": 0, "y": 11, "width": 16, "height": 5, "color": "seaDark"},
-    {"x": 7, "y": 5, "width": 3, "height": 8, "color": "stone"},
-    {"x": 6, "y": 4, "width": 5, "height": 2, "color": "roof"},
-    {"x": 7, "y": 3, "width": 3, "height": 2, "color": "shade"}
+    {"x": 0, "y": 13, "width": 16, "height": 3, "color": "waterDark"}
   ],
-  "runs": [
-    {"x": 1, "y": 12, "length": 5, "color": "sea"},
-    {"x": 10, "y": 13, "length": 5, "color": "sea"},
-    {"x": 2, "y": 14, "length": 4, "color": "foam"},
-    {"x": 8, "y": 15, "length": 5, "color": "foam"},
-    {"x": 6, "y": 13, "length": 5, "color": "shade"}
+  "motifs": {
+    "rock-shelf": [
+      ". . . . outline . . . . .",
+      ". . outline outline rock outline outline . . .",
+      ". outline rock rock rock rock outline . . .",
+      "outline rock rock waterDark waterDark waterDark outline outline . ."
+    ],
+    "lighthouse": [
+      ". . . roof . . .",
+      ". . roof roofLight roof . .",
+      ". roof roofLight roofLight roofLight roof .",
+      "outline outline outline outline outline outline outline",
+      ". outline glow lantern glow outline .",
+      ". outline outline outline outline outline .",
+      ". . outline stoneLight stone outline .",
+      ". . outline stoneLight stone outline .",
+      ". . outline stone stoneShadow outline .",
+      ". outline stoneLight stone stoneShadow outline .",
+      ". outline stone stone stoneShadow outline .",
+      "outline outline outline outline outline outline outline"
+    ],
+    "wave": [
+      "water . . water water .",
+      ". water foam foam water water"
+    ]
+  },
+  "stamps": [
+    {"motif": "rock-shelf", "x": 1, "y": 12},
+    {"motif": "lighthouse", "x": 4, "y": 1},
+    {"motif": "wave", "x": 0, "y": 14},
+    {"motif": "wave", "x": 10, "y": 13, "flip_x": true, "map": {"foam": "water"}}
   ],
   "pixels": [
-    {"x": 8, "y": 3, "color": "glow"},
-    {"x": 8, "y": 4, "color": "light"},
-    {"x": 8, "y": 7, "color": "shade"},
-    {"x": 8, "y": 10, "color": "shade"},
-    {"x": 12, "y": 2, "color": "foam"},
-    {"x": 3, "y": 4, "color": "foam"}
+    {"x": 2, "y": 3, "color": "foam"},
+    {"x": 13, "y": 6, "color": "stone"}
   ]
 }

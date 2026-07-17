@@ -68,6 +68,12 @@
     button.primary { border-color: #3b4039; color: #bdc2bb; background: #181b17; }
     button.primary:hover { border-color: var(--control); color: #d0d4ce; background: #232720; }
     .fit-button { width: 100%; margin-top: 8px; }
+    .proof-strip { display: grid; gap: 10px; }
+    .proof-sample { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; gap: 10px; color: var(--muted); font: 700 11px/1.2 ui-monospace, "Cascadia Mono", monospace; }
+    .proof-canvas-shell { min-width: 0; min-height: 34px; display: flex; align-items: center; padding: 5px; overflow: auto; border: 1px solid var(--edge-strong); background-color: #20231d; background-image: linear-gradient(45deg, #171914 25%, transparent 25%), linear-gradient(-45deg, #171914 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #171914 75%), linear-gradient(-45deg, transparent 75%, #171914 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0; }
+    .proof-canvas { flex: 0 0 auto; image-rendering: pixelated; image-rendering: crisp-edges; }
+    .quality-notes { display: grid; gap: 7px; margin-top: 12px; }
+    .quality-note { margin: 0; padding-left: 9px; border-left: 2px solid var(--control); color: var(--muted); font-size: 12px; line-height: 1.35; }
     .color-tape { display: flex; height: 14px; margin-bottom: 14px; overflow: hidden; border: 2px solid var(--edge-strong); background: var(--paper-raised); }
     .tape-segment { min-width: 3px; }
     .palette { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
@@ -130,16 +136,21 @@
           <button class="fit-button" id="fit" type="button">Fit artwork to stage</button>
         </section>
         <section class="panel">
-          <h2 class="panel-title"><span>Color ledger</span><span class="panel-index">02</span></h2>
+          <h2 class="panel-title"><span>Readability proofs</span><span class="panel-index">02</span></h2>
+          <div class="proof-strip" id="native-scale-proof" aria-label="Native, scaled, silhouette, and value pixel-art proofs"></div>
+          <div class="quality-notes" id="quality-notes" aria-live="polite"></div>
+        </section>
+        <section class="panel">
+          <h2 class="panel-title"><span>Color ledger</span><span class="panel-index">03</span></h2>
           <div class="color-tape" id="color-tape" aria-label="Color usage distribution"></div>
           <div class="palette" id="palette"></div>
         </section>
         <section class="panel">
-          <h2 class="panel-title"><span>Artifact</span><span class="panel-index">03</span></h2>
+          <h2 class="panel-title"><span>Artifact</span><span class="panel-index">04</span></h2>
           <dl class="facts" id="facts"></dl>
         </section>
         <section class="panel exports">
-          <h2 class="panel-title"><span>Export master</span><span class="panel-index">04</span></h2>
+          <h2 class="panel-title"><span>Export master</span><span class="panel-index">05</span></h2>
           <button class="primary" id="download-png" type="button">Download PNG</button>
           <button id="download-json" type="button">Download JSON</button>
         </section>
@@ -169,6 +180,7 @@
     const flat = data.grid.flat();
     const painted = flat.filter(Boolean).length;
     const usage = new Map(colors.map(color => [color, flat.filter(cell => cell === color).length]));
+    const quality = data.quality || {};
     let manualZoom = false;
     document.title = data.title || 'Pixel art proof';
     document.querySelector('#title').textContent = data.title || 'Untitled pixel art';
@@ -205,8 +217,64 @@
       palette.appendChild(card);
     });
 
+    const proofStrip = document.querySelector('#native-scale-proof');
+    const proofModes = [
+      { label:'Native 1x', scale:1, mode:'color' },
+      { label:'2x proof', scale:2, mode:'color' },
+      { label:'4x proof', scale:4, mode:'color' },
+      { label:'Silhouette', scale:4, mode:'silhouette' },
+      { label:'Value', scale:4, mode:'value' }
+    ];
+    const proofColor = (color, mode) => {
+      if (!color) return null;
+      if (mode === 'silhouette') return color === data.background ? null : '#F2EFE6';
+      if (mode !== 'value') return color;
+      const channels = [1, 3, 5].map(index => parseInt(color.slice(index, index + 2), 16));
+      const gray = Math.round(.2126 * channels[0] + .7152 * channels[1] + .0722 * channels[2]).toString(16).padStart(2, '0');
+      return `#${gray}${gray}${gray}`;
+    };
+    proofModes.forEach(({ label:proofLabel, scale, mode }) => {
+      const sample = document.createElement('div');
+      sample.className = 'proof-sample';
+      const label = document.createElement('span');
+      label.textContent = proofLabel;
+      const shell = document.createElement('span');
+      shell.className = 'proof-canvas-shell';
+      const proof = document.createElement('canvas');
+      proof.className = 'proof-canvas';
+      proof.width = data.width * scale;
+      proof.height = data.height * scale;
+      proof.setAttribute('aria-label', `${proofLabel} artwork proof`);
+      const proofContext = proof.getContext('2d', { alpha: true });
+      proofContext.imageSmoothingEnabled = false;
+      data.grid.forEach((row, y) => row.forEach((sourceColor, x) => {
+        const color = proofColor(sourceColor, mode);
+        if (color) {
+          proofContext.fillStyle = color;
+          proofContext.fillRect(x * scale, y * scale, scale, scale);
+        }
+      }));
+      shell.appendChild(proof);
+      sample.append(label, shell);
+      proofStrip.appendChild(sample);
+    });
+
+    const qualityNotes = document.querySelector('#quality-notes');
+    (quality.warnings || []).forEach(warning => {
+      const note = document.createElement('p');
+      note.className = 'quality-note';
+      note.textContent = warning;
+      qualityNotes.appendChild(note);
+    });
+    if (!(quality.warnings || []).length) {
+      const note = document.createElement('p');
+      note.className = 'quality-note';
+      note.textContent = 'No deterministic craft-risk signals. Visual judgment still required.';
+      qualityNotes.appendChild(note);
+    }
+
     const facts = document.querySelector('#facts');
-    [['Schema', `v${data.schema_version}`], ['Source', data.source?.kind || 'spec'], ['Alpha', data.grid.flat().some(value => value === null) ? 'yes' : 'no']].forEach(([term, value]) => {
+    [['Schema', `v${data.schema_version}`], ['Source', data.source?.kind || 'spec'], ['Alpha', data.grid.flat().some(value => value === null) ? 'yes' : 'no'], ['Clusters', quality.clusters ?? 'n/a'], ['Singletons', quality.single_pixel_clusters ?? 'n/a'], ['Value span', quality.value_span ?? 'n/a']].forEach(([term, value]) => {
       const dt = document.createElement('dt'); dt.textContent = term;
       const dd = document.createElement('dd'); dd.textContent = value;
       facts.append(dt, dd);
@@ -228,7 +296,7 @@
         for (let y = 0; y <= data.height; y++) { ctx.moveTo(0, y * cell + .5); ctx.lineTo(canvas.width, y * cell + .5); }
         ctx.stroke();
       }
-      window.__PIXEL_ART_METRICS__ = { width:data.width, height:data.height, colors:colors.length, painted, zoom:cell };
+      window.__PIXEL_ART_METRICS__ = { width:data.width, height:data.height, colors:colors.length, painted, zoom:cell, quality };
       window.__PIXEL_ART_READY__ = true;
     }
 

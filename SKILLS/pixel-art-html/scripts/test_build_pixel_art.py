@@ -36,10 +36,51 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertEqual(verified["title"], "Test beacon")
             self.assertNotIn("https://", (output / "index.html").read_text(encoding="utf-8"))
             self.assertEqual((output / "pixel-art.png").read_bytes()[:8], b"\x89PNG\r\n\x1a\n")
+            self.assertIn("native-scale-proof", (output / "index.html").read_text(encoding="utf-8"))
+
+    def test_motifs_support_reuse_flips_and_palette_maps(self) -> None:
+        artifact = module.compile_spec({
+            "width": 8,
+            "height": 8,
+            "palette": {"a": "#123", "b": "#456", "c": "#abc"},
+            "motifs": {"leaf": [". a .", "a a a", ". b ."]},
+            "stamps": [
+                {"motif": "leaf", "x": 0, "y": 1},
+                {"motif": "leaf", "x": 4, "y": 1, "flip_x": True, "map": {"a": "c"}},
+            ],
+        })
+        self.assertEqual(artifact["grid"][1][1], "#112233")
+        self.assertEqual(artifact["grid"][3][1], "#445566")
+        self.assertEqual(artifact["grid"][1][5], "#AABBCC")
+        self.assertEqual(artifact["quality"]["clusters"], 4)
+
+    def test_quality_report_surfaces_orphan_pixel_risk_without_scoring_art(self) -> None:
+        artifact = module.compile_spec({
+            "width": 8,
+            "height": 8,
+            "palette": {"ink": "#202020", "near": "#242424"},
+            "pixels": [
+                {"x": 0, "y": 0, "color": "ink"},
+                {"x": 2, "y": 2, "color": "ink"},
+                {"x": 4, "y": 4, "color": "near"},
+                {"x": 6, "y": 6, "color": "near"},
+            ],
+        })
+        report = artifact["quality"]
+        self.assertEqual(report["single_pixel_clusters"], 4)
+        self.assertTrue(any("orphan-pixel" in warning for warning in report["warnings"]))
+        self.assertTrue(any("value span" in warning for warning in report["warnings"]))
+        self.assertNotIn("score", report)
 
     def test_rejects_out_of_bounds_operations(self) -> None:
         with self.assertRaisesRegex(module.ArtifactError, "out of bounds"):
             module.compile_spec({"width": 8, "height": 8, "pixels": [{"x": 8, "y": 0, "color": "#fff"}]})
+
+    def test_rejects_malformed_motifs(self) -> None:
+        with self.assertRaisesRegex(module.ArtifactError, "equal width"):
+            module.compile_spec({"width": 8, "height": 8, "motifs": {"bad": ["x x", "x"]}})
+        with self.assertRaisesRegex(module.ArtifactError, "strings or null"):
+            module.compile_spec({"width": 8, "height": 8, "motifs": {"bad": [[{"color": "#fff"}]]}})
 
     def test_rejects_palette_drift(self) -> None:
         artifact = module.compile_spec({"width": 8, "height": 8, "pixels": [{"x": 0, "y": 0, "color": "#fff"}]})
@@ -69,6 +110,8 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertEqual([item["path"] for item in manifest["items"]], ["8x8", "12x12"])
             self.assertTrue((output / "8x8" / "pixel-art.png").is_file())
             self.assertNotIn("https://", (output / "index.html").read_text(encoding="utf-8"))
+            critique = module.critique_output(output)
+            self.assertEqual([item["path"] for item in critique["items"]], ["8x8", "12x12"])
 
     def test_image_route_when_pillow_is_available(self) -> None:
         try:
