@@ -40,6 +40,10 @@
     "should_trigger": true
   },
   {
+    "query": "This automatic 8x8 sprite is still unreadable; preserve it as the baseline, author a real same-grid repair, and prove the difference without labels.",
+    "should_trigger": true
+  },
+  {
     "query": "Generate a painterly fantasy portrait with the image generation tool.",
     "should_trigger": false
   },

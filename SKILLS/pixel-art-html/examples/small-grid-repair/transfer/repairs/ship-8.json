@@ -1,0 +1,36 @@
+{
+  "title": "Amber scout ship — 8x8 authored repair",
+  "width": 8,
+  "height": 8,
+  "evidence_tier": "fixture",
+  "art_direction": {
+    "use": "transparent vehicle transfer fixture",
+    "projection": "top-down",
+    "light": "upper-left hard cluster",
+    "focus": "amber canopy and split cyan exhaust",
+    "signature": "arrowhead hull, warm cockpit, and two engine trails",
+    "subtraction": "no panel lines, wing trim, rivets, or secondary hull shades"
+  },
+  "repair_decisions": {
+    "silhouette": "replace the flattened sampled fragments with a centered arrowhead hull and stepped symmetric wings",
+    "identity_cue": "restore the missing amber canopy and separate the cyan exhaust into two readable engine trails",
+    "subtraction": "remove panel lines, inner wing highlights, rivets, and all secondary hull shading"
+  },
+  "background": null,
+  "palette": {
+    "i": "#111722",
+    "s": "#70859B",
+    "a": "#E69A34",
+    "c": "#43D7D1"
+  },
+  "grid": [
+    "...ii...",
+    "..iaai..",
+    "..issii.",
+    ".iissii.",
+    "iissssii",
+    ".iissii.",
+    "..icci..",
+    "..c..c.."
+  ]
+}

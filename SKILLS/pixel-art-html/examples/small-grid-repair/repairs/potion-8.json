@@ -1,0 +1,36 @@
+{
+  "title": "Bound blood flask — 8x8 authored repair",
+  "width": 8,
+  "height": 8,
+  "evidence_tier": "representative",
+  "art_direction": {
+    "use": "transparent RPG pickup icon",
+    "projection": "front three-quarter shorthand",
+    "light": "upper-left hard cluster",
+    "focus": "descending amber binding",
+    "signature": "round blood flask crossed by one descending repair band",
+    "subtraction": "no cork texture, facets, secondary reflections, or interior noise"
+  },
+  "repair_decisions": {
+    "silhouette": "replace the fragmented cross with a broad shoulder, round body, and short neck",
+    "identity_cue": "three-cell amber diagonal crossing pale glass and red liquid",
+    "subtraction": "remove microfacets, redundant darks, isolated highlights, and the pointed base"
+  },
+  "background": null,
+  "palette": {
+    "i": "#1A1022",
+    "r": "#9A1230",
+    "h": "#F2E5C4",
+    "a": "#D89238"
+  },
+  "grid": [
+    "........",
+    "...aa...",
+    "...ii...",
+    "..ihhi..",
+    ".ihrai..",
+    ".irarri.",
+    "..arri..",
+    "........"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "title": "Red-scarf scout source",
+  "width": 32,
+  "height": 32,
+  "evidence_tier": "fixture",
+  "art_direction": {
+    "use": "character source fixture",
+    "projection": "side-facing action shorthand",
+    "light": "upper-left",
+    "focus": "long red scarf"
+  },
+  "background": null,
+  "palette": {
+    "i": "#171522",
+    "s": "#4A2946",
+    "b": "#70839B",
+    "l": "#CBD4D8",
+    "h": "#E8B77F",
+    "r": "#C92842"
+  },
+  "rects": [
+    {"x": 12, "y": 3, "width": 8, "height": 7, "color": "i"},
+    {"x": 14, "y": 5, "width": 6, "height": 5, "color": "h"},
+    {"x": 14, "y": 5, "width": 2, "height": 4, "color": "l"},
+    {"x": 14, "y": 10, "width": 4, "height": 3, "color": "h"},
+    {"x": 10, "y": 12, "width": 12, "height": 3, "color": "r"},
+    {"x": 20, "y": 14, "width": 7, "height": 3, "color": "r"},
+    {"x": 24, "y": 17, "width": 5, "height": 3, "color": "r"},
+    {"x": 11, "y": 15, "width": 11, "height": 9, "color": "b"},
+    {"x": 12, "y": 15, "width": 3, "height": 8, "color": "l"},
+    {"x": 8, "y": 15, "width": 4, "height": 10, "color": "s"},
+    {"x": 21, "y": 16, "width": 4, "height": 8, "color": "s"},
+    {"x": 12, "y": 23, "width": 4, "height": 7, "color": "i"},
+    {"x": 18, "y": 22, "width": 4, "height": 8, "color": "i"},
+    {"x": 10, "y": 29, "width": 6, "height": 2, "color": "i"},
+    {"x": 19, "y": 29, "width": 6, "height": 2, "color": "i"}
+  ],
+  "pixels": [
+    {"x": 18, "y": 6, "color": "i"},
+    {"x": 11, "y": 17, "color": "l"},
+    {"x": 23, "y": 18, "color": "r"}
+  ]
+}

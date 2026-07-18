@@ -1,0 +1,31 @@
+{
+  "title": "Direction B — Signal vial",
+  "width": 8,
+  "height": 8,
+  "evidence_tier": "draft",
+  "art_direction": {
+    "use": "pickup icon direction thumbnail",
+    "projection": "strict frontal",
+    "light": "upper-left hard cluster",
+    "focus": "hot horizontal liquid signal",
+    "signature": "tall narrow vial with a single bright warning band",
+    "subtraction": "remove binding and broad glass body"
+  },
+  "background": null,
+  "palette": {
+    "i": "#17101F",
+    "r": "#97142D",
+    "h": "#FF3854",
+    "a": "#D89238"
+  },
+  "grid": [
+    "....a...",
+    "...iai..",
+    "...iii..",
+    "...iri..",
+    "..ihhi..",
+    "..irri..",
+    "..irri..",
+    "...ii..."
+  ]
+}

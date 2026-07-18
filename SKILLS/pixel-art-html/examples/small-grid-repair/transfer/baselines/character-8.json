@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "title": "Red-scarf scout automatic 8x8",
+  "width": 8,
+  "height": 8,
+  "background": null,
+  "evidence_tier": "fixture",
+  "palette": [
+    "#301F34",
+    "#DCC3A3",
+    "#C92842",
+    "#70839B"
+  ],
+  "grid": [
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      "#301F34",
+      "#DCC3A3",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      "#DCC3A3",
+      "#DCC3A3",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      "#C92842",
+      "#C92842",
+      "#C92842",
+      "#C92842",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      "#301F34",
+      "#DCC3A3",
+      "#70839B",
+      "#301F34",
+      "#C92842",
+      null
+    ],
+    [
+      null,
+      null,
+      "#301F34",
+      "#DCC3A3",
+      "#70839B",
+      "#301F34",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      "#301F34",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      "#301F34",
+      null,
+      "#301F34",
+      null,
+      null
+    ]
+  ],
+  "source": {
+    "kind": "image",
+    "name": "pixel-art.png",
+    "fit": "contain",
+    "resample": "lanczos",
+    "dither": "none",
+    "requested_colors": 4,
+    "min_cluster": 1,
+    "requested_reconstruction": "auto",
+    "reconstruction": "two-stage",
+    "structure_colors": 8,
+    "manual_repair_required": true,
+    "analysis": {
+      "class": "pseudo-pixel",
+      "confidence": "high",
+      "detector": "local-target-aware-v1",
+      "inferred_grid": null,
+      "target_grid": {
+        "width": 8,
+        "height": 8
+      },
+      "metrics": {
+        "source_width": 32,
+        "source_height": 32,
+        "sampled_unique_ratio": 0.0068,
+        "same_neighbor_ratio": 0.8896,
+        "semi_transparent_ratio": 0.0,
+        "target_cell_uniformity": 0.8604
+      },
+      "reasons": [
+        "large same-color neighborhoods suggest block structure, but the local detector cannot certify a source lattice"
+      ]
+    }
+  },
+  "proofs": {
+    "repeat_3x": false
+  },
+  "quality": {
+    "subject_cells": 20,
+    "bbox": [
+      2,
+      1,
+      6,
+      7
+    ],
+    "padding": [
+      2,
+      1,
+      1,
+      0
+    ],
+    "clusters": 8,
+    "single_pixel_clusters": 2,
+    "value_span": 0.5503,
+    "low_contrast_boundary_ratio": 0.0625,
+    "warnings": []
+  }
+}

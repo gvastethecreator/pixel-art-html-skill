@@ -78,7 +78,9 @@
         "Every artifact records source class, confidence, detector, target grid, inferred lattice when available, and applied reconstruction without allowing detection to change the requested target size.",
         "The 8x8, 16x16, 24x24, and 32x32 artifacts are reconstructed directly from the original source with alpha and palette limits preserved.",
         "The proof page exposes the source-lattice toggle and source metadata without external network requests or executable path leaks.",
-        "The 8x8 and 16x16 grids receive explicit silhouette and identity-cue repair; reconstruction metrics alone are not used to promote them beyond draft.",
+        "Exactly three materially different 8x8 silhouette/material directions are compared before one is selected; palette-only variants do not count.",
+        "The 8x8 and 16x16 grids are independently authored through the repair command with explicit silhouette, identity-cue, and subtraction decisions; reconstruction metrics alone are not used to promote them.",
+        "Each repair preserves the losing same-size canonical baseline and exposes an equal-scale before/after proof whose blind mode uses neutral Sample A / Sample B captions.",
         "A title-free native-scale review records what is actually recognized at every size, and validation proves canonical JSON/PNG parity."
       ]
     }

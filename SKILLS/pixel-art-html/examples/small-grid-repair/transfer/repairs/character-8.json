@@ -1,0 +1,36 @@
+{
+  "title": "Red-scarf scout — 8x8 authored repair",
+  "width": 8,
+  "height": 8,
+  "evidence_tier": "fixture",
+  "art_direction": {
+    "use": "transparent character transfer fixture",
+    "projection": "side-facing running shorthand",
+    "light": "upper-left hard cluster",
+    "focus": "long red scarf and split running stance",
+    "signature": "open face, trailing scarf, and two separated feet",
+    "subtraction": "no eye pixel, armor trim, fingers, or fabric texture"
+  },
+  "repair_decisions": {
+    "silhouette": "replace the compressed vertical fragments with an open face, compact torso, and a wide two-foot running stance",
+    "identity_cue": "spend four connected red cells on a scarf that trails left from the neck",
+    "subtraction": "remove eye, hair highlight, armor trim, hands, and all interior costume texture"
+  },
+  "background": null,
+  "palette": {
+    "i": "#171522",
+    "h": "#E8B77F",
+    "b": "#70839B",
+    "r": "#C92842"
+  },
+  "grid": [
+    "...ii...",
+    "..ihh...",
+    "..ihhi..",
+    ".rriib..",
+    "rribbi..",
+    "..ibbi..",
+    ".ii..ii.",
+    "ii....ii"
+  ]
+}

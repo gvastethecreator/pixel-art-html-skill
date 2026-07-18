@@ -10,7 +10,7 @@ Create authored pixel art, not merely valid low-resolution files. Keep model gen
 ## Route
 
 - Text-only art or edits: direction card -> silhouette/value passes -> exact spec -> critique -> browser proof.
-- Local/attached image: source brief -> source classification -> target-aware conversion -> manual repixelization -> critique -> browser proof.
+- Local/attached image: source brief -> source classification -> target-aware draft -> authored same-grid repair -> critique -> blind before/after browser proof.
 - Codex ImageGen: generate a clean source with `$imagegen`, save it in the project, then follow the image route.
 - Existing artifact: edit its source spec or canonical grid, rebuild, and compare the final render.
 - Resolution set: author each text master independently, or convert every size from the original image, then clean each size.
@@ -41,6 +41,7 @@ Do not use an OpenAI API key, image API script, `$openai-image-gen`, or an exter
    - Compare native-size read, user value, useful signature, feasibility, and proof path. Choose one explicitly; reject the other two and do not default to a hybrid.
    - Name one signature to preserve and one generic or diluting element to remove. ImageGen may supply concept evidence, never the final exact grid.
    - For a concrete recovery benchmark, inspect [cursed-salvage](examples/cursed-salvage/README.md); use its process and gates, not its visual theme.
+   - For severe-grid image recovery, inspect [small-grid-repair](examples/small-grid-repair/README.md); preserve its same-grid baseline/repair proof and omission discipline, not its potion theme.
    - `fixture` and routine `draft` work may skip this search only when no artistic-quality claim is made.
    - Done when [visual-review.md](references/visual-review.md) has a direction record or an explicit, valid skip reason.
 
@@ -62,6 +63,8 @@ Do not use an OpenAI API key, image API script, `$openai-image-gen`, or an exter
    - Run `critique`; inspect bounds, singleton clusters, value span, and low-contrast boundaries as risk signals, not a score.
    - Open the HTML in a browser. Inspect native 1x, 2x, 4x, silhouette, value hierarchy, crop, alpha edges, cluster rhythm, focal contrast, and subject-specific context.
    - For image-derived work, inspect source class/confidence and toggle the recovered source-lattice overlay. Treat a plausible lattice as diagnosis, not proof that the final target grid is good.
+   - When an 8x8/16x16 image draft loses the native read, author an independent exact spec and compile it with `repair <baseline-pixel-art.json> <repair-spec.json>`. Record non-empty `silhouette`, `identity_cue`, and `subtraction` decisions. A repair must keep dimensions and change at least one cell.
+   - Use the generated same-scale baseline/authored comparison and enable `Hide title for blind review`. Changed-cell count proves intervention only; it is not a quality score.
    - Tile, texture, and seamless specs automatically add a 3x repeat proof when their direction card identifies that use. Inspect the repeated proof for seams, landmarks, diagonals, and visual fatigue.
    - Resolve every warning visually or record why it is intentional. Remove details that help only while zoomed in.
    - For `representative` or `production-candidate` output, copy the visual-review template beside the output. Hide titles, shuffle pack items, and record what is actually identified, which materials read, what signature is remembered, and every mismatch.
@@ -117,6 +120,12 @@ Small-grid recovery ladder from the same original source:
 
 ```bash
 uv run --with pillow==11.0.0 python <skill-dir>/scripts/build_pixel_art.py from-image <image> --output <scratch-output> --sizes 8,16,24,32 --colors 8 --source-class auto --reconstruction auto
+```
+
+Authored same-grid repair from one canonical draft:
+
+```bash
+python <skill-dir>/scripts/build_pixel_art.py repair <draft-output>/pixel-art.json <repair-spec.json> --output <repair-output> --scale 16
 ```
 
 Deterministic recovery benchmark:
@@ -190,4 +199,4 @@ manifest.json
 <asset-slug>/{index.html,pixel-art.json,pixel-art.png}
 ```
 
-Managed mode also writes `iteration.json` and regenerates `pixel-art/catalog.json` plus `pixel-art/index.html`; read [project-library.md](references/project-library.md) for that contract. Every proof HTML remains standalone and network-free. `pixel-art.json` is the canonical editable grid; `pixel-art.png` is its nearest-neighbor preview/export, and validation proves its dimensions and every RGBA cell still match the canonical grid. The proof page displays the declared evidence tier so a fixture or draft cannot masquerade as accepted art.
+Managed mode also writes `iteration.json` and regenerates `pixel-art/catalog.json` plus `pixel-art/index.html`; read [project-library.md](references/project-library.md) for that contract. Every proof HTML remains standalone and network-free. `pixel-art.json` is the canonical editable grid; `pixel-art.png` is its nearest-neighbor preview/export, and validation proves its dimensions and every RGBA cell still match the canonical grid. A repair artifact additionally embeds its exact baseline grid, authored decisions, and recomputed delta evidence. The proof page displays the declared evidence tier so a fixture or draft cannot masquerade as accepted art.

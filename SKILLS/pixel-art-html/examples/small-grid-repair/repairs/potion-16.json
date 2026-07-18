@@ -1,0 +1,47 @@
+{
+  "title": "Bound blood flask — 16x16 authored repair",
+  "width": 16,
+  "height": 16,
+  "evidence_tier": "representative",
+  "art_direction": {
+    "use": "transparent RPG pickup icon",
+    "projection": "front three-quarter shorthand",
+    "light": "upper-left hard cluster",
+    "focus": "descending amber binding over the liquid line",
+    "signature": "faceted blood flask crossed by one descending repair band",
+    "subtraction": "no source microtexture, isolated glints, or secondary facet outlines"
+  },
+  "repair_decisions": {
+    "silhouette": "rebuild neck, stepped shoulders, broad round body, and a stable six-cell base",
+    "identity_cue": "two-cell amber binding descends across the pale glass and bright liquid plane",
+    "subtraction": "remove quantized cork texture, redundant purple fragments, single-pixel reflections, and right-side protrusion"
+  },
+  "background": null,
+  "palette": {
+    "i": "#1A1022",
+    "s": "#4A2946",
+    "g": "#8796A5",
+    "h": "#E8E1C5",
+    "r": "#7D0F25",
+    "l": "#C91E3A",
+    "a": "#D18A32"
+  },
+  "grid": [
+    "................",
+    "......iaai......",
+    "......iaai......",
+    "......ihgi......",
+    "......ihgi......",
+    ".....iihgii.....",
+    "....iihgssii....",
+    "...iihgassssi...",
+    "...ihgarrrssi...",
+    "..ihgaarrrrrsi..",
+    "..isaarllllrsi..",
+    "..iaarllllrrsi..",
+    "..iarlllrrrssi..",
+    "...iarlrrrssi...",
+    ".....iirrsi.....",
+    "................"
+  ]
+}

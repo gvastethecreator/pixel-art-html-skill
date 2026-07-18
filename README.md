@@ -7,6 +7,7 @@ Pixel Art HTML turns text-authored grids, local images, or accepted Codex ImageG
 - Build single images or deliberate multi-resolution sets from 8x8 through 128x128.
 - Classify exact-grid, pseudo-pixel, and painterly sources before conversion, then record the detector, confidence, inferred lattice, and applied reconstruction in canonical metadata.
 - Convert locally with Pillow using target-aware structure/color packing while enforcing exact dimensions and palette limits.
+- Repair losing 8x8/16x16 drafts through a declarative authored spec that preserves the exact baseline, required silhouette/identity/subtraction decisions, changed-cell evidence, and blind before/after proof.
 - Reuse exact cluster motifs with flips and palette maps instead of scattering one-off pixels.
 - Label every output as fixture, draft, representative, or production-candidate so structural smoke cannot masquerade as art-quality proof.
 - Compare three materially different directions for rejected or direction-sensitive quality work, then record a title-free perceptual read.
@@ -49,6 +50,14 @@ uv run --with pillow==11.0.0 python .\SKILLS\pixel-art-html\scripts\build_pixel_
 ```
 
 The proof page shows the source class, detection confidence, inferred source lattice, reconstruction route, and a toggleable recovered-lattice overlay. `auto` preserves an exact matching lattice with nearest-neighbor sampling and otherwise uses two-stage target packing. It does not turn an 8x8 draft into authored art; repair silhouette and identity cues per size.
+
+Turn one generated draft into a provenance-preserving authored repair:
+
+```powershell
+python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py repair .\draft\pixel-art.json .\repair-spec.json --output .\authored-repair
+```
+
+The repair spec is a normal exact-grid spec plus `repair_decisions.silhouette`, `identity_cue`, and `subtraction`. No-op or dimension-changing repairs are rejected.
 
 Both commands regenerate `pixel-art/index.html`, which navigates every managed iteration in the project. Use `--output <directory>` when an unindexed standalone destination is preferable.
 
@@ -93,6 +102,7 @@ The image-conversion test runs when Pillow is installed; all other tests use the
 - [Visual quality contract](./SKILLS/pixel-art-html/references/quality-contract.md)
 - [Visual review and evidence tiers](./SKILLS/pixel-art-html/references/visual-review.md)
 - [Representative recovery example](./SKILLS/pixel-art-html/examples/cursed-salvage/README.md)
+- [Representative 8x8/16x16 authored repair](./SKILLS/pixel-art-html/examples/small-grid-repair/README.md)
 
 ## Background
 

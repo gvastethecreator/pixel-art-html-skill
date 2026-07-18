@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "title": "Potion source recovery — 8x8",
+  "width": 8,
+  "height": 8,
+  "background": null,
+  "evidence_tier": "draft",
+  "palette": [
+    "#703D19",
+    "#05020B",
+    "#64646C",
+    "#280E26",
+    "#AA1529",
+    "#CE8F40",
+    "#56090F",
+    "#49274E"
+  ],
+  "grid": [
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      "#703D19",
+      "#05020B",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      "#64646C",
+      "#05020B",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      "#64646C",
+      "#703D19",
+      "#280E26",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      "#AA1529",
+      "#CE8F40",
+      "#56090F",
+      "#AA1529",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      "#703D19",
+      "#56090F",
+      "#56090F",
+      "#49274E",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      "#56090F",
+      "#703D19",
+      "#280E26",
+      "#05020B",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  ],
+  "source": {
+    "kind": "image",
+    "name": "potion-alpha.png",
+    "fit": "contain",
+    "resample": "lanczos",
+    "dither": "none",
+    "requested_colors": 8,
+    "min_cluster": 1,
+    "requested_reconstruction": "auto",
+    "reconstruction": "two-stage",
+    "structure_colors": 16,
+    "manual_repair_required": true,
+    "analysis": {
+      "class": "pseudo-pixel",
+      "confidence": "high",
+      "detector": "pixel-art-fixer",
+      "inferred_grid": {
+        "width": 89,
+        "height": 89,
+        "step_x": 14.0899,
+        "step_y": 14.0899
+      },
+      "target_grid": {
+        "width": 8,
+        "height": 8
+      },
+      "metrics": {
+        "source_width": 1254,
+        "source_height": 1254,
+        "sampled_unique_ratio": 0.1921,
+        "same_neighbor_ratio": 0.7641,
+        "semi_transparent_ratio": 0.0024,
+        "target_cell_uniformity": 0.7234
+      },
+      "reasons": [
+        "no trustworthy hard-cell lattice was found",
+        "Pixel Art Fixer selected 89x89 via fast:ac+rl(S)"
+      ],
+      "local_evidence": {
+        "class": "painterly",
+        "confidence": "medium",
+        "detector": "local-target-aware-v1"
+      },
+      "external": {
+        "provider": "pixel-art-fixer",
+        "mode": "full",
+        "cols": 89,
+        "rows": 89,
+        "step_x": 14.0899,
+        "step_y": 14.0899,
+        "consensus": "fast:ac+rl(S)",
+        "confidence": "high"
+      }
+    }
+  },
+  "proofs": {
+    "repeat_3x": false
+  },
+  "quality": {
+    "subject_cells": 19,
+    "bbox": [
+      2,
+      1,
+      5,
+      6
+    ],
+    "padding": [
+      2,
+      1,
+      2,
+      1
+    ],
+    "clusters": 13,
+    "single_pixel_clusters": 9,
+    "value_span": 0.3304,
+    "low_contrast_boundary_ratio": 0.75,
+    "warnings": [
+      "Many same-color clusters are single pixels; inspect for orphan-pixel noise.",
+      "Most color boundaries have low luminance contrast; inspect focal hierarchy."
+    ]
+  }
+}
