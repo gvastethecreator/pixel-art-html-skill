@@ -60,6 +60,7 @@ Text-authored sizes are independent masters. Image-derived sizes convert from th
 - Palette count is within the requested limit and still provides value separation.
 - The exact grid, not the source image, carries recognition.
 - At 8x8 and 16x16, automatic reconstruction remains `draft` until a human or agent explicitly repairs the silhouette and one identity cue and passes the title-free native-scale read.
+- Representative 8x8/16x16 image recovery preserves the losing canonical baseline, records silhouette/identity/subtraction decisions, and exposes a same-grid blind before/after proof. A non-empty changed-cell delta proves intervention, not improvement.
 - Reconstruction benchmark metrics may justify routing changes, but they do not measure composition, specificity, material read, or artistic quality.
 
 Read [image-source-brief.md](image-source-brief.md) before generation or conversion when the source is not already pixel-clean.
@@ -91,5 +92,6 @@ Resolve every warning through visual inspection or state why it is intentional.
 - Every item is recognizable but interchangeable with a stock pictogram because no useful signature or specific construction survives.
 - The background has equal or greater contrast/detail than the focal subject.
 - Any requested collection master is missing or mechanically resized from another master.
+- An image-derived 8x8/16x16 artifact is promoted without an authored same-grid repair record and title-hidden baseline comparison.
 - Browser proof is absent, blurry, clipped, empty, or not the final generated artifact.
 - HTML depends on a server, CDN, external font, framework, or network request.

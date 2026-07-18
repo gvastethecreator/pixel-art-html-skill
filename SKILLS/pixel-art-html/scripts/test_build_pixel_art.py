@@ -394,6 +394,116 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertIn("sourceGridOverlay", proof)
             self.assertIn("sourceGridStride", proof)
 
+    def test_repair_cli_preserves_losing_baseline_and_exposes_blind_before_after_proof(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            baseline_path = root / "baseline.json"
+            repair_path = root / "repair.json"
+            output = root / "output"
+            baseline = module.canonical_artifact(
+                title="Automatic draft",
+                grid=[["#111111" if (x, y) == (3, 3) else None for x in range(8)] for y in range(8)],
+                background=None,
+                source={"kind": "image", "manual_repair_required": True},
+                evidence_tier="draft",
+            )
+            baseline_path.write_text(json.dumps(baseline), encoding="utf-8")
+            repair_path.write_text(json.dumps({
+                "title": "Authored repair",
+                "width": 8,
+                "height": 8,
+                "evidence_tier": "draft",
+                "palette": {"l": "#F2E5C4"},
+                "grid": [
+                    "........", "........", "........", "...ll...",
+                    "........", "........", "........", "........",
+                ],
+                "art_direction": {"use": "pickup icon", "focus": "two-cell light cluster"},
+                "repair_decisions": {
+                    "silhouette": "replace isolated source fragment with one connected cue",
+                    "identity_cue": "two-cell light cluster",
+                    "subtraction": "remove all source noise",
+                },
+            }), encoding="utf-8")
+            completed = subprocess.run(
+                [sys.executable, str(MODULE_PATH), "repair", str(baseline_path), str(repair_path), "--output", str(output), "--scale", "4"],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            artifact = json.loads((output / "pixel-art.json").read_text(encoding="utf-8"))
+            self.assertEqual(artifact["source"]["kind"], "manual-repair")
+            self.assertEqual(artifact["source"]["baseline"]["title"], "Automatic draft")
+            self.assertEqual(artifact["source"]["baseline_grid"], baseline["grid"])
+            self.assertEqual(artifact["source"]["repair_decisions"]["identity_cue"], "two-cell light cluster")
+            self.assertEqual(artifact["source"]["repair_evidence"], {
+                "changed_cells": 2,
+                "baseline_subject_cells": 1,
+                "repaired_subject_cells": 2,
+            })
+            proof = (output / "index.html").read_text(encoding="utf-8")
+            self.assertIn('id="repair-comparison"', proof)
+            self.assertIn('id="blind-review"', proof)
+            self.assertIn('id="repair-baseline-label"', proof)
+            self.assertIn('id="repair-current-label"', proof)
+            self.assertIn("blind ? 'Sample A' : 'Baseline'", proof)
+            self.assertIn("blind ? 'Sample B' : 'Authored repair'", proof)
+            self.assertIn("Authored repair", proof)
+            self.assertIn("repairChangedCells", proof)
+            self.assertNotIn("https://", proof)
+
+    def test_repair_rejects_a_noop_that_cannot_prove_authored_change(self) -> None:
+        baseline = module.canonical_artifact(
+            title="Unchanged draft",
+            grid=[["#111111" if (x, y) == (3, 3) else None for x in range(8)] for y in range(8)],
+            background=None,
+            source={"kind": "image", "manual_repair_required": True},
+            evidence_tier="draft",
+        )
+        repair_spec = {
+            "title": "False repair",
+            "width": 8,
+            "height": 8,
+            "palette": {"i": "#111111"},
+            "grid": [
+                "........", "........", "........", "...i....",
+                "........", "........", "........", "........",
+            ],
+            "repair_decisions": {
+                "silhouette": "claim a silhouette repair",
+                "identity_cue": "claim an identity cue",
+                "subtraction": "claim removed noise",
+            },
+        }
+        with self.assertRaisesRegex(module.ArtifactError, "repair must change at least one cell"):
+            module.compile_repair(baseline, repair_spec)
+
+    def test_repair_canonical_validation_rejects_a_malformed_comparison_grid(self) -> None:
+        baseline = module.canonical_artifact(
+            title="Baseline",
+            grid=[["#111111" if (x, y) == (3, 3) else None for x in range(8)] for y in range(8)],
+            background=None,
+            source={"kind": "image", "manual_repair_required": True},
+            evidence_tier="draft",
+        )
+        repaired = module.compile_repair(baseline, {
+            "title": "Repair",
+            "palette": {"l": "#EEEEEE"},
+            "grid": [
+                "........", "........", "........", "...ll...",
+                "........", "........", "........", "........",
+            ],
+            "repair_decisions": {
+                "silhouette": "connect the cue",
+                "identity_cue": "two light cells",
+                "subtraction": "remove the orphan",
+            },
+        })
+        repaired["source"]["baseline_grid"] = [[None]]
+        with self.assertRaisesRegex(module.ArtifactError, "repair baseline grid must match artifact dimensions"):
+            module.validate_artifact(repaired)
+
     def test_small_grid_benchmark_cli_writes_machine_and_browser_reports(self) -> None:
         try:
             import PIL  # noqa: F401

@@ -85,6 +85,28 @@ Image-derived canonical output also records:
 
 `analysis` is diagnostic provenance. Its inferred source grid never changes the requested runtime dimensions, and neither detector confidence nor reconstruction fidelity promotes an artifact beyond its declared evidence tier. `manual_repair_required` is true for image-derived 8x8/16x16 output unless an exact matching source lattice was preserved; the proof page surfaces the requirement as a review warning. An optional external detector is recorded by stable detector/mode/result metadata; executable paths are never serialized.
 
+## Authored repair specs
+
+Use the normal spec fields plus three mandatory decisions:
+
+```json
+{
+  "title": "Bound flask — 8x8 repair",
+  "width": 8,
+  "height": 8,
+  "evidence_tier": "draft",
+  "palette": {"i": "#1A1022", "r": "#9A1230", "a": "#D89238"},
+  "grid": ["........", "...aa...", "...ii...", "..irri..", ".iarri..", ".irrri..", "..ii....", "........"],
+  "repair_decisions": {
+    "silhouette": "broad shoulder and round body",
+    "identity_cue": "descending amber binding",
+    "subtraction": "remove sampled microfacets and isolated glints"
+  }
+}
+```
+
+Compile it with `repair <canonical-baseline.json> <repair-spec.json>`. Dimensions default to the baseline but may never differ. The canonical repair source records `kind: manual-repair`, `manual_repair_status: authored-review-required`, full baseline grid/palette, the decisions, original analysis when present, and exact delta evidence. Validation recomputes the baseline palette, dimensions, subject cells, changed cells, repaired subject cells, proof intents, and status so edited metadata cannot fake the comparison.
+
 Canonical palette arrays follow first raster appearance, not source declaration order. Compare palette sets or semantic source aliases when order is not itself part of the test.
 
 ## Resolution collections

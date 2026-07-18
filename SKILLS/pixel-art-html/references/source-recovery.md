@@ -52,9 +52,29 @@ Automatic conversion always remains a draft at 8x8 and 16x16:
 
 Image-derived canonical metadata sets `manual_repair_required` for these sizes unless an exact matching lattice was preserved. The proof page repeats that requirement as a review warning so a clean validator result cannot hide the missing authoring pass.
 
+Compile the authored master against the losing canonical draft:
+
+```bash
+python <skill-dir>/scripts/build_pixel_art.py repair <draft>/pixel-art.json <repair-spec.json> --output <repair-output>
+```
+
+The repair spec uses the normal exact-grid schema and must add:
+
+```json
+{
+  "repair_decisions": {
+    "silhouette": "structural read changed",
+    "identity_cue": "cue that receives the remaining cells",
+    "subtraction": "source detail deliberately removed"
+  }
+}
+```
+
+The compiler rejects missing decisions, dimension drift, and zero-cell no-ops. Canonical output preserves the full baseline grid/palette, repair decisions, original image analysis when present, and recomputed changed/painted-cell evidence. Its proof page shows baseline and repair at equal scale; blind mode hides the artifact title and changes the captions to neutral `Sample A` / `Sample B` labels. These fields prove a reviewable authored intervention, never automatic artistic acceptance.
+
 If the subject cannot read after subtraction, change the crop, pose, or source direction. More structure labels or colors will not repair an information-budget failure.
 
-## 5. Run the deterministic benchmark
+## 5. Run the deterministic reconstruction benchmark
 
 ```bash
 uv run --with pillow==11.0.0 python <skill-dir>/scripts/benchmark_small_grids.py --output <benchmark-output>

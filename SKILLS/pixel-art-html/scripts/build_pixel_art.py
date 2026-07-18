@@ -25,6 +25,7 @@ PROJECT_HUB_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-project-hub-templa
 CLEAR_TOKENS = {None, "", ".", "..", "none", "null", "transparent", "clear"}
 RECOMMENDED_SIZES = (16, 24, 32, 40, 48, 64)
 EVIDENCE_TIERS = ("fixture", "draft", "representative", "production-candidate")
+REPAIR_DECISION_FIELDS = ("silhouette", "identity_cue", "subtraction")
 WINDOWS_RESERVED_NAMES = {"CON", "PRN", "AUX", "NUL", *(f"COM{index}" for index in range(1, 10)), *(f"LPT{index}" for index in range(1, 10))}
 
 
@@ -198,12 +199,74 @@ def compile_spec(spec: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+def compile_repair(baseline: dict[str, Any], spec: dict[str, Any]) -> dict[str, Any]:
+    """Compile an authored same-grid repair while preserving the losing baseline."""
+    validate_artifact(baseline)
+    decisions = spec.get("repair_decisions")
+    if not isinstance(decisions, dict):
+        raise ArtifactError("repair_decisions must be an object")
+    missing = [field for field in REPAIR_DECISION_FIELDS if not isinstance(decisions.get(field), str) or not decisions[field].strip()]
+    if missing:
+        raise ArtifactError(f"repair_decisions needs non-empty: {', '.join(missing)}")
+
+    repair_spec = {**spec, "width": spec.get("width", baseline["width"]), "height": spec.get("height", baseline["height"])}
+    repaired = compile_spec(repair_spec)
+    if (repaired["width"], repaired["height"]) != (baseline["width"], baseline["height"]):
+        raise ArtifactError("repair dimensions must match the canonical baseline")
+
+    changed_cells = sum(
+        before != after
+        for before_row, after_row in zip(baseline["grid"], repaired["grid"])
+        for before, after in zip(before_row, after_row)
+    )
+    if changed_cells == 0:
+        raise ArtifactError("repair must change at least one cell")
+    source = {
+        "kind": "manual-repair",
+        "art_direction": repaired["source"].get("art_direction", {}),
+        "manual_repair_status": "authored-review-required",
+        "baseline": {
+            "title": baseline["title"],
+            "width": baseline["width"],
+            "height": baseline["height"],
+            "background": baseline["background"],
+            "evidence_tier": baseline.get("evidence_tier", "legacy-unlabeled"),
+            "source_kind": baseline.get("source", {}).get("kind", "unknown"),
+        },
+        "baseline_grid": baseline["grid"],
+        "baseline_palette": baseline["palette"],
+        "repair_decisions": {field: decisions[field].strip() for field in REPAIR_DECISION_FIELDS},
+        "repair_evidence": {
+            "changed_cells": changed_cells,
+            "baseline_subject_cells": baseline["quality"]["subject_cells"],
+            "repaired_subject_cells": repaired["quality"]["subject_cells"],
+        },
+    }
+    if baseline.get("source", {}).get("analysis"):
+        source["baseline_analysis"] = baseline["source"]["analysis"]
+    artifact = canonical_artifact(
+        title=repaired["title"],
+        grid=repaired["grid"],
+        background=repaired["background"],
+        source=source,
+        evidence_tier=repaired["evidence_tier"],
+    )
+    return artifact
+
+
 def source_requires_repeat_proof(source: dict[str, Any]) -> bool:
     art_direction = source.get("art_direction", {})
     if not isinstance(art_direction, dict):
         return False
     use = str(art_direction.get("use", "")).lower()
     return bool(re.search(r"\b(tile|tileset|texture|seamless)\b", use))
+
+
+def artifact_proof_intents(source: dict[str, Any]) -> dict[str, bool]:
+    proofs = {"repeat_3x": source_requires_repeat_proof(source)}
+    if source.get("kind") == "manual-repair" and isinstance(source.get("baseline_grid"), list):
+        proofs["repair_comparison"] = True
+    return proofs
 
 
 def canonical_artifact(*, title: str, grid: list[list[str | None]], background: str | None, source: dict[str, Any], evidence_tier: str = "draft") -> dict[str, Any]:
@@ -235,7 +298,7 @@ def canonical_artifact(*, title: str, grid: list[list[str | None]], background: 
         "palette": colors,
         "grid": normalized_grid,
         "source": source,
-        "proofs": {"repeat_3x": source_requires_repeat_proof(source)},
+        "proofs": artifact_proof_intents(source),
     }
     artifact["quality"] = artifact_quality_report(artifact)
     return artifact
@@ -1120,9 +1183,48 @@ def validate_artifact(artifact: dict[str, Any]) -> None:
     if "quality" in artifact and artifact["quality"] != artifact_quality_report(artifact):
         raise ArtifactError("canonical quality report does not match grid")
     if "proofs" in artifact:
-        expected_proofs = {"repeat_3x": source_requires_repeat_proof(artifact.get("source", {}))}
+        expected_proofs = artifact_proof_intents(artifact.get("source", {}))
         if artifact["proofs"] != expected_proofs:
             raise ArtifactError("canonical proof intents do not match source direction")
+    validate_repair_metadata(artifact)
+
+
+def validate_repair_metadata(artifact: dict[str, Any]) -> None:
+    source = artifact.get("source", {})
+    if source.get("kind") != "manual-repair":
+        return
+    width, height = artifact["width"], artifact["height"]
+    baseline_grid = source.get("baseline_grid")
+    if not isinstance(baseline_grid, list) or len(baseline_grid) != height or any(not isinstance(row, list) or len(row) != width for row in baseline_grid):
+        raise ArtifactError("repair baseline grid must match artifact dimensions")
+    if any(normalize_color(cell) != cell for row in baseline_grid for cell in row):
+        raise ArtifactError("repair baseline grid must contain canonical colors or null")
+    baseline_palette = source.get("baseline_palette")
+    baseline_colors = {cell for row in baseline_grid for cell in row if cell}
+    if not isinstance(baseline_palette, list) or set(baseline_palette) != baseline_colors or len(baseline_palette) != len(set(baseline_palette)):
+        raise ArtifactError("repair baseline palette does not match baseline grid")
+    baseline = source.get("baseline")
+    if not isinstance(baseline, dict) or baseline.get("width") != width or baseline.get("height") != height:
+        raise ArtifactError("repair baseline metadata must match artifact dimensions")
+    decisions = source.get("repair_decisions")
+    if not isinstance(decisions, dict) or any(not isinstance(decisions.get(field), str) or not decisions[field].strip() for field in REPAIR_DECISION_FIELDS):
+        raise ArtifactError("canonical repair decisions are incomplete")
+    changed_cells = sum(
+        before != after
+        for before_row, after_row in zip(baseline_grid, artifact["grid"])
+        for before, after in zip(before_row, after_row)
+    )
+    baseline_background = normalize_color(baseline.get("background"))
+    baseline_subject_cells = sum(cell is not None and cell != baseline_background for row in baseline_grid for cell in row)
+    expected_evidence = {
+        "changed_cells": changed_cells,
+        "baseline_subject_cells": baseline_subject_cells,
+        "repaired_subject_cells": artifact["quality"]["subject_cells"],
+    }
+    if changed_cells == 0 or source.get("repair_evidence") != expected_evidence:
+        raise ArtifactError("canonical repair evidence does not match baseline delta")
+    if source.get("manual_repair_status") != "authored-review-required":
+        raise ArtifactError("canonical manual repair status is invalid")
 
 
 def validate_standalone_html(path: Path, placeholders: tuple[str, ...]) -> None:
@@ -1317,6 +1419,12 @@ def parse_args() -> argparse.Namespace:
     add_output_options(spec_parser)
     spec_parser.add_argument("--scale", type=int, default=16)
 
+    repair_parser = subparsers.add_parser("repair", help="Compile an authored same-grid repair from canonical JSON plus a compact spec.")
+    repair_parser.add_argument("baseline", type=Path, help="Canonical pixel-art.json baseline to preserve for comparison.")
+    repair_parser.add_argument("spec", type=Path, help="Authored repair spec with repair_decisions.")
+    add_output_options(repair_parser)
+    repair_parser.add_argument("--scale", type=int, default=16)
+
     collection_parser = subparsers.add_parser("collection", help="Compile several exact specs into one resolution set.")
     collection_parser.add_argument("specs", nargs="+", type=Path)
     add_output_options(collection_parser)
@@ -1371,6 +1479,16 @@ def main() -> int:
             if not isinstance(spec, dict):
                 raise ArtifactError("spec root must be an object")
             artifact = compile_spec(spec)
+            output, library = resolve_output(args, artifact["title"])
+            write_artifact(artifact, output, args.scale)
+            result = validate_output(output)
+            print(json.dumps(finish_managed(result, output, library), ensure_ascii=False))
+        elif args.command == "repair":
+            baseline = json.loads(args.baseline.read_text(encoding="utf-8"))
+            spec = json.loads(args.spec.read_text(encoding="utf-8"))
+            if not isinstance(baseline, dict) or not isinstance(spec, dict):
+                raise ArtifactError("repair baseline and spec roots must be objects")
+            artifact = compile_repair(baseline, spec)
             output, library = resolve_output(args, artifact["title"])
             write_artifact(artifact, output, args.scale)
             result = validate_output(output)

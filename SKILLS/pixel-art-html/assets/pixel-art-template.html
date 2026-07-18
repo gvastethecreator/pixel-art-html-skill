@@ -62,6 +62,7 @@
     output { min-width: 48px; padding: 3px 6px; border: 1px solid var(--edge-strong); color: var(--ink); background: var(--paper-raised); text-align: center; font: 700 12px/1.25 ui-monospace, "Cascadia Mono", monospace; }
     input[type="range"] { width: 100%; margin: 3px 0 14px; accent-color: var(--control); }
     .check-row { display: flex; align-items: center; gap: 10px; min-height: 38px; font-size: 13px; font-weight: 700; }
+    .check-row[hidden] { display: none; }
     .check-row input { width: 18px; height: 18px; accent-color: var(--control); }
     button { min-height: 42px; padding: 10px 12px; border: 2px solid var(--edge-strong); border-radius: 0; color: var(--button-text); background: var(--button); font-size: 13px; font-weight: 760; }
     button:hover { border-color: var(--control); color: #c8ccc6; background: var(--button-hover); }
@@ -69,6 +70,13 @@
     button.primary:hover { border-color: var(--control); color: #d0d4ce; background: #232720; }
     .fit-button { width: 100%; margin-top: 8px; }
     .proof-strip { display: grid; gap: 10px; }
+    .repair-comparison { display: grid; gap: 10px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+    .repair-comparison[hidden] { display: none; }
+    .repair-kicker { margin: 0; color: var(--muted); font: 700 11px/1.3 ui-monospace, "Cascadia Mono", monospace; }
+    .repair-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .repair-card { min-width: 0; margin: 0; padding: 8px; border: 1px solid var(--edge-strong); background: #20231d; }
+    .repair-card figcaption { margin-bottom: 7px; color: var(--muted); font: 700 10px/1.2 ui-monospace, "Cascadia Mono", monospace; text-transform: uppercase; }
+    .repair-card canvas { max-width: 100%; margin: auto; }
     .proof-sample { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; gap: 10px; color: var(--muted); font: 700 11px/1.2 ui-monospace, "Cascadia Mono", monospace; }
     .proof-canvas-shell { min-width: 0; min-height: 34px; display: flex; align-items: center; padding: 5px; overflow: auto; border: 1px solid var(--edge-strong); background-color: #20231d; background-image: linear-gradient(45deg, #171914 25%, transparent 25%), linear-gradient(-45deg, #171914 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #171914 75%), linear-gradient(-45deg, transparent 75%, #171914 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0; }
     .proof-canvas { flex: 0 0 auto; image-rendering: pixelated; image-rendering: crisp-edges; }
@@ -134,10 +142,18 @@
           <input id="zoom" type="range" min="4" max="32" step="1" value="16">
           <label class="check-row" for="grid"><input id="grid" type="checkbox" checked><span>Show grid overlay</span></label>
           <label class="check-row" id="source-grid-row" for="source-grid" hidden><input id="source-grid" type="checkbox"><span id="source-grid-label">Show recovered source lattice</span></label>
+          <label class="check-row" for="blind-review"><input id="blind-review" type="checkbox"><span>Hide title for blind review</span></label>
           <button class="fit-button" id="fit" type="button">Fit artwork to stage</button>
         </section>
         <section class="panel">
           <h2 class="panel-title"><span>Readability proofs</span><span class="panel-index">02</span></h2>
+          <div class="repair-comparison" id="repair-comparison" hidden>
+            <p class="repair-kicker" id="repair-kicker">Before/after / same grid / same display scale</p>
+            <div class="repair-pair">
+              <figure class="repair-card"><figcaption id="repair-baseline-label">Baseline</figcaption><canvas id="repair-baseline" aria-label="Baseline pixel-art proof"></canvas></figure>
+              <figure class="repair-card"><figcaption id="repair-current-label">Authored repair</figcaption><canvas id="repair-current" aria-label="Authored repair pixel-art proof"></canvas></figure>
+            </div>
+          </div>
           <div class="proof-strip" id="native-scale-proof" aria-label="Native, scaled, silhouette, and value pixel-art proofs"></div>
           <div class="quality-notes" id="quality-notes" aria-live="polite"></div>
         </section>
@@ -179,6 +195,9 @@
     const gridToggle = document.querySelector('#grid');
     const sourceGridToggle = document.querySelector('#source-grid');
     const sourceGridRow = document.querySelector('#source-grid-row');
+    const blindReviewToggle = document.querySelector('#blind-review');
+    const titleHeading = document.querySelector('#title');
+    const artifactTitle = data.title || 'Untitled pixel art';
     const colors = data.palette || [];
     const flat = data.grid.flat();
     const painted = flat.filter(Boolean).length;
@@ -186,6 +205,11 @@
     const quality = data.quality || {};
     const sourceAnalysis = data.source?.analysis || null;
     const inferredGrid = sourceAnalysis?.inferred_grid || null;
+    const baselineGrid = Array.isArray(data.source?.baseline_grid) ? data.source.baseline_grid : null;
+    const repairChangedCells = data.source?.repair_evidence?.changed_cells ?? null;
+    const repairKicker = document.querySelector('#repair-kicker');
+    const repairBaselineLabel = document.querySelector('#repair-baseline-label');
+    const repairCurrentLabel = document.querySelector('#repair-current-label');
     const evidenceTier = data.evidence_tier || 'legacy-unlabeled';
     const evidenceLabels = {
       fixture: 'Fixture / mechanics only',
@@ -195,8 +219,8 @@
       'legacy-unlabeled': 'Legacy artifact / evidence unlabeled'
     };
     let manualZoom = false;
-    document.title = data.title || 'Pixel art proof';
-    document.querySelector('#title').textContent = data.title || 'Untitled pixel art';
+    document.title = artifactTitle;
+    titleHeading.textContent = artifactTitle;
     document.querySelector('#stamp-size').textContent = `${data.width} x ${data.height}`;
     document.querySelector('#stamp-colors').textContent = `${colors.length} colors / ${data.grid.flat().some(value => value === null) ? 'alpha' : 'opaque'}`;
     document.querySelector('#proof-status').textContent = evidenceLabels[evidenceTier] || evidenceTier;
@@ -252,6 +276,25 @@
       const gray = Math.round(.2126 * channels[0] + .7152 * channels[1] + .0722 * channels[2]).toString(16).padStart(2, '0');
       return `#${gray}${gray}${gray}`;
     };
+    if (baselineGrid) {
+      const comparison = document.querySelector('#repair-comparison');
+      const comparisonScale = Math.max(2, Math.min(8, Math.floor(96 / Math.max(data.width, data.height))));
+      const renderComparison = (target, sourceGrid) => {
+        target.width = data.width * comparisonScale;
+        target.height = data.height * comparisonScale;
+        const targetContext = target.getContext('2d', { alpha:true });
+        targetContext.imageSmoothingEnabled = false;
+        sourceGrid.forEach((row, y) => row.forEach((color, x) => {
+          if (color) {
+            targetContext.fillStyle = color;
+            targetContext.fillRect(x * comparisonScale, y * comparisonScale, comparisonScale, comparisonScale);
+          }
+        }));
+      };
+      renderComparison(document.querySelector('#repair-baseline'), baselineGrid);
+      renderComparison(document.querySelector('#repair-current'), data.grid);
+      comparison.hidden = false;
+    }
     proofModes.forEach(({ label:proofLabel, scale, mode }) => {
       const sample = document.createElement('div');
       sample.className = 'proof-sample';
@@ -304,8 +347,27 @@
 
     const facts = document.querySelector('#facts');
     const sourceGridFact = inferredGrid ? `${inferredGrid.width} x ${inferredGrid.height} @ ${inferredGrid.step_x} / ${inferredGrid.step_y}` : 'not detected';
-    const manualRepairFact = data.source?.kind === 'image' ? (manualRepairRequired ? 'required' : 'not required') : 'n/a';
-    [['Schema', `v${data.schema_version}`], ['Evidence', evidenceTier], ['Source', data.source?.kind || 'spec'], ['Source class', sourceAnalysis ? `${sourceAnalysis.class} / ${sourceAnalysis.confidence}` : 'n/a'], ['Detection', sourceAnalysis?.detector || 'n/a'], ['Source grid', sourceGridFact], ['Reconstruction', data.source?.reconstruction || 'n/a'], ['Manual repair', manualRepairFact], ['Alpha', data.grid.flat().some(value => value === null) ? 'yes' : 'no'], ['Clusters', quality.clusters ?? 'n/a'], ['Singletons', quality.single_pixel_clusters ?? 'n/a'], ['Value span', quality.value_span ?? 'n/a']].forEach(([term, value]) => {
+    const manualRepairFact = data.source?.kind === 'image'
+      ? (manualRepairRequired ? 'required' : 'not required')
+      : (data.source?.manual_repair_status === 'authored-review-required' ? 'authored / review required' : (data.source?.manual_repair_status || 'n/a'));
+    const factRows = [['Schema', `v${data.schema_version}`], ['Evidence', evidenceTier], ['Source', data.source?.kind || 'spec']];
+    if (data.source?.kind === 'image') {
+      factRows.push(['Source class', sourceAnalysis ? `${sourceAnalysis.class} / ${sourceAnalysis.confidence}` : 'n/a']);
+      factRows.push(['Detection', sourceAnalysis?.detector || 'n/a']);
+      factRows.push(['Source grid', sourceGridFact]);
+      factRows.push(['Reconstruction', data.source?.reconstruction || 'n/a']);
+      factRows.push(['Manual repair', manualRepairFact]);
+    } else if (data.source?.kind === 'manual-repair') {
+      const baseline = data.source?.baseline;
+      factRows.push(['Baseline', baseline ? `${baseline.width} x ${baseline.height} / ${baseline.source_kind}` : 'n/a']);
+      factRows.push(['Manual repair', manualRepairFact]);
+      factRows.push(['Changed cells', repairChangedCells ?? 'n/a']);
+    }
+    factRows.push(['Alpha', data.grid.flat().some(value => value === null) ? 'yes' : 'no']);
+    factRows.push(['Clusters', quality.clusters ?? 'n/a']);
+    factRows.push(['Singletons', quality.single_pixel_clusters ?? 'n/a']);
+    factRows.push(['Value span', quality.value_span ?? 'n/a']);
+    factRows.forEach(([term, value]) => {
       const dt = document.createElement('dt'); dt.textContent = term;
       const dd = document.createElement('dd'); dd.textContent = value;
       facts.append(dt, dd);
@@ -342,7 +404,7 @@
         if (inferredGrid.height % sourceGridStride.y) { ctx.moveTo(0, canvas.height - .5); ctx.lineTo(canvas.width, canvas.height - .5); }
         ctx.stroke();
       }
-      window.__PIXEL_ART_METRICS__ = { width:data.width, height:data.height, colors:colors.length, painted, zoom:cell, quality, evidenceTier, sourceAnalysis, sourceGridOverlay, sourceGridStride };
+      window.__PIXEL_ART_METRICS__ = { width:data.width, height:data.height, colors:colors.length, painted, zoom:cell, quality, evidenceTier, sourceAnalysis, sourceGridOverlay, sourceGridStride, repairChangedCells, blindReview:blindReviewToggle.checked };
       window.__PIXEL_ART_READY__ = true;
     }
 
@@ -381,6 +443,17 @@
     zoom.addEventListener('input', () => { manualZoom = true; render(); });
     gridToggle.addEventListener('change', render);
     sourceGridToggle.addEventListener('change', render);
+    blindReviewToggle.addEventListener('change', () => {
+      const blind = blindReviewToggle.checked;
+      titleHeading.textContent = blind ? 'Blind review' : artifactTitle;
+      document.title = blind ? 'Blind pixel-art review' : artifactTitle;
+      if (baselineGrid) {
+        repairKicker.textContent = blind ? 'Blind A/B / same grid / same display scale' : 'Before/after / same grid / same display scale';
+        repairBaselineLabel.textContent = blind ? 'Sample A' : 'Baseline';
+        repairCurrentLabel.textContent = blind ? 'Sample B' : 'Authored repair';
+      }
+      render();
+    });
     new ResizeObserver(() => { if (!manualZoom) fitCanvas(); }).observe(stage);
     requestAnimationFrame(fitCanvas);
   </script>

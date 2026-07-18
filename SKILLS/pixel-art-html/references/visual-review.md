@@ -68,6 +68,8 @@ Keep each pass separately judgeable:
 6. Subtraction pass at native 1x.
 7. Context and blind read.
 
+For canonical repair artifacts, use the built-in `Hide title for blind review` control and compare the neutral `Sample A` / `Sample B` pair at the same display scale. Do not reveal the source image, repair title, or baseline/authored captions until the observed read is recorded.
+
 If the silhouette or value master fails, do not add texture. If two consecutive revisions are flat or worse, reset the direction.
 
 ## Review record
