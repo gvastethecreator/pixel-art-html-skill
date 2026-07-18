@@ -22,6 +22,7 @@ COLLECTION_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-collection-template
 PROJECT_HUB_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-project-hub-template.html"
 CLEAR_TOKENS = {None, "", ".", "..", "none", "null", "transparent", "clear"}
 RECOMMENDED_SIZES = (16, 24, 32, 40, 48, 64)
+EVIDENCE_TIERS = ("fixture", "draft", "representative", "production-candidate")
 WINDOWS_RESERVED_NAMES = {"CON", "PRN", "AUX", "NUL", *(f"COM{index}" for index in range(1, 10)), *(f"LPT{index}" for index in range(1, 10))}
 
 
@@ -61,6 +62,13 @@ def checked_int(value: Any, name: str) -> int:
         return int(value)
     except (TypeError, ValueError) as exc:
         raise ArtifactError(f"{name} must be an integer") from exc
+
+
+def checked_evidence_tier(value: Any) -> str:
+    tier = str(value or "draft").strip().lower()
+    if tier not in EVIDENCE_TIERS:
+        raise ArtifactError(f"evidence_tier must be one of: {', '.join(EVIDENCE_TIERS)}")
+    return tier
 
 
 def pattern_rows(value: Any, name: str, palette: dict[str, str | None] | None = None) -> list[list[Any]]:
@@ -107,7 +115,11 @@ def compile_spec(spec: dict[str, Any]) -> dict[str, Any]:
             raise ArtifactError(f"grid must contain {height} rows")
         compiled_rows: list[list[str | None]] = []
         for y, row in enumerate(rows):
-            cells = row.split() if isinstance(row, str) else row
+            if isinstance(row, str):
+                text = row.strip()
+                cells = text.split() if any(char.isspace() for char in text) else list(text)
+            else:
+                cells = row
             if not isinstance(cells, list) or len(cells) != width:
                 raise ArtifactError(f"grid row {y} must contain {width} cells")
             compiled_rows.append([normalize_color(cell, palette) for cell in cells])
@@ -180,6 +192,7 @@ def compile_spec(spec: dict[str, Any]) -> dict[str, Any]:
         grid=grid,
         background=background,
         source={"kind": "spec", "art_direction": art_direction},
+        evidence_tier=checked_evidence_tier(spec.get("evidence_tier")),
     )
 
 
@@ -191,7 +204,7 @@ def source_requires_repeat_proof(source: dict[str, Any]) -> bool:
     return bool(re.search(r"\b(tile|tileset|texture|seamless)\b", use))
 
 
-def canonical_artifact(*, title: str, grid: list[list[str | None]], background: str | None, source: dict[str, Any]) -> dict[str, Any]:
+def canonical_artifact(*, title: str, grid: list[list[str | None]], background: str | None, source: dict[str, Any], evidence_tier: str = "draft") -> dict[str, Any]:
     if not grid or not grid[0]:
         raise ArtifactError("grid cannot be empty")
     width = len(grid[0])
@@ -216,6 +229,7 @@ def canonical_artifact(*, title: str, grid: list[list[str | None]], background: 
         "width": width,
         "height": height,
         "background": normalize_color(background),
+        "evidence_tier": checked_evidence_tier(evidence_tier),
         "palette": colors,
         "grid": normalized_grid,
         "source": source,
@@ -575,19 +589,20 @@ def parse_sizes(value: str) -> list[int]:
     return sizes
 
 
-def fit_image(image: Any, width: int, height: int, fit: str) -> Any:
+def fit_image(image: Any, width: int, height: int, fit: str, resample: str = "lanczos") -> Any:
     from PIL import Image
 
     source = image.convert("RGBA")
+    resampling = Image.Resampling.NEAREST if resample == "nearest" else Image.Resampling.LANCZOS
     if fit == "stretch":
-        return source.resize((width, height), Image.Resampling.LANCZOS)
+        return source.resize((width, height), resampling)
     source_ratio = source.width / source.height
     target_ratio = width / height
     if fit == "contain":
         scale = min(width / source.width, height / source.height)
     else:
         scale = max(width / source.width, height / source.height)
-    resized = source.resize((max(1, round(source.width * scale)), max(1, round(source.height * scale))), Image.Resampling.LANCZOS)
+    resized = source.resize((max(1, round(source.width * scale)), max(1, round(source.height * scale))), resampling)
     if fit == "contain":
         result = Image.new("RGBA", (width, height), (0, 0, 0, 0))
         result.alpha_composite(resized, ((width - resized.width) // 2, (height - resized.height) // 2))
@@ -602,6 +617,62 @@ def image_pixels(image: Any) -> list[Any]:
     return list(flattened()) if flattened else list(image.getdata())
 
 
+def merge_small_color_clusters_once(grid: list[list[str | None]], minimum: int) -> list[list[str | None]]:
+    height = len(grid)
+    width = len(grid[0])
+    result = [list(row) for row in grid]
+    visited: set[tuple[int, int]] = set()
+    replacements: list[tuple[list[tuple[int, int]], str]] = []
+    for y in range(height):
+        for x in range(width):
+            color = grid[y][x]
+            if color is None or (x, y) in visited:
+                continue
+            component = [(x, y)]
+            pending = [(x, y)]
+            visited.add((x, y))
+            while pending:
+                cx, cy = pending.pop()
+                for nx, ny in (
+                    (cx - 1, cy - 1), (cx, cy - 1), (cx + 1, cy - 1),
+                    (cx - 1, cy),                       (cx + 1, cy),
+                    (cx - 1, cy + 1), (cx, cy + 1), (cx + 1, cy + 1),
+                ):
+                    if 0 <= nx < width and 0 <= ny < height and (nx, ny) not in visited and grid[ny][nx] == color:
+                        visited.add((nx, ny))
+                        pending.append((nx, ny))
+                        component.append((nx, ny))
+            if len(component) >= minimum:
+                continue
+            neighbors = Counter(
+                grid[ny][nx]
+                for cx, cy in component
+                for nx, ny in (
+                    (cx - 1, cy), (cx + 1, cy), (cx, cy - 1), (cx, cy + 1),
+                    (cx - 1, cy - 1), (cx + 1, cy - 1), (cx - 1, cy + 1), (cx + 1, cy + 1),
+                )
+                if 0 <= nx < width and 0 <= ny < height and grid[ny][nx] is not None and grid[ny][nx] != color
+            )
+            if neighbors:
+                replacements.append((component, neighbors.most_common(1)[0][0]))
+    for component, replacement in replacements:
+        for x, y in component:
+            result[y][x] = replacement
+    return result
+
+
+def merge_small_color_clusters(grid: list[list[str | None]], minimum: int, max_passes: int = 3) -> list[list[str | None]]:
+    current = [list(row) for row in grid]
+    if minimum <= 1:
+        return current
+    for _ in range(max_passes):
+        cleaned = merge_small_color_clusters_once(current, minimum)
+        if cleaned == current:
+            break
+        current = cleaned
+    return current
+
+
 def artifact_from_image(args: argparse.Namespace) -> dict[str, Any]:
     try:
         from PIL import Image
@@ -614,9 +685,12 @@ def artifact_from_image(args: argparse.Namespace) -> dict[str, Any]:
         raise ArtifactError("colors must be between 2 and 256")
     if not 0 <= args.alpha_threshold <= 255:
         raise ArtifactError("alpha-threshold must be between 0 and 255")
+    minimum_cluster = checked_int(getattr(args, "min_cluster", 1), "min-cluster")
+    if not 1 <= minimum_cluster <= 8:
+        raise ArtifactError("min-cluster must be between 1 and 8")
     background = normalize_color(args.background)
     with Image.open(args.image) as opened:
-        fitted = fit_image(opened, width, height, args.fit)
+        fitted = fit_image(opened, width, height, args.fit, getattr(args, "resample", "lanczos"))
     if background:
         base = Image.new("RGBA", fitted.size, (*tuple(int(background[i:i + 2], 16) for i in (1, 3, 5)), 255))
         base.alpha_composite(fitted)
@@ -643,11 +717,13 @@ def artifact_from_image(args: argparse.Namespace) -> dict[str, Any]:
                 r, g, b = quantized_pixels[index]
                 row.append(f"#{r:02X}{g:02X}{b:02X}")
         grid.append(row)
+    grid = merge_small_color_clusters(grid, minimum_cluster)
     return canonical_artifact(
         title=args.title or Path(args.image).stem.replace("-", " ").replace("_", " ").title(),
         grid=grid,
         background=background,
-        source={"kind": "image", "name": Path(args.image).name, "fit": args.fit, "dither": args.dither, "requested_colors": args.colors},
+        source={"kind": "image", "name": Path(args.image).name, "fit": args.fit, "resample": getattr(args, "resample", "lanczos"), "dither": args.dither, "requested_colors": args.colors, "min_cluster": minimum_cluster},
+        evidence_tier=checked_evidence_tier(getattr(args, "evidence_tier", "draft")),
     )
 
 
@@ -658,6 +734,8 @@ def validate_artifact(artifact: dict[str, Any]) -> None:
         raise ArtifactError(f"missing canonical fields: {', '.join(sorted(missing))}")
     if artifact["schema_version"] != 1:
         raise ArtifactError("unsupported schema_version")
+    if "evidence_tier" in artifact:
+        checked_evidence_tier(artifact["evidence_tier"])
     width = checked_dimension(artifact["width"], "width")
     height = checked_dimension(artifact["height"], "height")
     if not isinstance(artifact["grid"], list) or len(artifact["grid"]) != height:
@@ -769,8 +847,12 @@ def result_summary(result: dict[str, Any], output: Path) -> dict[str, Any]:
         summary["count"] = len(result["items"])
         summary["sizes"] = [f"{item['width']}x{item['height']}" for item in result["items"]]
         summary["kind"] = result["kind"]
+        summary["evidence_tiers"] = [
+            json.loads((output / item["path"] / "pixel-art.json").read_text(encoding="utf-8")).get("evidence_tier", "legacy-unlabeled")
+            for item in result["items"]
+        ]
     else:
-        summary.update(width=result["width"], height=result["height"], colors=len(result["palette"]))
+        summary.update(width=result["width"], height=result["height"], colors=len(result["palette"]), evidence_tier=result.get("evidence_tier", "legacy-unlabeled"))
     return summary
 
 
@@ -896,10 +978,13 @@ def parse_args() -> argparse.Namespace:
     image_parser.add_argument("--height", type=int)
     image_parser.add_argument("--colors", type=int, default=16)
     image_parser.add_argument("--fit", choices=("contain", "cover", "stretch"), default="contain")
+    image_parser.add_argument("--resample", choices=("lanczos", "nearest"), default="lanczos", help="Use nearest only for already pixel-clean sources; photos and painted concepts need lanczos.")
     image_parser.add_argument("--dither", choices=("none", "floyd"), default="none")
     image_parser.add_argument("--background", default="transparent")
     image_parser.add_argument("--alpha-threshold", type=int, default=10)
+    image_parser.add_argument("--min-cluster", type=int, default=1, help="Merge image-derived color clusters smaller than N cells; keep 1 for no cleanup.")
     image_parser.add_argument("--title")
+    image_parser.add_argument("--evidence-tier", choices=EVIDENCE_TIERS, default="draft", help="Label the artifact's proof claim; image conversion defaults to an unreviewed draft.")
     image_parser.add_argument("--scale", type=int, default=16)
 
     validate_parser = subparsers.add_parser("validate", help="Validate a generated output directory.")

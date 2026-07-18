@@ -27,6 +27,7 @@ class PixelArtBuilderTests(unittest.TestCase):
         }
         artifact = module.compile_spec(spec)
         self.assertEqual((artifact["width"], artifact["height"]), (8, 8))
+        self.assertEqual(artifact["evidence_tier"], "draft")
         self.assertEqual(artifact["grid"][2][3], "#FFD166")
         self.assertEqual(set(artifact["palette"]), {"#112233", "#FFD166"})
         with tempfile.TemporaryDirectory() as temp:
@@ -37,6 +38,24 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertNotIn("https://", (output / "index.html").read_text(encoding="utf-8"))
             self.assertEqual((output / "pixel-art.png").read_bytes()[:8], b"\x89PNG\r\n\x1a\n")
             self.assertIn("native-scale-proof", (output / "index.html").read_text(encoding="utf-8"))
+
+    def test_evidence_tier_is_explicit_and_rejects_false_labels(self) -> None:
+        fixture = module.compile_spec({
+            "title": "Timing fixture",
+            "width": 8,
+            "height": 8,
+            "evidence_tier": "fixture",
+            "background": "#123",
+        })
+        self.assertEqual(fixture["evidence_tier"], "fixture")
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)
+            module.write_artifact(fixture, output, 4)
+            proof = (output / "index.html").read_text(encoding="utf-8")
+            self.assertIn("Fixture / mechanics only", proof)
+            self.assertIn("evidence_tier", proof)
+        with self.assertRaisesRegex(module.ArtifactError, "evidence_tier must be one of"):
+            module.compile_spec({"width": 8, "height": 8, "evidence_tier": "production", "background": "#123"})
 
     def test_motifs_support_reuse_flips_and_palette_maps(self) -> None:
         artifact = module.compile_spec({
@@ -66,6 +85,25 @@ class PixelArtBuilderTests(unittest.TestCase):
         self.assertEqual(artifact["grid"][2][2], "#385A3A")
         self.assertIsNone(artifact["grid"][3][2])
 
+    def test_full_grid_accepts_compact_one_character_alias_rows(self) -> None:
+        artifact = module.compile_spec({
+            "width": 8,
+            "height": 8,
+            "palette": {"i": "#112233", "l": "#FFD166"},
+            "grid": [
+                "........",
+                "...ii...",
+                "..ill...",
+                "..iiii..",
+                "..iiii..",
+                "...ii...",
+                "...ii...",
+                "........",
+            ],
+        })
+        self.assertEqual(artifact["grid"][2][2:5], ["#112233", "#FFD166", "#FFD166"])
+        self.assertIsNone(artifact["grid"][0][0])
+
     def test_quality_report_surfaces_orphan_pixel_risk_without_scoring_art(self) -> None:
         artifact = module.compile_spec({
             "width": 8,
@@ -83,6 +121,17 @@ class PixelArtBuilderTests(unittest.TestCase):
         self.assertTrue(any("orphan-pixel" in warning for warning in report["warnings"]))
         self.assertTrue(any("value span" in warning for warning in report["warnings"]))
         self.assertNotIn("score", report)
+
+    def test_image_cluster_cleanup_merges_opt_in_singletons_without_eroding_alpha(self) -> None:
+        grid = [
+            [None, "#111111", "#111111"],
+            [None, "#FF0000", "#111111"],
+            [None, "#111111", "#111111"],
+        ]
+        cleaned = module.merge_small_color_clusters(grid, 2)
+        self.assertIsNone(cleaned[1][0])
+        self.assertEqual(cleaned[1][1], "#111111")
+        self.assertEqual(module.merge_small_color_clusters(grid, 1), grid)
 
     def test_rejects_out_of_bounds_operations(self) -> None:
         with self.assertRaisesRegex(module.ArtifactError, "out of bounds"):
@@ -136,6 +185,7 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertEqual([item["path"] for item in manifest["items"]], ["copper-key", "moon-key"])
             self.assertTrue((output / "copper-key" / "pixel-art.png").is_file())
             self.assertEqual(module.critique_output(output)["kind"], "pack")
+            self.assertEqual(module.result_summary(manifest, output)["evidence_tiers"], ["draft", "draft"])
 
     def test_validation_rejects_png_pixels_that_drift_from_grid(self) -> None:
         artifact = module.compile_spec({"width": 8, "height": 8, "background": "#123"})
@@ -218,11 +268,12 @@ class PixelArtBuilderTests(unittest.TestCase):
                 for x in range(4, 12):
                     image.putpixel((x, y), (240, 70, 50, 255))
             image.save(source)
-            args = type("Args", (), {"image": source, "width": None, "height": None, "size": 8, "colors": 4, "alpha_threshold": 10, "background": "transparent", "fit": "contain", "dither": "none", "title": "Image fixture"})()
+            args = type("Args", (), {"image": source, "width": None, "height": None, "size": 8, "colors": 4, "alpha_threshold": 10, "background": "transparent", "fit": "contain", "resample": "nearest", "min_cluster": 1, "dither": "none", "title": "Image fixture"})()
             artifact = module.artifact_from_image(args)
             self.assertEqual((artifact["width"], artifact["height"]), (8, 8))
             self.assertTrue(any(cell for row in artifact["grid"] for cell in row))
             self.assertTrue(any(cell is None for row in artifact["grid"] for cell in row))
+            self.assertEqual(artifact["source"]["resample"], "nearest")
 
     def test_managed_iterations_are_numbered_and_hubbed(self) -> None:
         artifact = module.compile_spec({"title": "Night Beacon", "width": 8, "height": 8, "background": "#123"})

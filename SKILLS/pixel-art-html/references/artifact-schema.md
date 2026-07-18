@@ -7,6 +7,7 @@ Author a JSON object. Dimensions must be integers from 8 through 128.
   "title": "Tiny lighthouse",
   "width": 16,
   "height": 16,
+  "evidence_tier": "draft",
   "art_direction": {
     "use": "scene",
     "projection": "side view",
@@ -42,10 +43,11 @@ Author a JSON object. Dimensions must be integers from 8 through 128.
 
 - `title`: optional label.
 - `width`, `height`: required unless both default to 32.
+- `evidence_tier`: `fixture`, `draft`, `representative`, or `production-candidate`. Defaults to `draft`. The compiler rejects `production` because a spec cannot approve itself.
 - `art_direction`: optional string-to-string direction card preserved in canonical source metadata. Record use, projection, light, focus, or other proof-relevant decisions.
 - `background`: `null`, `.`, `transparent`, a palette alias, or `#RGB`/`#RRGGBB`.
 - `palette`: alias-to-color object. Aliases keep specs compact.
-- `grid`: optional full grid. Each row may be a whitespace-separated string or a JSON array. Use `.`, `..`, `null`, or `transparent` for clear cells.
+- `grid`: optional full grid. Each row may be a compact character string, a whitespace-separated string, or a JSON array. Compact rows require one-character palette aliases and are ideal for unique silhouettes; `"....iill...."` is twelve cells. Use `.`, `..`, `null`, or `transparent` for clear cells.
 - `rects`: filled rectangles with `x`, `y`, `width`, `height`, `color`.
 - `runs`: horizontal runs with `x`, `y`, `length`, `color`.
 - `motifs`: reusable local cluster patterns. Each value is an equal-width row list; rows may be whitespace-separated strings, compact one-character strings, or JSON arrays. A row string that exactly matches a semantic palette alias is one cell, so a one-column motif may use `"grass"`; use arrays to remove ambiguity. Clear tokens are transparent/no-op inside a motif.
@@ -56,7 +58,7 @@ Apply order: background, `grid`, `rects`, `runs`, `stamps`, `pixels`. Later oper
 
 Use rectangles and runs for scaffolding and broad planes. Use motifs for repeated foliage, clouds, brick chips, foam, lights, panel marks, or other coherent cluster grammar. Use a full grid when the silhouette needs one-off local control; do not force a complex subject into rectangles.
 
-The compiler emits canonical JSON with a complete `grid` of `#RRGGBB` or `null` cells, source metadata, derived proof intent, and a deterministic `quality` risk report. `proofs.repeat_3x` is true only when `art_direction.use` identifies a tile, tileset, texture, or seamless master. Do not hand-author canonical output when a compact source spec is easier to review. The report is diagnostic and never a semantic quality score.
+The compiler emits canonical JSON with a complete `grid` of `#RRGGBB` or `null` cells, the declared `evidence_tier`, source metadata, derived proof intent, and a deterministic `quality` risk report. `proofs.repeat_3x` is true only when `art_direction.use` identifies a tile, tileset, texture, or seamless master. Do not hand-author canonical output when a compact source spec is easier to review. The report is diagnostic and never a semantic quality score.
 
 Canonical palette arrays follow first raster appearance, not source declaration order. Compare palette sets or semantic source aliases when order is not itself part of the test.
 
@@ -64,7 +66,7 @@ Canonical palette arrays follow first raster appearance, not source declaration 
 
 Recommended square masters: `16`, `24`, `32`, `40`, `48`, and `64`. Single artifacts may use any width and height from 8 through 128.
 
-- Image input: pass `--sizes all` or a comma-separated list. Convert each target directly from the original image.
+- Image input: pass `--sizes all` or a comma-separated list. Convert each target directly from the original image. Keep `--resample lanczos` for photos, painted concepts, and anti-aliased sources; use `--resample nearest` only when the source already has a trustworthy hard pixel grid.
 - Text input: author one spec per target size, then pass the files to `collection`.
 - Keep subject identity, pose, palette roles, and framing coherent across the set.
 - Change detail density intentionally. Do not mechanically cascade from the largest grid.

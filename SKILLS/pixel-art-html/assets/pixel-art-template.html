@@ -121,7 +121,7 @@
     </header>
     <section class="workbench" aria-label="Pixel art proofing workbench">
       <section class="preview" aria-label="Artwork preview">
-        <div class="preview-bar"><span class="status">Master ready</span><span id="source-label"></span></div>
+        <div class="preview-bar"><span class="status" id="proof-status"></span><span id="source-label"></span></div>
         <div class="stage" id="stage">
           <div class="proof-frame"><canvas id="art" tabindex="0" aria-label="Pixel art canvas"></canvas></div>
         </div>
@@ -166,7 +166,7 @@
       rect(0,11,16,5,colors.b); rect(7,5,3,8,colors.s); rect(6,4,5,2,colors.r); rect(7,3,3,2,colors.d);
       rect(1,12,5,1,colors.c); rect(10,13,5,1,colors.c); rect(2,14,4,1,colors.w); rect(8,15,5,1,colors.w); rect(6,13,5,1,colors.d);
       grid[3][8]=colors.l; grid[2][12]=colors.w; grid[4][3]=colors.w; grid[7][8]=colors.d; grid[10][8]=colors.d;
-      return { schema_version:1, title:'Pixel proof template', width:16, height:16, background:'#101525', palette:Object.values(colors), grid, source:{kind:'template preview'} };
+      return { schema_version:1, title:'Pixel proof template', width:16, height:16, background:'#101525', evidence_tier:'fixture', palette:Object.values(colors), grid, source:{kind:'template preview'} };
     }
     const rawData = document.querySelector('#pixel-art-data').textContent.trim();
     const data = rawData.startsWith('__') ? templateDemo() : JSON.parse(rawData);
@@ -181,11 +181,20 @@
     const painted = flat.filter(Boolean).length;
     const usage = new Map(colors.map(color => [color, flat.filter(cell => cell === color).length]));
     const quality = data.quality || {};
+    const evidenceTier = data.evidence_tier || 'legacy-unlabeled';
+    const evidenceLabels = {
+      fixture: 'Fixture / mechanics only',
+      draft: 'Draft / visual review pending',
+      representative: 'Representative sample',
+      'production-candidate': 'Production candidate / approval pending',
+      'legacy-unlabeled': 'Legacy artifact / evidence unlabeled'
+    };
     let manualZoom = false;
     document.title = data.title || 'Pixel art proof';
     document.querySelector('#title').textContent = data.title || 'Untitled pixel art';
     document.querySelector('#stamp-size').textContent = `${data.width} x ${data.height}`;
     document.querySelector('#stamp-colors').textContent = `${colors.length} colors / ${data.grid.flat().some(value => value === null) ? 'alpha' : 'opaque'}`;
+    document.querySelector('#proof-status').textContent = evidenceLabels[evidenceTier] || evidenceTier;
     document.querySelector('#source-label').textContent = `Source: ${data.source?.kind || 'spec'}`;
     document.querySelector('#painted-count').textContent = `${painted} / ${data.width * data.height}`;
 
@@ -278,7 +287,7 @@
     }
 
     const facts = document.querySelector('#facts');
-    [['Schema', `v${data.schema_version}`], ['Source', data.source?.kind || 'spec'], ['Alpha', data.grid.flat().some(value => value === null) ? 'yes' : 'no'], ['Clusters', quality.clusters ?? 'n/a'], ['Singletons', quality.single_pixel_clusters ?? 'n/a'], ['Value span', quality.value_span ?? 'n/a']].forEach(([term, value]) => {
+    [['Schema', `v${data.schema_version}`], ['Evidence', evidenceTier], ['Source', data.source?.kind || 'spec'], ['Alpha', data.grid.flat().some(value => value === null) ? 'yes' : 'no'], ['Clusters', quality.clusters ?? 'n/a'], ['Singletons', quality.single_pixel_clusters ?? 'n/a'], ['Value span', quality.value_span ?? 'n/a']].forEach(([term, value]) => {
       const dt = document.createElement('dt'); dt.textContent = term;
       const dd = document.createElement('dd'); dd.textContent = value;
       facts.append(dt, dd);
@@ -300,7 +309,7 @@
         for (let y = 0; y <= data.height; y++) { ctx.moveTo(0, y * cell + .5); ctx.lineTo(canvas.width, y * cell + .5); }
         ctx.stroke();
       }
-      window.__PIXEL_ART_METRICS__ = { width:data.width, height:data.height, colors:colors.length, painted, zoom:cell, quality };
+      window.__PIXEL_ART_METRICS__ = { width:data.width, height:data.height, colors:colors.length, painted, zoom:cell, quality, evidenceTier };
       window.__PIXEL_ART_READY__ = true;
     }
 

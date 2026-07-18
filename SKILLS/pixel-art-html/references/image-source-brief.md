@@ -2,6 +2,8 @@
 
 Use this reference for Codex ImageGen, an attached image, a local render, or a photo/reference that will become exact-grid pixel art. A source image supplies composition and shape evidence; it does not satisfy the final pixel-art contract.
 
+For a representative, production-candidate, or recovery task with direction risk, generate or sketch three materially different concepts from the same source brief before selecting one. The concepts prove a direction decision only; the manually repixelized exact grid remains the artifact.
+
 ## Build the source brief
 
 Specify the target before generating or choosing a source:
@@ -42,6 +44,8 @@ Hard pixel edges in the source can help, but never trust a model-generated image
 
 Image quantization preserves photographic/model noise surprisingly well. Manual repixelization must reassert the same pass order as text authoring: silhouette -> projection -> value/palette -> directional light -> material clusters -> focus/cleanup.
 
+For an already pixel-clean source, `--resample nearest` can preserve its cluster edges. For visible quantization speckle, `--min-cluster 2` may merge one-cell color islands into adjacent opaque colors without eroding alpha; it is an opt-in cleanup draft, not a replacement for deciding which glints and accents are intentional.
+
 ## Source-specific checks
 
 ### Character or creature
@@ -81,4 +85,3 @@ Image quantization preserves photographic/model noise surprisingly well. Manual 
 - every surface has photographic texture or micro-contrast;
 - palette reduction merges the subject into the background;
 - a cleaner source would cost less than manually rescuing the conversion.
-

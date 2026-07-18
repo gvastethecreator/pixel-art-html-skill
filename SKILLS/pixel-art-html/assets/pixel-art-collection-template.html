@@ -20,8 +20,11 @@
     .grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 14px; }
     article { width: 100%; max-width: calc((100% - 28px) / 3); min-width: 0; flex: 0 1 calc((100% - 28px) / 3); display: grid; grid-template-rows: auto minmax(320px, 1fr) auto; border: 2px solid var(--edge-strong); background: var(--surface); box-shadow: 6px 6px 0 #000; }
     .card-head, .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 13px; font: 750 12px/1.25 ui-monospace, "Cascadia Mono", monospace; }
+    .card-head { flex-wrap: wrap; }
+    .card-meta { display: flex; flex: 0 0 auto; align-items: center; gap: 8px; margin-left: auto; }
+    .tier { padding: 3px 5px; border: 1px solid var(--edge-strong); color: var(--muted); font-size: 9px; text-transform: uppercase; }
     .card-head { border-bottom: 2px solid var(--edge); }
-    .size { color: var(--signal-text); font-size: 15px; }
+    .size { min-width: 0; color: var(--signal-text); font-size: 15px; overflow-wrap: anywhere; }
     .stage { min-width: 0; display: grid; place-items: center; padding: 24px; overflow: auto; background-color: #020302; background-image: linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px); background-size: 20px 20px; }
     .proof { padding: 10px; border: 2px solid var(--edge-strong); background-color: #20231d; background-image: linear-gradient(45deg,#171914 25%,transparent 25%),linear-gradient(-45deg,#171914 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#171914 75%),linear-gradient(-45deg,transparent 75%,#171914 75%); background-size: 16px 16px; background-position: 0 0,0 8px,8px -8px,-8px 0; }
     canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
@@ -60,7 +63,9 @@
       const head = document.createElement('div'); head.className = 'card-head';
       const label = document.createElement('span'); label.className = 'size'; label.textContent = isPack ? artifact.title : `${artifact.width} x ${artifact.height}`;
       const colorCount = document.createElement('span'); colorCount.textContent = `${artifact.palette.length} colors`;
-      head.append(label, colorCount);
+      const cardMeta = document.createElement('span'); cardMeta.className = 'card-meta';
+      const tier = document.createElement('span'); tier.className = 'tier'; tier.textContent = artifact.evidence_tier || 'unlabeled';
+      cardMeta.append(tier, colorCount); head.append(label, cardMeta);
       const stage = document.createElement('div'); stage.className = 'stage';
       const proof = document.createElement('div'); proof.className = 'proof';
       const canvas = document.createElement('canvas'); canvas.tabIndex = 0; canvas.setAttribute('aria-label', `${artifact.title}, ${artifact.width} by ${artifact.height} pixel art`);
@@ -87,7 +92,7 @@
       const open = document.createElement('a'); open.className='open'; open.href=`${item.path}/index.html`; open.textContent='Open exact proof';
       foot.append(tape,facts,open); article.append(head,stage,foot); grid.appendChild(article);
     });
-    window.__PIXEL_ART_COLLECTION_METRICS__ = { count:data.items.length, sizes };
+    window.__PIXEL_ART_COLLECTION_METRICS__ = { count:data.items.length, sizes, evidenceTiers:data.items.map(item => item.artifact.evidence_tier || 'legacy-unlabeled') };
     window.__PIXEL_ART_COLLECTION_READY__ = true;
   </script>
 </body>
