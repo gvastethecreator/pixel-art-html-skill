@@ -7,6 +7,8 @@ Pixel Art HTML turns text-authored grids, local images, or accepted Codex ImageG
 - Build single images or deliberate multi-resolution sets from 8x8 through 128x128.
 - Convert locally with Pillow while enforcing exact dimensions and palette limits.
 - Reuse exact cluster motifs with flips and palette maps instead of scattering one-off pixels.
+- Label every output as fixture, draft, representative, or production-candidate so structural smoke cannot masquerade as art-quality proof.
+- Compare three materially different directions for rejected or direction-sensitive quality work, then record a title-free perceptual read.
 - Surface bounds, cluster, singleton, value-span, and boundary-contrast risks without pretending to score subjective quality.
 - Review every artifact at native 1x, 2x, 4x, flat silhouette, and grayscale value inside the standalone proof workbench.
 - Review tile/texture intent in an automatic 3x repetition proof, and group same-size icons or variants into named asset packs.
@@ -73,6 +75,8 @@ The image-conversion test runs when Pillow is installed; all other tests use the
 - [Image-source brief and repixelization](./SKILLS/pixel-art-html/references/image-source-brief.md)
 - [Project library contract](./SKILLS/pixel-art-html/references/project-library.md)
 - [Visual quality contract](./SKILLS/pixel-art-html/references/quality-contract.md)
+- [Visual review and evidence tiers](./SKILLS/pixel-art-html/references/visual-review.md)
+- [Representative recovery example](./SKILLS/pixel-art-html/examples/cursed-salvage/README.md)
 
 ## Background
 
@@ -82,7 +86,7 @@ The craft workflow and subject routing also synthesize lessons from Raymond Schl
 
 ## Status
 
-Preview skill pack. The deterministic spec and HTML paths are dependency-free; image conversion requires Pillow. Craft references, motif primitives, diagnostics, and proof views improve the feedback loop, while final visual judgment still belongs to a real native-scale review.
+Preview skill pack. The deterministic spec and HTML paths are dependency-free; image conversion requires Pillow. Craft references, motif primitives, diagnostics, evidence labels, direction search, and proof views improve the feedback loop, while final visual judgment still belongs to a real native-scale review.
 
 ## License
 

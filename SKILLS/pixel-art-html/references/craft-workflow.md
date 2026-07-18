@@ -2,6 +2,17 @@
 
 Use this reference for text-authored art, manual cleanup after conversion, or critique of an existing master. It distills recurring craft rules from the 62-module SLYNYRD Pixelblog study; the workflow and wording here are original synthesis, not a substitute for the source tutorials.
 
+## Evidence and direction first
+
+Label the artifact `fixture`, `draft`, `representative`, or `production-candidate` before drawing. For recovery or direction-risk quality work, make three same-brief thumbnails before the direction card:
+
+- change shape language, silhouette thesis, or material story, not only palette;
+- keep the grid, subject list, use, and proof context comparable;
+- choose one against native-size readability, useful signature, feasibility, and material potential;
+- preserve one memorable functional move and remove one stock/default construction.
+
+A fixture may be ugly and still useful, but it must never become visual-quality evidence. Read [visual-review.md](visual-review.md) for the full claim boundary.
+
 ## Direction card
 
 Write this before painting cells:
@@ -17,6 +28,8 @@ Value groups: dark / mid / light / accent
 Palette ramps and shared colors:
 Material or texture cluster grammar:
 Background, padding, and overlap rules:
+Evidence tier and proof claim:
+Selected direction, signature, and subtraction:
 ```
 
 If a field is unknown, decide it before detail. Projection, light, scale, and palette are scene-wide contracts; changing them late usually creates a patchwork result.
@@ -129,6 +142,7 @@ The deterministic critique report is a risk detector only. A clean report does n
 | Symptom | Likely source | Repair |
 |---|---|---|
 | Valid but generic/blocky | rectangles survived past scaffold | reshape silhouette with a local grid or motif stamps before detail |
+| Recognizable but forgettable | first feasible direction was accepted | compare three shape/material theses, preserve one useful signature, remove one stock cue |
 | Muddy despite many colors | weak value jobs, excess near-duplicates | merge colors, widen dark/mid/light separation, reserve accent |
 | Flat volume | light direction undefined or pillow shading | choose one source and rebuild plane-facing clusters |
 | Noisy surface | unique marks and orphan pixels | reduce to 2-6 repeatable cluster motifs with quiet gaps |
@@ -138,4 +152,3 @@ The deterministic critique report is a risk detector only. A clean report does n
 | Converted image looks like a thumbnail | quantization preserved source noise | manually repixelize silhouette, value groups, and material clusters |
 | Tile repetition obvious | landmark-like motif repeats or edges do not loop | neutralize the base, overlap edges, add restrained variants, test 3x3 |
 | Background competes with subject | equal contrast/detail at every depth | lower distant contrast/saturation and remove fine clusters |
-

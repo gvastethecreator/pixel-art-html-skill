@@ -51,6 +51,21 @@
         "A human reviewer identifies all four items at native 1x without labels and sees one coherent light, baseline, palette-role, and padding system.",
         "The overview is standalone, exposes every item, and links to each exact proof without remote requests or console errors."
       ]
+    },
+    {
+      "id": "recover-rejected-generic-pickups",
+      "prompt": "The previous potion, key, shield, and crystal pack is structurally valid but looks generic and amateur. Treat it as a losing baseline, recover the visual direction, and deliver a representative exact-grid pack whose quality is visible without reading labels. Keep 32x32 if the selected thesis survives; otherwise prove and document why 48x48 is the smallest honest grid.",
+      "expected_output": "A representative recovery pack with three comparable direction artifacts, one explicit choice, a useful shared signature, independently authored exact masters, title-free perceptual evidence, and a real before/after render.",
+      "files": [],
+      "assertions": [
+        "The rejected pack begins with artifact verdict loss; passing manifests or critique warnings are not used to defend its art quality.",
+        "Exactly three materially different shape-language or material-story directions use the same four-item brief and grid before one is selected; palette swaps do not count.",
+        "The selected direction records one useful signature to preserve and one generic construction to remove, without defaulting to a hybrid.",
+        "Every canonical artifact declares evidence_tier representative and the proof UI exposes that label; a move from 32x32 to 48x48 is backed by an information-budget comparison rather than aesthetic hand-waving.",
+        "With titles hidden and pack order shuffled, a reviewer identifies potion, key, shield, and crystal, names their materials, and records any mismatch in visual-review.md.",
+        "A like-for-like browser comparison shows a visible gain over the rejected pack in silhouette specificity, material planes, focal hierarchy, and set cohesion.",
+        "Validation still proves standalone HTML, exact canonical grids at the selected size, PNG RGBA parity, and no remote requests."
+      ]
     }
   ]
 }

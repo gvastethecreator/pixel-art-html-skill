@@ -32,6 +32,10 @@
     "should_trigger": true
   },
   {
+    "query": "These pixel-art icons are technically valid but look generic and bad; recover the visual direction and prove a better exact-grid pack.",
+    "should_trigger": true
+  },
+  {
     "query": "Generate a painterly fantasy portrait with the image generation tool.",
     "should_trigger": false
   },
