@@ -7,8 +7,10 @@ from collections.abc import Iterator
 from datetime import datetime, timezone
 import html
 import json
+import math
 import re
 import struct
+import subprocess
 import sys
 import unicodedata
 import zlib
@@ -617,6 +619,331 @@ def image_pixels(image: Any) -> list[Any]:
     return list(flattened()) if flattened else list(image.getdata())
 
 
+def target_cell_uniformity(image: Any, target_width: int, target_height: int, samples_per_axis: int = 8) -> float:
+    """Measure whether target-aligned cells contain one stable RGBA value."""
+    rgba = image.convert("RGBA")
+    pixels = rgba.load()
+    stable = 0
+    total = 0
+    for target_y in range(target_height):
+        top = target_y * rgba.height / target_height
+        bottom = (target_y + 1) * rgba.height / target_height
+        for target_x in range(target_width):
+            left = target_x * rgba.width / target_width
+            right = (target_x + 1) * rgba.width / target_width
+            cell_samples: list[tuple[int, int, int, int]] = []
+            sample_x_count = max(1, min(samples_per_axis, int(right - left) or 1))
+            sample_y_count = max(1, min(samples_per_axis, int(bottom - top) or 1))
+            for sample_y in range(sample_y_count):
+                y = min(rgba.height - 1, int(top + (sample_y + 0.5) * (bottom - top) / sample_y_count))
+                for sample_x in range(sample_x_count):
+                    x = min(rgba.width - 1, int(left + (sample_x + 0.5) * (right - left) / sample_x_count))
+                    cell_samples.append(pixels[x, y])
+            counts = Counter(cell_samples)
+            stable += counts.most_common(1)[0][1]
+            total += len(cell_samples)
+    return round(stable / max(total, 1), 4)
+
+
+def classify_image_source(image: Any, target_width: int, target_height: int) -> dict[str, Any]:
+    """Conservatively classify an image before exact-grid conversion.
+
+    The target grid is authoritative. This local detector recognizes exact
+    target-aligned integer upscales and broad pseudo-pixel signals; it does not
+    pretend to recover arbitrary warped lattices.
+    """
+    rgba = image.convert("RGBA")
+    width, height = rgba.size
+    sample_step = max(1, int(((width * height) / 65_536) ** 0.5))
+    pixels = rgba.load()
+    sampled: list[tuple[int, int, int, int]] = []
+    equal_neighbors = 0
+    neighbor_pairs = 0
+    semi_transparent = 0
+    for y in range(0, height, sample_step):
+        for x in range(0, width, sample_step):
+            color = pixels[x, y]
+            sampled.append(color)
+            if 0 < color[3] < 255:
+                semi_transparent += 1
+            if x + 1 < width:
+                neighbor_pairs += 1
+                equal_neighbors += pixels[x + 1, y] == color
+            if y + 1 < height:
+                neighbor_pairs += 1
+                equal_neighbors += pixels[x, y + 1] == color
+
+    unique_ratio = len(set(sampled)) / max(len(sampled), 1)
+    same_neighbor_ratio = equal_neighbors / max(neighbor_pairs, 1)
+    semi_transparent_ratio = semi_transparent / max(len(sampled), 1)
+    uniformity = target_cell_uniformity(rgba, target_width, target_height)
+    integer_target_scale = (
+        width % target_width == 0
+        and height % target_height == 0
+        and width // target_width == height // target_height
+        and width // target_width >= 1
+    )
+    inferred_grid: dict[str, Any] | None = None
+    reasons: list[str] = []
+
+    if integer_target_scale and uniformity >= 0.995:
+        scale = width // target_width
+        source_class = "exact-grid"
+        confidence = "high"
+        inferred_grid = {"width": target_width, "height": target_height, "step_x": float(scale), "step_y": float(scale)}
+        reasons.append(f"target-aligned integer lattice {scale}x with {uniformity:.3f} cell uniformity")
+    elif width == target_width and height == target_height and unique_ratio <= 0.5:
+        source_class = "exact-grid"
+        confidence = "high" if semi_transparent_ratio <= 0.02 else "medium"
+        inferred_grid = {"width": target_width, "height": target_height, "step_x": 1.0, "step_y": 1.0}
+        reasons.append("stored dimensions already match the target grid")
+    elif same_neighbor_ratio >= 0.52 and unique_ratio <= 0.16:
+        source_class = "pseudo-pixel"
+        confidence = "high" if same_neighbor_ratio >= 0.78 and unique_ratio <= 0.04 else "medium"
+        reasons.append("large same-color neighborhoods suggest block structure, but the local detector cannot certify a source lattice")
+    else:
+        source_class = "painterly"
+        confidence = "high" if same_neighbor_ratio < 0.25 or unique_ratio > 0.35 else "medium"
+        reasons.append("no trustworthy hard-cell lattice was found")
+
+    return {
+        "class": source_class,
+        "confidence": confidence,
+        "detector": "local-target-aware-v1",
+        "inferred_grid": inferred_grid,
+        "target_grid": {"width": target_width, "height": target_height},
+        "metrics": {
+            "source_width": width,
+            "source_height": height,
+            "sampled_unique_ratio": round(unique_ratio, 4),
+            "same_neighbor_ratio": round(same_neighbor_ratio, 4),
+            "semi_transparent_ratio": round(semi_transparent_ratio, 4),
+            "target_cell_uniformity": uniformity,
+        },
+        "reasons": reasons,
+    }
+
+
+def run_pixel_fixer_detector(binary: Path, image: Path, mode: str = "full", timeout_seconds: int = 45) -> dict[str, Any]:
+    """Run the optional local Rust-compatible detector through a narrow JSON seam."""
+    if mode not in {"full", "fast"}:
+        raise ArtifactError("pixel-fixer mode must be full or fast")
+    if not binary.is_file():
+        raise ArtifactError(f"pixel-fixer binary not found: {binary}")
+    command = [sys.executable, str(binary), mode, str(image)] if binary.suffix.lower() == ".py" else [str(binary), mode, str(image)]
+    try:
+        completed = subprocess.run(command, capture_output=True, text=True, timeout=timeout_seconds, check=False)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise ArtifactError(f"pixel-fixer detector failed: {exc}") from exc
+    if completed.returncode != 0:
+        detail = completed.stderr.strip() or completed.stdout.strip() or f"exit {completed.returncode}"
+        raise ArtifactError(f"pixel-fixer detector failed: {detail}")
+    payload: dict[str, Any] | None = None
+    for line in reversed(completed.stdout.splitlines()):
+        try:
+            candidate = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(candidate, dict):
+            payload = candidate
+            break
+    if payload is None:
+        raise ArtifactError("pixel-fixer detector did not emit a JSON object")
+    try:
+        columns = int(payload["cols"])
+        rows = int(payload["rows"])
+        step_x = float(payload["step_x"])
+        step_y = float(payload["step_y"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ArtifactError("pixel-fixer detector JSON needs cols, rows, step_x, and step_y") from exc
+    if columns < 1 or rows < 1 or not math.isfinite(step_x) or not math.isfinite(step_y) or step_x <= 0 or step_y <= 0:
+        raise ArtifactError("pixel-fixer detector returned invalid grid dimensions")
+    consensus = str(payload.get("consensus", "unknown"))
+    if consensus.startswith("fast:"):
+        confidence = "high"
+    elif consensus == "arbitrated" or "+" in consensus:
+        confidence = "medium"
+    else:
+        confidence = "low"
+    return {
+        "provider": "pixel-art-fixer",
+        "mode": mode,
+        "cols": columns,
+        "rows": rows,
+        "step_x": round(step_x, 4),
+        "step_y": round(step_y, 4),
+        "consensus": consensus,
+        "confidence": confidence,
+    }
+
+
+def merge_external_source_analysis(local: dict[str, Any], external: dict[str, Any], source_size: tuple[int, int]) -> dict[str, Any]:
+    inferred_grid = {
+        "width": external["cols"],
+        "height": external["rows"],
+        "step_x": external["step_x"],
+        "step_y": external["step_y"],
+    }
+    source_class = local["class"]
+    if source_class != "exact-grid":
+        source_class = "exact-grid" if (external["cols"], external["rows"]) == source_size else "pseudo-pixel"
+    return {
+        **local,
+        "class": source_class,
+        "confidence": external["confidence"],
+        "detector": "pixel-art-fixer",
+        "inferred_grid": inferred_grid,
+        "local_evidence": {"class": local["class"], "confidence": local["confidence"], "detector": local["detector"]},
+        "external": external,
+        "reasons": [*local.get("reasons", []), f"Pixel Art Fixer selected {external['cols']}x{external['rows']} via {external['consensus']}"],
+    }
+
+
+def align_source_to_target_aspect(image: Any, target_width: int, target_height: int, fit: str) -> Any:
+    """Pad or crop at source resolution before target-cell reconstruction."""
+    from PIL import Image
+
+    source = image.convert("RGBA")
+    if fit == "stretch":
+        return source
+    target_ratio = target_width / target_height
+    source_ratio = source.width / source.height
+    if fit == "contain":
+        if abs(source_ratio - target_ratio) < 1e-9:
+            return source
+        if source_ratio > target_ratio:
+            canvas_width = source.width
+            canvas_height = max(source.height, math.ceil(source.width / target_ratio))
+        else:
+            canvas_height = source.height
+            canvas_width = max(source.width, math.ceil(source.height * target_ratio))
+        canvas = Image.new("RGBA", (canvas_width, canvas_height), (0, 0, 0, 0))
+        canvas.alpha_composite(source, ((canvas_width - source.width) // 2, (canvas_height - source.height) // 2))
+        return canvas
+    if source_ratio > target_ratio:
+        crop_width = max(1, round(source.height * target_ratio))
+        left = (source.width - crop_width) // 2
+        return source.crop((left, 0, left + crop_width, source.height))
+    crop_height = max(1, round(source.width / target_ratio))
+    top = (source.height - crop_height) // 2
+    return source.crop((0, top, source.width, top + crop_height))
+
+
+def two_stage_target_image(image: Any, target_width: int, target_height: int, fit: str, structure_colors: int, alpha_threshold: int) -> Any:
+    """Choose target-cell structure from labels, then color from source pixels."""
+    from PIL import Image
+
+    source = align_source_to_target_aspect(image, target_width, target_height, fit)
+    rgba_pixels = image_pixels(source)
+    visible = [(r, g, b) for r, g, b, a in rgba_pixels if a > alpha_threshold]
+    dominant = Counter(visible).most_common(1)[0][0] if visible else (255, 255, 255)
+    structural_rgb = Image.new("RGB", source.size)
+    structural_rgb.putdata([(r, g, b) if a > alpha_threshold else dominant for r, g, b, a in rgba_pixels])
+    labels_image = structural_rgb.quantize(colors=structure_colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+    labels = image_pixels(labels_image)
+    source_pixels = source.load()
+    label_pixels = labels_image.load()
+    target = Image.new("RGBA", (target_width, target_height), (0, 0, 0, 0))
+    target_pixels = target.load()
+
+    for target_y in range(target_height):
+        top = target_y * source.height / target_height
+        bottom = (target_y + 1) * source.height / target_height
+        y_start = max(0, math.floor(top))
+        y_end = min(source.height, max(y_start + 1, math.ceil(bottom)))
+        for target_x in range(target_width):
+            left = target_x * source.width / target_width
+            right = (target_x + 1) * source.width / target_width
+            x_start = max(0, math.floor(left))
+            x_end = min(source.width, max(x_start + 1, math.ceil(right)))
+            total_weight = 0.0
+            visible_weight = 0.0
+            label_weights: Counter[int] = Counter()
+            samples: list[tuple[tuple[int, int, int, int], int, float]] = []
+            for y in range(y_start, y_end):
+                fy = (y + 0.5 - top) / max(bottom - top, 1e-9)
+                weight_y = max(0.05, 1.0 - 2.0 * abs(fy - 0.5))
+                for x in range(x_start, x_end):
+                    fx = (x + 0.5 - left) / max(right - left, 1e-9)
+                    weight = weight_y * max(0.05, 1.0 - 2.0 * abs(fx - 0.5))
+                    color = source_pixels[x, y]
+                    label = int(label_pixels[x, y])
+                    total_weight += weight
+                    if color[3] > alpha_threshold:
+                        visible_weight += weight
+                        label_weights[label] += weight
+                        samples.append((color, label, weight))
+            if visible_weight <= total_weight * 0.5 or not label_weights:
+                continue
+            winning_label = label_weights.most_common(1)[0][0]
+            selected = [(color, weight) for color, label, weight in samples if label == winning_label]
+            if not selected:
+                selected = [(color, weight) for color, _label, weight in samples]
+            denominator = sum(weight for _color, weight in selected)
+            channels = [round(sum(color[channel] * weight for color, weight in selected) / denominator) for channel in range(3)]
+            target_pixels[target_x, target_y] = (*channels, 255)
+    return target
+
+
+def accent_preserving_palette_map(visible: list[tuple[int, int, int]], colors: int) -> dict[tuple[int, int, int], tuple[int, int, int]]:
+    """Quantize target cells without letting frequency erase rare focal colors."""
+    counts = Counter(visible)
+    unique = sorted(counts)
+    if len(unique) <= colors:
+        return {color: color for color in unique}
+
+    def distance(left: tuple[int, int, int], right: tuple[int, int, int]) -> int:
+        return sum((left[index] - right[index]) ** 2 for index in range(3))
+
+    centers = [min(unique, key=lambda color: (-counts[color], color))]
+    while len(centers) < colors:
+        centers.append(max((color for color in unique if color not in centers), key=lambda color: (min(distance(color, center) for center in centers), counts[color], color)))
+    for _ in range(8):
+        assignments = {color: min(range(len(centers)), key=lambda index: (distance(color, centers[index]), index)) for color in unique}
+        updated: list[tuple[int, int, int]] = []
+        for index, center in enumerate(centers):
+            members = [color for color in unique if assignments[color] == index]
+            if not members:
+                updated.append(center)
+                continue
+            denominator = sum(counts[color] for color in members)
+            updated.append(tuple(round(sum(color[channel] * counts[color] for color in members) / denominator) for channel in range(3)))
+        if updated == centers:
+            break
+        centers = updated
+    return {color: centers[min(range(len(centers)), key=lambda index: (distance(color, centers[index]), index))] for color in unique}
+
+
+def quantized_grid_from_target(image: Any, colors: int, dither_mode: str, alpha_threshold: int, background: str | None, preserve_accents: bool = False) -> list[list[str | None]]:
+    from PIL import Image
+
+    target = image.convert("RGBA")
+    rgba_pixels = image_pixels(target)
+    visible = [(r, g, b) for r, g, b, a in rgba_pixels if a > alpha_threshold]
+    dominant = Counter(visible).most_common(1)[0][0] if visible else (255, 255, 255)
+    if preserve_accents and dither_mode == "none":
+        palette_map = accent_preserving_palette_map(visible, colors)
+        quantized_pixels = [palette_map.get((r, g, b), dominant) if a > alpha_threshold else dominant for r, g, b, a in rgba_pixels]
+    else:
+        rgb = Image.new("RGB", target.size)
+        rgb.putdata([(r, g, b) if a > alpha_threshold else dominant for r, g, b, a in rgba_pixels])
+        dither = Image.Dither.NONE if dither_mode == "none" else Image.Dither.FLOYDSTEINBERG
+        quantized = rgb.quantize(colors=colors, method=Image.Quantize.MEDIANCUT, dither=dither).convert("RGB")
+        quantized_pixels = image_pixels(quantized)
+    grid: list[list[str | None]] = []
+    for y in range(target.height):
+        row: list[str | None] = []
+        for x in range(target.width):
+            index = y * target.width + x
+            if not background and rgba_pixels[index][3] <= alpha_threshold:
+                row.append(None)
+            else:
+                r, g, b = quantized_pixels[index]
+                row.append(f"#{r:02X}{g:02X}{b:02X}")
+        grid.append(row)
+    return grid
+
+
 def merge_small_color_clusters_once(grid: list[list[str | None]], minimum: int) -> list[list[str | None]]:
     height = len(grid)
     width = len(grid[0])
@@ -690,39 +1017,72 @@ def artifact_from_image(args: argparse.Namespace) -> dict[str, Any]:
         raise ArtifactError("min-cluster must be between 1 and 8")
     background = normalize_color(args.background)
     with Image.open(args.image) as opened:
-        fitted = fit_image(opened, width, height, args.fit, getattr(args, "resample", "lanczos"))
-    if background:
-        base = Image.new("RGBA", fitted.size, (*tuple(int(background[i:i + 2], 16) for i in (1, 3, 5)), 255))
-        base.alpha_composite(fitted)
-        fitted = base
+        source_image = opened.convert("RGBA")
+    source_analysis = classify_image_source(source_image, width, height)
+    pixel_fixer_binary = getattr(args, "pixel_fixer_bin", None)
+    external_analysis = getattr(args, "pixel_fixer_result", None)
+    if external_analysis is None and pixel_fixer_binary:
+        external_analysis = run_pixel_fixer_detector(Path(pixel_fixer_binary), Path(args.image), getattr(args, "pixel_fixer_mode", "full"))
+    if external_analysis is not None:
+        source_analysis = merge_external_source_analysis(source_analysis, external_analysis, source_image.size)
+    requested_source_class = getattr(args, "source_class", "auto")
+    if requested_source_class != "auto":
+        source_analysis = {
+            **source_analysis,
+            "class": requested_source_class,
+            "confidence": "forced",
+            "detector": "user-override",
+            "reasons": [f"source class forced to {requested_source_class}"],
+        }
+    reconstruction = getattr(args, "reconstruction", "auto")
+    if reconstruction not in {"legacy", "auto", "two-stage"}:
+        raise ArtifactError("reconstruction must be legacy, auto, or two-stage")
+    structure_colors = checked_int(getattr(args, "structure_colors", 0), "structure-colors")
+    if structure_colors == 0:
+        structure_colors = max(4, min(32, args.colors * 2))
+    if not 2 <= structure_colors <= 64:
+        raise ArtifactError("structure-colors must be 0 or between 2 and 64")
+    applied_reconstruction = reconstruction
+    effective_resample = getattr(args, "resample", "lanczos")
+    if reconstruction == "auto":
+        inferred = source_analysis.get("inferred_grid") or {}
+        target_matches = inferred.get("width") == width and inferred.get("height") == height
+        if source_analysis["class"] == "exact-grid" and target_matches:
+            applied_reconstruction = "exact-nearest"
+            effective_resample = "nearest"
+        else:
+            applied_reconstruction = "two-stage"
 
-    rgba_pixels = image_pixels(fitted)
-    visible = [(r, g, b) for r, g, b, a in rgba_pixels if a > args.alpha_threshold]
-    dominant = Counter(visible).most_common(1)[0][0] if visible else (255, 255, 255)
-    rgb_pixels = [(r, g, b) if a > args.alpha_threshold else dominant for r, g, b, a in rgba_pixels]
-    rgb = Image.new("RGB", fitted.size)
-    rgb.putdata(rgb_pixels)
-    dither = Image.Dither.NONE if args.dither == "none" else Image.Dither.FLOYDSTEINBERG
-    quantized = rgb.quantize(colors=args.colors, method=Image.Quantize.MEDIANCUT, dither=dither).convert("RGB")
-    quantized_pixels = image_pixels(quantized)
-    grid: list[list[str | None]] = []
-    for y in range(height):
-        row: list[str | None] = []
-        for x in range(width):
-            index = y * width + x
-            alpha = rgba_pixels[index][3]
-            if not background and alpha <= args.alpha_threshold:
-                row.append(None)
-            else:
-                r, g, b = quantized_pixels[index]
-                row.append(f"#{r:02X}{g:02X}{b:02X}")
-        grid.append(row)
+    if applied_reconstruction == "two-stage":
+        target_image = two_stage_target_image(source_image, width, height, args.fit, structure_colors, args.alpha_threshold)
+    else:
+        target_image = fit_image(source_image, width, height, args.fit, effective_resample)
+    if background:
+        base = Image.new("RGBA", target_image.size, (*tuple(int(background[i:i + 2], 16) for i in (1, 3, 5)), 255))
+        base.alpha_composite(target_image)
+        target_image = base
+
+    grid = quantized_grid_from_target(target_image, args.colors, args.dither, args.alpha_threshold, background, preserve_accents=applied_reconstruction == "two-stage")
     grid = merge_small_color_clusters(grid, minimum_cluster)
+    manual_repair_required = width <= 16 and applied_reconstruction != "exact-nearest"
     return canonical_artifact(
         title=args.title or Path(args.image).stem.replace("-", " ").replace("_", " ").title(),
         grid=grid,
         background=background,
-        source={"kind": "image", "name": Path(args.image).name, "fit": args.fit, "resample": getattr(args, "resample", "lanczos"), "dither": args.dither, "requested_colors": args.colors, "min_cluster": minimum_cluster},
+        source={
+            "kind": "image",
+            "name": Path(args.image).name,
+            "fit": args.fit,
+            "resample": effective_resample,
+            "dither": args.dither,
+            "requested_colors": args.colors,
+            "min_cluster": minimum_cluster,
+            "requested_reconstruction": reconstruction,
+            "reconstruction": applied_reconstruction,
+            "structure_colors": structure_colors,
+            "manual_repair_required": manual_repair_required,
+            "analysis": source_analysis,
+        },
         evidence_tier=checked_evidence_tier(getattr(args, "evidence_tier", "draft")),
     )
 
@@ -979,6 +1339,11 @@ def parse_args() -> argparse.Namespace:
     image_parser.add_argument("--colors", type=int, default=16)
     image_parser.add_argument("--fit", choices=("contain", "cover", "stretch"), default="contain")
     image_parser.add_argument("--resample", choices=("lanczos", "nearest"), default="lanczos", help="Use nearest only for already pixel-clean sources; photos and painted concepts need lanczos.")
+    image_parser.add_argument("--source-class", choices=("auto", "exact-grid", "pseudo-pixel", "painterly"), default="auto", help="Classify automatically unless a reviewed source needs an explicit override.")
+    image_parser.add_argument("--reconstruction", choices=("legacy", "auto", "two-stage"), default="auto", help="Auto uses nearest for an exact target lattice and two-stage otherwise; legacy preserves resize-first behavior.")
+    image_parser.add_argument("--structure-colors", type=int, default=0, help="Temporary two-stage label count; 0 derives a target-aware value from --colors.")
+    image_parser.add_argument("--pixel-fixer-bin", type=Path, help="Optional local Pixel Art Fixer-compatible binary; detection metadata only, never a hosted service.")
+    image_parser.add_argument("--pixel-fixer-mode", choices=("full", "fast"), default="full")
     image_parser.add_argument("--dither", choices=("none", "floyd"), default="none")
     image_parser.add_argument("--background", default="transparent")
     image_parser.add_argument("--alpha-threshold", type=int, default=10)
@@ -1040,10 +1405,14 @@ def main() -> int:
                     raise ArtifactError("--sizes cannot be combined with --width or --height")
                 artifacts = []
                 base_title = args.title or args.image.stem.replace("-", " ").replace("_", " ").title()
+                pixel_fixer_result = None
+                if args.pixel_fixer_bin:
+                    pixel_fixer_result = run_pixel_fixer_detector(Path(args.pixel_fixer_bin), args.image, args.pixel_fixer_mode)
                 for size in parse_sizes(args.sizes):
                     variant_args = argparse.Namespace(**vars(args))
                     variant_args.size = size
                     variant_args.title = f"{base_title} — {size}x{size}"
+                    variant_args.pixel_fixer_result = pixel_fixer_result
                     artifacts.append(artifact_from_image(variant_args))
                 title = args.title or f"{base_title} — resolution set"
                 output, library = resolve_output(args, title)

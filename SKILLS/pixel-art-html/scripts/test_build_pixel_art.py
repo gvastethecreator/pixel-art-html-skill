@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from datetime import datetime, timezone
@@ -274,6 +276,252 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertTrue(any(cell for row in artifact["grid"] for cell in row))
             self.assertTrue(any(cell is None for row in artifact["grid"] for cell in row))
             self.assertEqual(artifact["source"]["resample"], "nearest")
+
+    def test_source_classification_distinguishes_exact_pseudo_and_painterly_inputs(self) -> None:
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillow not installed")
+
+        native = Image.new("RGBA", (8, 8), (0, 0, 0, 0))
+        for y in range(2, 6):
+            for x in range(2, 6):
+                native.putpixel((x, y), (220, 50, 60, 255))
+        exact_scaled = native.resize((40, 40), Image.Resampling.NEAREST)
+        exact = module.classify_image_source(exact_scaled, 8, 8)
+        self.assertEqual(exact["class"], "exact-grid")
+        self.assertEqual(exact["confidence"], "high")
+        self.assertEqual(exact["inferred_grid"], {"width": 8, "height": 8, "step_x": 5.0, "step_y": 5.0})
+
+        pseudo = native.resize((61, 61), Image.Resampling.BICUBIC)
+        pseudo_result = module.classify_image_source(pseudo, 8, 8)
+        self.assertEqual(pseudo_result["class"], "pseudo-pixel")
+        self.assertIn(pseudo_result["confidence"], {"medium", "high"})
+        self.assertIsNone(pseudo_result["inferred_grid"])
+
+        painterly = Image.new("RGBA", (64, 64), (0, 0, 0, 255))
+        for y in range(64):
+            for x in range(64):
+                painterly.putpixel((x, y), ((x * 3 + y) % 256, (y * 5 + x) % 256, (x * 7 + y * 11) % 256, 255))
+        painted_result = module.classify_image_source(painterly, 8, 8)
+        self.assertEqual(painted_result["class"], "painterly")
+        self.assertIsNone(painted_result["inferred_grid"])
+
+    def test_image_route_records_source_analysis_and_allows_an_explicit_class_override(self) -> None:
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillow not installed")
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "source.png"
+            image = Image.new("RGBA", (8, 8), (0, 0, 0, 0))
+            image.putpixel((3, 3), (255, 80, 40, 255))
+            image.save(source)
+            values = {
+                "image": source, "width": None, "height": None, "size": 8,
+                "colors": 4, "alpha_threshold": 10, "background": "transparent",
+                "fit": "contain", "resample": "nearest", "min_cluster": 1,
+                "dither": "none", "title": "Analysis fixture", "source_class": "auto",
+                "reconstruction": "legacy", "evidence_tier": "draft",
+            }
+            artifact = module.artifact_from_image(type("Args", (), values)())
+            self.assertEqual(artifact["source"]["analysis"]["class"], "exact-grid")
+            self.assertEqual(artifact["source"]["analysis"]["confidence"], "high")
+            self.assertEqual(artifact["source"]["reconstruction"], "legacy")
+
+            values["source_class"] = "painterly"
+            overridden = module.artifact_from_image(type("Args", (), values)())
+            self.assertEqual(overridden["source"]["analysis"]["class"], "painterly")
+            self.assertEqual(overridden["source"]["analysis"]["confidence"], "forced")
+            self.assertEqual(overridden["source"]["analysis"]["detector"], "user-override")
+
+    def test_two_stage_reconstruction_preserves_small_grid_structure_alpha_and_palette_budget(self) -> None:
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillow not installed")
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "degraded.png"
+            native = Image.new("RGBA", (8, 8), (0, 0, 0, 0))
+            for y in range(2, 6):
+                for x in range(2, 6):
+                    native.putpixel((x, y), (24, 28, 38, 255) if x in {2, 5} or y in {2, 5} else (205, 45, 55, 255))
+            native.putpixel((3, 3), (255, 225, 130, 255))
+            native.resize((61, 61), Image.Resampling.BICUBIC).save(source)
+            args = type("Args", (), {
+                "image": source, "width": None, "height": None, "size": 8,
+                "colors": 4, "alpha_threshold": 10, "background": "transparent",
+                "fit": "contain", "resample": "lanczos", "min_cluster": 1,
+                "dither": "none", "title": "Two stage fixture", "source_class": "auto",
+                "reconstruction": "two-stage", "structure_colors": 8,
+                "evidence_tier": "draft",
+            })()
+            artifact = module.artifact_from_image(args)
+            self.assertLessEqual(len(artifact["palette"]), 4)
+            self.assertIsNone(artifact["grid"][0][0])
+            self.assertIsNotNone(artifact["grid"][2][2])
+            self.assertIsNotNone(artifact["grid"][3][3])
+            self.assertNotEqual(artifact["grid"][3][3], artifact["grid"][4][4])
+            self.assertEqual(artifact["source"]["reconstruction"], "two-stage")
+            self.assertEqual(artifact["source"]["structure_colors"], 8)
+            self.assertTrue(artifact["source"]["manual_repair_required"])
+
+    def test_image_proof_exposes_source_detection_metadata_and_overlay_control(self) -> None:
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillow not installed")
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source.png"
+            Image.new("RGBA", (8, 8), (30, 40, 50, 255)).resize((40, 40), Image.Resampling.NEAREST).save(source)
+            args = type("Args", (), {
+                "image": source, "width": None, "height": None, "size": 8,
+                "colors": 4, "alpha_threshold": 10, "background": "transparent",
+                "fit": "contain", "resample": "nearest", "min_cluster": 1,
+                "dither": "none", "title": "Overlay fixture", "source_class": "auto",
+                "reconstruction": "auto", "structure_colors": 0,
+                "evidence_tier": "draft",
+            })()
+            output = root / "proof"
+            module.write_artifact(module.artifact_from_image(args), output, 4)
+            proof = (output / "index.html").read_text(encoding="utf-8")
+            self.assertIn('id="source-grid"', proof)
+            self.assertIn("Show recovered source lattice", proof)
+            self.assertIn("Source class", proof)
+            self.assertIn("Manual repair", proof)
+            self.assertIn("Manual silhouette and identity-cue repair required", proof)
+            self.assertIn("sourceGridOverlay", proof)
+            self.assertIn("sourceGridStride", proof)
+
+    def test_small_grid_benchmark_cli_writes_machine_and_browser_reports(self) -> None:
+        try:
+            import PIL  # noqa: F401
+        except ImportError:
+            self.skipTest("Pillow not installed")
+        benchmark_script = MODULE_PATH.with_name("benchmark_small_grids.py")
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "benchmark"
+            completed = subprocess.run(
+                [sys.executable, str(benchmark_script), "--output", str(output), "--sizes", "8", "--distortions", "nearest,fractional"],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            summary = json.loads(completed.stdout.strip())
+            self.assertEqual(summary["sizes"], [8])
+            self.assertEqual(summary["distortions"], ["nearest", "fractional"])
+            self.assertEqual(summary["methods"], ["legacy", "two-stage"])
+            report = json.loads((output / "benchmark.json").read_text(encoding="utf-8"))
+            self.assertEqual(len(report["samples"]), 4)
+            self.assertEqual({sample["target_size"] for sample in report["samples"]}, {8})
+            html = (output / "index.html").read_text(encoding="utf-8")
+            self.assertIn("Small-grid reconstruction benchmark", html)
+            self.assertIn("data:image/png;base64,", html)
+            self.assertNotIn("https://", html)
+
+    def test_optional_pixel_fixer_adapter_records_external_detection_without_path_leak(self) -> None:
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillow not installed")
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source.png"
+            Image.new("RGBA", (8, 8), (40, 50, 60, 255)).resize((40, 40), Image.Resampling.NEAREST).save(source)
+            fake = root / "fake_fixer.py"
+            fake.write_text(
+                "import json\nprint(json.dumps({'cols': 8, 'rows': 8, 'step_x': 5.0, 'step_y': 5.0, 'consensus': 'fast:ac+rl(S)'}))\n",
+                encoding="utf-8",
+            )
+            args = type("Args", (), {
+                "image": source, "width": None, "height": None, "size": 8,
+                "colors": 4, "alpha_threshold": 10, "background": "transparent",
+                "fit": "contain", "resample": "nearest", "min_cluster": 1,
+                "dither": "none", "title": "External detector fixture", "source_class": "auto",
+                "reconstruction": "auto", "structure_colors": 0, "pixel_fixer_bin": fake,
+                "pixel_fixer_mode": "full", "evidence_tier": "draft",
+            })()
+            artifact = module.artifact_from_image(args)
+            analysis = artifact["source"]["analysis"]
+            self.assertEqual(analysis["detector"], "pixel-art-fixer")
+            self.assertEqual(analysis["confidence"], "high")
+            self.assertEqual(analysis["external"]["consensus"], "fast:ac+rl(S)")
+            self.assertEqual(analysis["inferred_grid"]["width"], 8)
+            self.assertNotIn(str(fake), json.dumps(artifact))
+
+    def test_optional_pixel_fixer_adapter_rejects_incomplete_detector_json(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            fake = root / "bad_fixer.py"
+            fake.write_text("print('{}')\n", encoding="utf-8")
+            source = root / "source.png"
+            source.write_bytes(b"not-used-by-fake")
+            with self.assertRaisesRegex(module.ArtifactError, "needs cols, rows, step_x, and step_y"):
+                module.run_pixel_fixer_detector(fake, source)
+
+            fake.write_text("print('{\"cols\": 8, \"rows\": 8, \"step_x\": NaN, \"step_y\": 5}')\n", encoding="utf-8")
+            with self.assertRaisesRegex(module.ArtifactError, "invalid grid dimensions"):
+                module.run_pixel_fixer_detector(fake, source)
+
+    def test_image_artifact_reuses_precomputed_pixel_fixer_result_for_resolution_sets(self) -> None:
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillow not installed")
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source.png"
+            Image.new("RGBA", (8, 8), (40, 50, 60, 255)).resize((40, 40), Image.Resampling.NEAREST).save(source)
+            args = type("Args", (), {
+                "image": source, "width": None, "height": None, "size": 8,
+                "colors": 4, "alpha_threshold": 10, "background": "transparent",
+                "fit": "contain", "resample": "nearest", "min_cluster": 1,
+                "dither": "none", "title": "Cached detector fixture", "source_class": "auto",
+                "reconstruction": "auto", "structure_colors": 0,
+                "pixel_fixer_bin": root / "missing-binary.exe", "pixel_fixer_mode": "full",
+                "pixel_fixer_result": {
+                    "detector": "pixel-art-fixer", "mode": "full", "cols": 8, "rows": 8,
+                    "step_x": 5.0, "step_y": 5.0, "consensus": "cached", "confidence": "high",
+                },
+                "evidence_tier": "draft",
+            })()
+            artifact = module.artifact_from_image(args)
+            self.assertEqual(artifact["source"]["analysis"]["external"]["consensus"], "cached")
+
+    def test_resolution_set_cli_invokes_optional_pixel_fixer_once(self) -> None:
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillow not installed")
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source.png"
+            output = root / "output"
+            Image.new("RGBA", (8, 8), (40, 50, 60, 255)).resize((40, 40), Image.Resampling.NEAREST).save(source)
+            fake = root / "fake_fixer.py"
+            fake.write_text(
+                "import json\nfrom pathlib import Path\n"
+                "counter = Path(__file__).with_suffix('.count')\n"
+                "counter.write_text(str(int(counter.read_text()) + 1) if counter.exists() else '1')\n"
+                "print(json.dumps({'cols': 8, 'rows': 8, 'step_x': 5.0, 'step_y': 5.0, 'consensus': 'cached-once'}))\n",
+                encoding="utf-8",
+            )
+            completed = subprocess.run(
+                [
+                    sys.executable, str(MODULE_PATH), "from-image", str(source),
+                    "--sizes", "8,16", "--colors", "4", "--pixel-fixer-bin", str(fake),
+                    "--output", str(output),
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            self.assertEqual(fake.with_suffix(".count").read_text(encoding="utf-8"), "1")
+            manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
+            self.assertEqual([item["path"] for item in manifest["items"]], ["8x8", "16x16"])
 
     def test_managed_iterations_are_numbered_and_hubbed(self) -> None:
         artifact = module.compile_spec({"title": "Night Beacon", "width": 8, "height": 8, "background": "#123"})

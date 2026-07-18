@@ -133,6 +133,7 @@
           <label class="control-label" for="zoom"><span>Cell scale</span><output id="zoom-value" for="zoom"></output></label>
           <input id="zoom" type="range" min="4" max="32" step="1" value="16">
           <label class="check-row" for="grid"><input id="grid" type="checkbox" checked><span>Show grid overlay</span></label>
+          <label class="check-row" id="source-grid-row" for="source-grid" hidden><input id="source-grid" type="checkbox"><span id="source-grid-label">Show recovered source lattice</span></label>
           <button class="fit-button" id="fit" type="button">Fit artwork to stage</button>
         </section>
         <section class="panel">
@@ -176,11 +177,15 @@
     const ctx = canvas.getContext('2d', { alpha: true });
     const zoom = document.querySelector('#zoom');
     const gridToggle = document.querySelector('#grid');
+    const sourceGridToggle = document.querySelector('#source-grid');
+    const sourceGridRow = document.querySelector('#source-grid-row');
     const colors = data.palette || [];
     const flat = data.grid.flat();
     const painted = flat.filter(Boolean).length;
     const usage = new Map(colors.map(color => [color, flat.filter(cell => cell === color).length]));
     const quality = data.quality || {};
+    const sourceAnalysis = data.source?.analysis || null;
+    const inferredGrid = sourceAnalysis?.inferred_grid || null;
     const evidenceTier = data.evidence_tier || 'legacy-unlabeled';
     const evidenceLabels = {
       fixture: 'Fixture / mechanics only',
@@ -197,6 +202,10 @@
     document.querySelector('#proof-status').textContent = evidenceLabels[evidenceTier] || evidenceTier;
     document.querySelector('#source-label').textContent = `Source: ${data.source?.kind || 'spec'}`;
     document.querySelector('#painted-count').textContent = `${painted} / ${data.width * data.height}`;
+    if (inferredGrid?.width && inferredGrid?.height) {
+      sourceGridRow.hidden = false;
+      document.querySelector('#source-grid-label').textContent = `Show recovered source lattice (${inferredGrid.width} x ${inferredGrid.height})`;
+    }
 
     const tape = document.querySelector('#color-tape');
     const palette = document.querySelector('#palette');
@@ -273,13 +282,20 @@
     });
 
     const qualityNotes = document.querySelector('#quality-notes');
+    const manualRepairRequired = Boolean(data.source?.manual_repair_required);
+    if (manualRepairRequired) {
+      const note = document.createElement('p');
+      note.className = 'quality-note';
+      note.textContent = 'Manual silhouette and identity-cue repair required before representative evidence.';
+      qualityNotes.appendChild(note);
+    }
     (quality.warnings || []).forEach(warning => {
       const note = document.createElement('p');
       note.className = 'quality-note';
       note.textContent = warning;
       qualityNotes.appendChild(note);
     });
-    if (!(quality.warnings || []).length) {
+    if (!(quality.warnings || []).length && !manualRepairRequired) {
       const note = document.createElement('p');
       note.className = 'quality-note';
       note.textContent = 'No deterministic craft-risk signals. Visual judgment still required.';
@@ -287,7 +303,9 @@
     }
 
     const facts = document.querySelector('#facts');
-    [['Schema', `v${data.schema_version}`], ['Evidence', evidenceTier], ['Source', data.source?.kind || 'spec'], ['Alpha', data.grid.flat().some(value => value === null) ? 'yes' : 'no'], ['Clusters', quality.clusters ?? 'n/a'], ['Singletons', quality.single_pixel_clusters ?? 'n/a'], ['Value span', quality.value_span ?? 'n/a']].forEach(([term, value]) => {
+    const sourceGridFact = inferredGrid ? `${inferredGrid.width} x ${inferredGrid.height} @ ${inferredGrid.step_x} / ${inferredGrid.step_y}` : 'not detected';
+    const manualRepairFact = data.source?.kind === 'image' ? (manualRepairRequired ? 'required' : 'not required') : 'n/a';
+    [['Schema', `v${data.schema_version}`], ['Evidence', evidenceTier], ['Source', data.source?.kind || 'spec'], ['Source class', sourceAnalysis ? `${sourceAnalysis.class} / ${sourceAnalysis.confidence}` : 'n/a'], ['Detection', sourceAnalysis?.detector || 'n/a'], ['Source grid', sourceGridFact], ['Reconstruction', data.source?.reconstruction || 'n/a'], ['Manual repair', manualRepairFact], ['Alpha', data.grid.flat().some(value => value === null) ? 'yes' : 'no'], ['Clusters', quality.clusters ?? 'n/a'], ['Singletons', quality.single_pixel_clusters ?? 'n/a'], ['Value span', quality.value_span ?? 'n/a']].forEach(([term, value]) => {
       const dt = document.createElement('dt'); dt.textContent = term;
       const dd = document.createElement('dd'); dd.textContent = value;
       facts.append(dt, dd);
@@ -309,7 +327,22 @@
         for (let y = 0; y <= data.height; y++) { ctx.moveTo(0, y * cell + .5); ctx.lineTo(canvas.width, y * cell + .5); }
         ctx.stroke();
       }
-      window.__PIXEL_ART_METRICS__ = { width:data.width, height:data.height, colors:colors.length, painted, zoom:cell, quality, evidenceTier };
+      const sourceGridOverlay = Boolean(sourceGridToggle.checked && inferredGrid?.width && inferredGrid?.height);
+      let sourceGridStride = { x: 1, y: 1 };
+      if (sourceGridOverlay) {
+        const sourceCellWidth = canvas.width / inferredGrid.width;
+        const sourceCellHeight = canvas.height / inferredGrid.height;
+        sourceGridStride = { x: Math.max(1, Math.ceil(4 / sourceCellWidth)), y: Math.max(1, Math.ceil(4 / sourceCellHeight)) };
+        ctx.strokeStyle = 'rgba(255, 177, 66, .38)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let x = 0; x <= inferredGrid.width; x += sourceGridStride.x) { const px = x * canvas.width / inferredGrid.width; ctx.moveTo(px + .5, 0); ctx.lineTo(px + .5, canvas.height); }
+        for (let y = 0; y <= inferredGrid.height; y += sourceGridStride.y) { const py = y * canvas.height / inferredGrid.height; ctx.moveTo(0, py + .5); ctx.lineTo(canvas.width, py + .5); }
+        if (inferredGrid.width % sourceGridStride.x) { ctx.moveTo(canvas.width - .5, 0); ctx.lineTo(canvas.width - .5, canvas.height); }
+        if (inferredGrid.height % sourceGridStride.y) { ctx.moveTo(0, canvas.height - .5); ctx.lineTo(canvas.width, canvas.height - .5); }
+        ctx.stroke();
+      }
+      window.__PIXEL_ART_METRICS__ = { width:data.width, height:data.height, colors:colors.length, painted, zoom:cell, quality, evidenceTier, sourceAnalysis, sourceGridOverlay, sourceGridStride };
       window.__PIXEL_ART_READY__ = true;
     }
 
@@ -347,6 +380,7 @@
     document.querySelector('#fit').addEventListener('click', () => { manualZoom = false; fitCanvas(); });
     zoom.addEventListener('input', () => { manualZoom = true; render(); });
     gridToggle.addEventListener('change', render);
+    sourceGridToggle.addEventListener('change', render);
     new ResizeObserver(() => { if (!manualZoom) fitCanvas(); }).observe(stage);
     requestAnimationFrame(fitCanvas);
   </script>
