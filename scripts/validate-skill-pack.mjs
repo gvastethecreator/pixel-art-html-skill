@@ -31,11 +31,13 @@ const required = [
   "SKILLS/pixel-art-html/references/image-source-brief.md",
   "SKILLS/pixel-art-html/references/project-library.md",
   "SKILLS/pixel-art-html/references/quality-contract.md",
+  "SKILLS/pixel-art-html/references/source-recovery.md",
   "SKILLS/pixel-art-html/references/subject-recipes.md",
   "SKILLS/pixel-art-html/references/visual-review.md",
   "SKILLS/pixel-art-html/evals/evals.json",
   "SKILLS/pixel-art-html/evals/trigger_queries.json",
   "SKILLS/pixel-art-html/scripts/build_pixel_art.py",
+  "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
   "SKILLS/pixel-art-html/scripts/test_build_pixel_art.py"
 ];
 const errors = [];

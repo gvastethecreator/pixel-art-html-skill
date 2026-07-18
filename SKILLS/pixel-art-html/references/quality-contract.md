@@ -50,12 +50,17 @@ Text-authored sizes are independent masters. Image-derived sizes convert from th
 
 ## Image conversion acceptance
 
+- Canonical source metadata records the classified source type, confidence, detector, requested target, inferred lattice when available, and applied reconstruction.
+- Exact-grid sources are nearest-preserved only when their lattice matches the requested target; detected source dimensions never override a fixed runtime grid.
+- Pseudo-pixel and painterly sources use target-aware structure/color packing before the final palette clamp; legacy resize-first output is comparison evidence only.
 - `contain` preserves complete icons/characters; `cover` fills scenes; `stretch` is explicit distortion.
 - Final crop preserves identity features and required negative space.
 - Alpha edges have no source-background halo.
 - Quantization noise has been replaced with authored clusters.
 - Palette count is within the requested limit and still provides value separation.
 - The exact grid, not the source image, carries recognition.
+- At 8x8 and 16x16, automatic reconstruction remains `draft` until a human or agent explicitly repairs the silhouette and one identity cue and passes the title-free native-scale read.
+- Reconstruction benchmark metrics may justify routing changes, but they do not measure composition, specificity, material read, or artistic quality.
 
 Read [image-source-brief.md](image-source-brief.md) before generation or conversion when the source is not already pixel-clean.
 

@@ -5,7 +5,8 @@
 Pixel Art HTML turns text-authored grids, local images, or accepted Codex ImageGen outputs into deterministic JSON, PNG, and standalone HTML. Its craft loop builds silhouette, projection, value, light, palette, and material clusters before detail. Managed builds are stored as chronological project iterations and automatically indexed in a dark, local-first gallery.
 
 - Build single images or deliberate multi-resolution sets from 8x8 through 128x128.
-- Convert locally with Pillow while enforcing exact dimensions and palette limits.
+- Classify exact-grid, pseudo-pixel, and painterly sources before conversion, then record the detector, confidence, inferred lattice, and applied reconstruction in canonical metadata.
+- Convert locally with Pillow using target-aware structure/color packing while enforcing exact dimensions and palette limits.
 - Reuse exact cluster motifs with flips and palette maps instead of scattering one-off pixels.
 - Label every output as fixture, draft, representative, or production-candidate so structural smoke cannot masquerade as art-quality proof.
 - Compare three materially different directions for rejected or direction-sensitive quality work, then record a title-free perceptual read.
@@ -41,6 +42,14 @@ Convert an image into the recommended resolution ladder:
 uv run --with pillow==11.0.0 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py from-image .\source.png --project-root . --slug character-set --sizes all
 ```
 
+For very small runtime grids, request them explicitly and treat every result as a repair draft:
+
+```powershell
+uv run --with pillow==11.0.0 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py from-image .\source.png --output .\small-grid-drafts --sizes 8,16,24,32 --colors 8 --reconstruction auto
+```
+
+The proof page shows the source class, detection confidence, inferred source lattice, reconstruction route, and a toggleable recovered-lattice overlay. `auto` preserves an exact matching lattice with nearest-neighbor sampling and otherwise uses two-stage target packing. It does not turn an 8x8 draft into authored art; repair silhouette and identity cues per size.
+
 Both commands regenerate `pixel-art/index.html`, which navigates every managed iteration in the project. Use `--output <directory>` when an unindexed standalone destination is preferable.
 
 After each build, run the structural validator and craft-risk report:
@@ -64,6 +73,12 @@ Node 20 or newer and Python 3.11 or newer are recommended:
 npm run check
 ```
 
+Run the deterministic recovery benchmark separately when changing classification or image packing:
+
+```powershell
+uv run --with pillow==11.0.0 python .\SKILLS\pixel-art-html\scripts\benchmark_small_grids.py --output .\.scratch\small-grid-benchmark
+```
+
 The image-conversion test runs when Pillow is installed; all other tests use the Python standard library.
 
 ## Documentation
@@ -73,6 +88,7 @@ The image-conversion test runs when Pillow is installed; all other tests use the
 - [Craft workflow](./SKILLS/pixel-art-html/references/craft-workflow.md)
 - [Subject recipes and 62-module transfer map](./SKILLS/pixel-art-html/references/subject-recipes.md)
 - [Image-source brief and repixelization](./SKILLS/pixel-art-html/references/image-source-brief.md)
+- [Small-grid source recovery](./SKILLS/pixel-art-html/references/source-recovery.md)
 - [Project library contract](./SKILLS/pixel-art-html/references/project-library.md)
 - [Visual quality contract](./SKILLS/pixel-art-html/references/quality-contract.md)
 - [Visual review and evidence tiers](./SKILLS/pixel-art-html/references/visual-review.md)

@@ -36,6 +36,10 @@
     "should_trigger": true
   },
   {
+    "query": "Recover the hidden grid from this blurry pseudo-pixel sprite, then make reviewed 8x8, 16x16, 24x24, and 32x32 exact masters.",
+    "should_trigger": true
+  },
+  {
     "query": "Generate a painterly fantasy portrait with the image generation tool.",
     "should_trigger": false
   },

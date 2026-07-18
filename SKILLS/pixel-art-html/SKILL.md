@@ -10,7 +10,7 @@ Create authored pixel art, not merely valid low-resolution files. Keep model gen
 ## Route
 
 - Text-only art or edits: direction card -> silhouette/value passes -> exact spec -> critique -> browser proof.
-- Local/attached image: source brief -> direct conversion -> manual repixelization -> critique -> browser proof.
+- Local/attached image: source brief -> source classification -> target-aware conversion -> manual repixelization -> critique -> browser proof.
 - Codex ImageGen: generate a clean source with `$imagegen`, save it in the project, then follow the image route.
 - Existing artifact: edit its source spec or canonical grid, rebuild, and compare the final render.
 - Resolution set: author each text master independently, or convert every size from the original image, then clean each size.
@@ -32,6 +32,7 @@ Do not use an OpenAI API key, image API script, `$openai-image-gen`, or an exter
 2. Load only the relevant branch.
    - Read [subject-recipes.md](references/subject-recipes.md) for the matching subject: character, prop, vehicle, architecture, landscape, material, tile, isometric, retro, or gameplay-readable asset.
    - Read [image-source-brief.md](references/image-source-brief.md) before ImageGen or conversion when the source is not already pixel-clean.
+   - Read [source-recovery.md](references/source-recovery.md) when the source has an uncertain lattice, the target is 8x8-32x32, or conversion quality is the problem.
    - Read [artifact-schema.md](references/artifact-schema.md) before authoring or editing a spec.
    - Done when subject-specific construction and rejection rules are known without loading unrelated branches.
 
@@ -55,9 +56,12 @@ Do not use an OpenAI API key, image API script, `$openai-image-gen`, or an exter
    - Keep every operation in bounds and keep palette aliases semantic: outline, shadow, base, light, accent, environment bridge.
    - Done when JSON, PNG, and standalone HTML are generated from one canonical grid.
 
+   For image input, leave `--source-class auto` unless visual evidence disproves the detector. The default `--reconstruction auto` preserves an exact source lattice only when it matches the requested target; pseudo-pixel and painterly inputs use target-aware two-stage packing. `--reconstruction legacy` exists for comparison and regression work, not as the preferred path.
+
 6. Critique and repair.
    - Run `critique`; inspect bounds, singleton clusters, value span, and low-contrast boundaries as risk signals, not a score.
    - Open the HTML in a browser. Inspect native 1x, 2x, 4x, silhouette, value hierarchy, crop, alpha edges, cluster rhythm, focal contrast, and subject-specific context.
+   - For image-derived work, inspect source class/confidence and toggle the recovered source-lattice overlay. Treat a plausible lattice as diagnosis, not proof that the final target grid is good.
    - Tile, texture, and seamless specs automatically add a 3x repeat proof when their direction card identifies that use. Inspect the repeated proof for seams, landmarks, diagonals, and visual fatigue.
    - Resolve every warning visually or record why it is intentional. Remove details that help only while zoomed in.
    - For `representative` or `production-candidate` output, copy the visual-review template beside the output. Hide titles, shuffle pack items, and record what is actually identified, which materials read, what signature is remembered, and every mismatch.
@@ -69,6 +73,7 @@ Do not use an OpenAI API key, image API script, `$openai-image-gen`, or an exter
    - Text route: preserve subject, pose, palette roles, and framing, but add/remove detail per independently authored grid.
    - Image route: convert each target directly from the original source, then clean silhouette, palette, and clusters per size.
    - Compare every master at native size. Never downscale the largest grid and call the results responsive masters.
+   - At 8x8 and 16x16, the automatic result is always a draft. Re-author the silhouette, remove secondary forms, and spend the remaining cells on one identity/focal cue. Do not promote it because reconstruction metrics improved.
    - Done when every requested size communicates the same identity with resolution-appropriate information.
 
 8. Package related assets deliberately.
@@ -108,6 +113,18 @@ Image route; local Pillow dependency, no model API:
 uv run --with pillow==11.0.0 python <skill-dir>/scripts/build_pixel_art.py from-image <image> --project-root <project> --slug <request-slug> --size 32 --colors 16 --fit contain --dither none --background transparent --evidence-tier draft
 ```
 
+Small-grid recovery ladder from the same original source:
+
+```bash
+uv run --with pillow==11.0.0 python <skill-dir>/scripts/build_pixel_art.py from-image <image> --output <scratch-output> --sizes 8,16,24,32 --colors 8 --source-class auto --reconstruction auto
+```
+
+Deterministic recovery benchmark:
+
+```bash
+uv run --with pillow==11.0.0 python <skill-dir>/scripts/benchmark_small_grids.py --output <benchmark-output>
+```
+
 Full image-derived resolution set:
 
 ```bash
@@ -139,7 +156,7 @@ Rebuild a project hub:
 python <skill-dir>/scripts/build_pixel_art.py hub --project-root <project>
 ```
 
-Useful image options: `--size N`, `--width N --height N`, `--sizes all`, `--colors 4|8|16|32`, `--fit contain|cover|stretch`, `--resample lanczos|nearest`, `--min-cluster 1..8`, `--dither none|floyd`, `--background transparent|#RRGGBB`, `--alpha-threshold 0..255`, and `--scale N`. Use nearest only for an already pixel-clean source. Keep min-cluster at 1 unless image-derived singleton noise is visible; cleanup is still a draft for manual review.
+Useful image options: `--size N`, `--width N --height N`, `--sizes all`, `--colors 4|8|16|32`, `--fit contain|cover|stretch`, `--source-class auto|exact-grid|pseudo-pixel|painterly`, `--reconstruction auto|two-stage|legacy`, `--structure-colors 0|2..64`, `--resample lanczos|nearest`, `--min-cluster 1..8`, `--dither none|floyd`, `--background transparent|#RRGGBB`, `--alpha-threshold 0..255`, and `--scale N`. `auto` chooses nearest only for an exact lattice matching the target and two-stage otherwise. Keep min-cluster at 1 unless image-derived singleton noise is visible; cleanup is still a draft for manual review. A locally installed compatible detector may be supplied with `--pixel-fixer-bin <path> --pixel-fixer-mode full|fast`; it contributes advisory lattice metadata only and is run once for a resolution set.
 
 ## Output contract
 

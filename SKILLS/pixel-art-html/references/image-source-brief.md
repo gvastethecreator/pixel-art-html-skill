@@ -36,15 +36,17 @@ Hard pixel edges in the source can help, but never trust a model-generated image
 ## Conversion is a draft
 
 1. Preserve the accepted source inside the project.
-2. Crop and choose `contain` or `cover` based on use; use `stretch` only for intentional distortion.
-3. Convert every target size directly from the original source.
-4. Inspect silhouette, crop, alpha fringe, value groups, palette, and focal cue.
-5. Open the canonical grid or reconstruct it as a spec. Merge noisy colors, repair stair steps, replace source texture with cluster motifs, and remove accidental singletons.
-6. Rebuild and compare at native 1x, 2x, and 4x.
+2. Classify the source as `exact-grid`, `pseudo-pixel`, or `painterly`. Review confidence, reasons, and any inferred lattice; override only with visual evidence.
+3. Crop and choose `contain` or `cover` based on use; use `stretch` only for intentional distortion.
+4. Convert every target size directly from the original source. Leave `--reconstruction auto`: it preserves an exact matching lattice and uses target-aware two-stage packing otherwise.
+5. Inspect silhouette, crop, alpha fringe, value groups, palette, focal cue, and the recovered source-lattice overlay.
+6. Open the canonical grid or reconstruct it as a spec. Merge noisy colors, repair stair steps, replace source texture with cluster motifs, and remove accidental singletons.
+7. At 8x8 or 16x16, redraw the silhouette and one identity cue rather than accepting the automatic cell choices. Omission is part of the deliverable.
+8. Rebuild and compare at native 1x, 2x, and 4x.
 
 Image quantization preserves photographic/model noise surprisingly well. Manual repixelization must reassert the same pass order as text authoring: silhouette -> projection -> value/palette -> directional light -> material clusters -> focus/cleanup.
 
-For an already pixel-clean source, `--resample nearest` can preserve its cluster edges. For visible quantization speckle, `--min-cluster 2` may merge one-cell color islands into adjacent opaque colors without eroding alpha; it is an opt-in cleanup draft, not a replacement for deciding which glints and accents are intentional.
+For an already pixel-clean source whose lattice matches the target, automatic reconstruction selects nearest-neighbor preservation. For visible quantization speckle, `--min-cluster 2` may merge one-cell color islands into adjacent opaque colors without eroding alpha; it is an opt-in cleanup draft, not a replacement for deciding which glints and accents are intentional. Read [source-recovery.md](source-recovery.md) for classifier evidence, two-stage behavior, benchmark usage, and the optional detector boundary.
 
 ## Source-specific checks
 

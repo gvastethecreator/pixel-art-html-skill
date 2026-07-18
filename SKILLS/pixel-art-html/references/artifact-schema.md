@@ -60,13 +60,38 @@ Use rectangles and runs for scaffolding and broad planes. Use motifs for repeate
 
 The compiler emits canonical JSON with a complete `grid` of `#RRGGBB` or `null` cells, the declared `evidence_tier`, source metadata, derived proof intent, and a deterministic `quality` risk report. `proofs.repeat_3x` is true only when `art_direction.use` identifies a tile, tileset, texture, or seamless master. Do not hand-author canonical output when a compact source spec is easier to review. The report is diagnostic and never a semantic quality score.
 
+Image-derived canonical output also records:
+
+```json
+{
+  "source": {
+    "kind": "image",
+    "requested_reconstruction": "auto",
+    "reconstruction": "two-stage",
+    "structure_colors": 16,
+    "manual_repair_required": true,
+    "analysis": {
+      "class": "pseudo-pixel",
+      "confidence": "medium",
+      "detector": "local-target-analysis",
+      "inferred_grid": {"width": 24, "height": 24, "step_x": 5.5, "step_y": 5.5},
+      "target_grid": {"width": 16, "height": 16},
+      "metrics": {},
+      "reasons": []
+    }
+  }
+}
+```
+
+`analysis` is diagnostic provenance. Its inferred source grid never changes the requested runtime dimensions, and neither detector confidence nor reconstruction fidelity promotes an artifact beyond its declared evidence tier. `manual_repair_required` is true for image-derived 8x8/16x16 output unless an exact matching source lattice was preserved; the proof page surfaces the requirement as a review warning. An optional external detector is recorded by stable detector/mode/result metadata; executable paths are never serialized.
+
 Canonical palette arrays follow first raster appearance, not source declaration order. Compare palette sets or semantic source aliases when order is not itself part of the test.
 
 ## Resolution collections
 
 Recommended square masters: `16`, `24`, `32`, `40`, `48`, and `64`. Single artifacts may use any width and height from 8 through 128.
 
-- Image input: pass `--sizes all` or a comma-separated list. Convert each target directly from the original image. Keep `--resample lanczos` for photos, painted concepts, and anti-aliased sources; use `--resample nearest` only when the source already has a trustworthy hard pixel grid.
+- Image input: pass `--sizes all` or a comma-separated list. Convert each target directly from the original image. `--reconstruction auto` preserves a trustworthy exact lattice only when it matches the target and otherwise uses two-stage target packing; use `legacy` only for comparison.
 - Text input: author one spec per target size, then pass the files to `collection`.
 - Keep subject identity, pose, palette roles, and framing coherent across the set.
 - Change detail density intentionally. Do not mechanically cascade from the largest grid.

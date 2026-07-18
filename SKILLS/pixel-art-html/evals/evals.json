@@ -66,6 +66,21 @@
         "A like-for-like browser comparison shows a visible gain over the rejected pack in silhouette specificity, material planes, focal hierarchy, and set cohesion.",
         "Validation still proves standalone HTML, exact canonical grids at the selected size, PNG RGBA parity, and no remote requests."
       ]
+    },
+    {
+      "id": "recover-uncertain-source-small-grid-ladder",
+      "prompt": "Recover this softly scaled character reference into exact 8x8, 16x16, 24x24, and 32x32 runtime masters. Diagnose the source structure, preserve the pose and red scarf cue, compare reconstruction evidence, then manually repair the two smallest grids so they read without labels.",
+      "expected_output": "A target-aware resolution set with source-analysis provenance, independently reviewed small-grid drafts, bounded palettes, clean alpha, browser-visible lattice evidence, and explicit separation between technical reconstruction and artistic acceptance.",
+      "files": [
+        "evals/fixtures/character-source.ppm"
+      ],
+      "assertions": [
+        "Every artifact records source class, confidence, detector, target grid, inferred lattice when available, and applied reconstruction without allowing detection to change the requested target size.",
+        "The 8x8, 16x16, 24x24, and 32x32 artifacts are reconstructed directly from the original source with alpha and palette limits preserved.",
+        "The proof page exposes the source-lattice toggle and source metadata without external network requests or executable path leaks.",
+        "The 8x8 and 16x16 grids receive explicit silhouette and identity-cue repair; reconstruction metrics alone are not used to promote them beyond draft.",
+        "A title-free native-scale review records what is actually recognized at every size, and validation proves canonical JSON/PNG parity."
+      ]
     }
   ]
 }
