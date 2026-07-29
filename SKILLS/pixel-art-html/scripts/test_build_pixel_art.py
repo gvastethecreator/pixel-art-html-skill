@@ -16,6 +16,11 @@ module = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(module)
 
 
+def requires_pillow(test_method):
+    test_method.requires_pillow = True
+    return test_method
+
+
 class PixelArtBuilderTests(unittest.TestCase):
     def test_compile_spec_and_write_standalone_artifact(self) -> None:
         spec = {
@@ -257,6 +262,7 @@ class PixelArtBuilderTests(unittest.TestCase):
         self.assertEqual(module.slugify("生命水晶"), "生命水晶")
         self.assertEqual(module.slugify("CON"), "pixel-con")
 
+    @requires_pillow
     def test_image_route_when_pillow_is_available(self) -> None:
         try:
             from PIL import Image
@@ -277,6 +283,7 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertTrue(any(cell is None for row in artifact["grid"] for cell in row))
             self.assertEqual(artifact["source"]["resample"], "nearest")
 
+    @requires_pillow
     def test_source_classification_distinguishes_exact_pseudo_and_painterly_inputs(self) -> None:
         try:
             from PIL import Image
@@ -307,6 +314,7 @@ class PixelArtBuilderTests(unittest.TestCase):
         self.assertEqual(painted_result["class"], "painterly")
         self.assertIsNone(painted_result["inferred_grid"])
 
+    @requires_pillow
     def test_image_route_records_source_analysis_and_allows_an_explicit_class_override(self) -> None:
         try:
             from PIL import Image
@@ -335,6 +343,7 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertEqual(overridden["source"]["analysis"]["confidence"], "forced")
             self.assertEqual(overridden["source"]["analysis"]["detector"], "user-override")
 
+    @requires_pillow
     def test_two_stage_reconstruction_preserves_small_grid_structure_alpha_and_palette_budget(self) -> None:
         try:
             from PIL import Image
@@ -366,6 +375,7 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertEqual(artifact["source"]["structure_colors"], 8)
             self.assertTrue(artifact["source"]["manual_repair_required"])
 
+    @requires_pillow
     def test_image_proof_exposes_source_detection_metadata_and_overlay_control(self) -> None:
         try:
             from PIL import Image
@@ -504,6 +514,7 @@ class PixelArtBuilderTests(unittest.TestCase):
         with self.assertRaisesRegex(module.ArtifactError, "repair baseline grid must match artifact dimensions"):
             module.validate_artifact(repaired)
 
+    @requires_pillow
     def test_small_grid_benchmark_cli_writes_machine_and_browser_reports(self) -> None:
         try:
             import PIL  # noqa: F401
@@ -531,6 +542,7 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertIn("data:image/png;base64,", html)
             self.assertNotIn("https://", html)
 
+    @requires_pillow
     def test_optional_pixel_fixer_adapter_records_external_detection_without_path_leak(self) -> None:
         try:
             from PIL import Image
@@ -575,6 +587,7 @@ class PixelArtBuilderTests(unittest.TestCase):
             with self.assertRaisesRegex(module.ArtifactError, "invalid grid dimensions"):
                 module.run_pixel_fixer_detector(fake, source)
 
+    @requires_pillow
     def test_image_artifact_reuses_precomputed_pixel_fixer_result_for_resolution_sets(self) -> None:
         try:
             from PIL import Image
@@ -600,6 +613,7 @@ class PixelArtBuilderTests(unittest.TestCase):
             artifact = module.artifact_from_image(args)
             self.assertEqual(artifact["source"]["analysis"]["external"]["consensus"], "cached")
 
+    @requires_pillow
     def test_resolution_set_cli_invokes_optional_pixel_fixer_once(self) -> None:
         try:
             from PIL import Image

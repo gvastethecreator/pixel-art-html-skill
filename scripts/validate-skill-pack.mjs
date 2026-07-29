@@ -55,6 +55,7 @@ const required = [
   "SKILLS/pixel-art-html/examples/small-grid-repair/transfer/previews/ship-automatic.png",
   "SKILLS/pixel-art-html/examples/small-grid-repair/transfer/previews/ship-authored.png",
   "SKILLS/pixel-art-html/references/artifact-schema.md",
+  "SKILLS/pixel-art-html/references/command-reference.md",
   "SKILLS/pixel-art-html/references/craft-workflow.md",
   "SKILLS/pixel-art-html/references/image-source-brief.md",
   "SKILLS/pixel-art-html/references/project-library.md",
@@ -66,7 +67,8 @@ const required = [
   "SKILLS/pixel-art-html/evals/trigger_queries.json",
   "SKILLS/pixel-art-html/scripts/build_pixel_art.py",
   "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
-  "SKILLS/pixel-art-html/scripts/test_build_pixel_art.py"
+  "SKILLS/pixel-art-html/scripts/test_build_pixel_art.py",
+  "scripts/run-pixel-art-tests.py"
 ];
 const errors = [];
 

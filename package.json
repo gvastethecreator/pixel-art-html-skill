@@ -9,8 +9,11 @@
   },
   "scripts": {
     "validate": "node scripts/validate-skill-pack.mjs",
-    "test": "python SKILLS/pixel-art-html/scripts/test_build_pixel_art.py",
-    "check": "npm run validate && npm test"
+    "test": "npm run test:full",
+    "test:core": "python scripts/run-pixel-art-tests.py --profile core",
+    "test:full": "python scripts/run-pixel-art-tests.py --profile full",
+    "check:core": "npm run validate && npm run test:core",
+    "check:full": "npm run validate && npm run test:full",
+    "check": "npm run check:full"
   }
 }
-

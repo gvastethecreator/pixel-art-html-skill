@@ -79,7 +79,14 @@ python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py pack .\potion.json .\k
 Node 20 or newer and Python 3.11 or newer are recommended:
 
 ```powershell
-npm run check
+npm run check:core
+```
+
+`check:core` validates the pack and runs the 25 dependency-free tests. `test:full` and `check:full` require Pillow and run all 34 tests; they stop with an install command when Pillow is missing instead of silently reporting a partial gate. CI installs `pillow==11.0.0` and runs `check:full` on Windows and Ubuntu.
+
+```powershell
+python -m pip install pillow==11.0.0
+npm run check:full
 ```
 
 Run the deterministic recovery benchmark separately when changing classification or image packing:
@@ -93,6 +100,7 @@ The image-conversion test runs when Pillow is installed; all other tests use the
 ## Documentation
 
 - [Skill workflow](./SKILLS/pixel-art-html/SKILL.md)
+- [Command and artifact reference](./SKILLS/pixel-art-html/references/command-reference.md)
 - [Artifact schema](./SKILLS/pixel-art-html/references/artifact-schema.md)
 - [Craft workflow](./SKILLS/pixel-art-html/references/craft-workflow.md)
 - [Subject recipes and 62-module transfer map](./SKILLS/pixel-art-html/references/subject-recipes.md)
