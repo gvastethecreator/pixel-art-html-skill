@@ -5,6 +5,7 @@ import argparse
 import binascii
 from collections.abc import Iterator
 from datetime import datetime, timezone
+import hashlib
 import html
 import json
 import math
@@ -21,10 +22,16 @@ from typing import Any
 SKILL_DIR = Path(__file__).resolve().parents[1]
 TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-template.html"
 COLLECTION_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-collection-template.html"
+STUDY_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-study-template.html"
 PROJECT_HUB_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-project-hub-template.html"
 CLEAR_TOKENS = {None, "", ".", "..", "none", "null", "transparent", "clear"}
 RECOMMENDED_SIZES = (16, 24, 32, 40, 48, 64)
 EVIDENCE_TIERS = ("fixture", "draft", "representative", "production-candidate")
+AUTHORING_EVIDENCE_TIERS = ("fixture", "draft")
+PROMOTED_EVIDENCE_TIERS = ("representative", "production-candidate")
+REVIEWER_KINDS = ("self", "user", "independent-agent", "owner")
+REVIEW_OBSERVATION_FIELDS = ("subject", "orientation_action", "material", "focal_cue", "signature", "mismatch")
+REVIEW_GATE_FIELDS = ("blind_read", "native_silhouette", "value_hierarchy", "material_read", "focal_read", "browser_proof")
 REPAIR_DECISION_FIELDS = ("silhouette", "identity_cue", "subtraction")
 WINDOWS_RESERVED_NAMES = {"CON", "PRN", "AUX", "NUL", *(f"COM{index}" for index in range(1, 10)), *(f"LPT{index}" for index in range(1, 10))}
 
@@ -71,6 +78,16 @@ def checked_evidence_tier(value: Any) -> str:
     tier = str(value or "draft").strip().lower()
     if tier not in EVIDENCE_TIERS:
         raise ArtifactError(f"evidence_tier must be one of: {', '.join(EVIDENCE_TIERS)}")
+    return tier
+
+
+def checked_authoring_evidence_tier(value: Any) -> str:
+    tier = checked_evidence_tier(value)
+    if tier not in AUTHORING_EVIDENCE_TIERS:
+        raise ArtifactError(
+            f"authoring evidence_tier must be one of: {', '.join(AUTHORING_EVIDENCE_TIERS)}; "
+            "use promote after blind review"
+        )
     return tier
 
 
@@ -195,7 +212,7 @@ def compile_spec(spec: dict[str, Any]) -> dict[str, Any]:
         grid=grid,
         background=background,
         source={"kind": "spec", "art_direction": art_direction},
-        evidence_tier=checked_evidence_tier(spec.get("evidence_tier")),
+        evidence_tier=checked_authoring_evidence_tier(spec.get("evidence_tier")),
     )
 
 
@@ -391,7 +408,7 @@ def artifact_quality_report(artifact: dict[str, Any]) -> dict[str, Any]:
 
 def critique_output(output: Path) -> dict[str, Any]:
     result = validate_output(output)
-    if result.get("kind") in {"collection", "pack"}:
+    if result.get("kind") in {"collection", "pack", "study"}:
         return {
             "status": "ok",
             "kind": result["kind"],
@@ -601,6 +618,34 @@ def render_collection_html(title: str, items: list[dict[str, Any]], path: Path, 
     path.write_text(result, encoding="utf-8", newline="\n")
 
 
+def anonymous_study_payload(artifacts: list[dict[str, Any]]) -> dict[str, Any]:
+    labels = ("Sample A", "Sample B", "Sample C")
+    return {
+        "schema_version": 1,
+        "kind": "blind-study",
+        "items": [
+            {
+                "label": label,
+                "width": artifact["width"],
+                "height": artifact["height"],
+                "background": artifact["background"],
+                "palette": artifact["palette"],
+                "grid": artifact["grid"],
+            }
+            for label, artifact in zip(labels, artifacts)
+        ],
+    }
+
+
+def render_study_html(artifacts: list[dict[str, Any]], path: Path) -> None:
+    template = STUDY_TEMPLATE_PATH.read_text(encoding="utf-8")
+    payload = json.dumps(anonymous_study_payload(artifacts), ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c").replace("&", "\\u0026")
+    result = template.replace("__STUDY_JSON__", payload)
+    if "__STUDY_JSON__" in result:
+        raise ArtifactError("study template placeholder replacement failed")
+    path.write_text(result, encoding="utf-8", newline="\n")
+
+
 def write_artifact(artifact: dict[str, Any], output: Path, scale: int) -> None:
     output.mkdir(parents=True, exist_ok=True)
     (output / "pixel-art.json").write_text(json.dumps(artifact, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
@@ -641,6 +686,63 @@ def write_collection(artifacts: list[dict[str, Any]], output: Path, scale: int, 
     manifest = {"schema_version": 1, "kind": kind, "title": title, "items": manifest_items}
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
     render_collection_html(title, html_items, output / "index.html", kind)
+    return manifest
+
+
+def validate_study_artifacts(artifacts: list[dict[str, Any]]) -> None:
+    if len(artifacts) != 3:
+        raise ArtifactError("a direction study needs exactly three candidates")
+    for artifact in artifacts:
+        validate_artifact(artifact)
+    dimensions = {(artifact["width"], artifact["height"]) for artifact in artifacts}
+    if len(dimensions) != 1:
+        raise ArtifactError("direction study candidates must use the same exact grid dimensions")
+    topology_fingerprints = set()
+    for artifact in artifacts:
+        background = artifact.get("background")
+        color_roles: dict[str, int] = {}
+        next_role = 0
+        topology: list[list[str | int]] = []
+        for row in artifact["grid"]:
+            topology_row: list[str | int] = []
+            for color in row:
+                if color is None:
+                    topology_row.append("clear")
+                elif background is not None and color == background:
+                    topology_row.append("background")
+                else:
+                    if color not in color_roles:
+                        color_roles[color] = next_role
+                        next_role += 1
+                    topology_row.append(color_roles[color])
+            topology.append(topology_row)
+        topology_fingerprints.add(json.dumps(topology, separators=(",", ":")))
+    if len(topology_fingerprints) != 3:
+        raise ArtifactError("direction study candidates need materially different grids; palette-only variants do not count")
+    if any(artifact.get("evidence_tier") != "draft" for artifact in artifacts):
+        raise ArtifactError("direction study candidates must be draft artifacts")
+
+
+def write_study(artifacts: list[dict[str, Any]], output: Path, scale: int, title: str) -> dict[str, Any]:
+    validate_study_artifacts(artifacts)
+    output.mkdir(parents=True, exist_ok=True)
+    paths = ("sample-a", "sample-b", "sample-c")
+    manifest_items: list[dict[str, Any]] = []
+    html_items: list[dict[str, Any]] = []
+    for relative_path, artifact in zip(paths, artifacts):
+        write_artifact(artifact, output / relative_path, scale)
+        manifest_items.append({
+            "path": relative_path,
+            "title": artifact["title"],
+            "width": artifact["width"],
+            "height": artifact["height"],
+            "colors": len(artifact["palette"]),
+        })
+        html_items.append({"path": relative_path, "artifact": artifact})
+    manifest = {"schema_version": 1, "kind": "study", "title": title, "items": manifest_items}
+    (output / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    render_collection_html(title, html_items, output / "index.html", kind="study")
+    render_study_html(artifacts, output / "blind.html")
     return manifest
 
 
@@ -1146,7 +1248,7 @@ def artifact_from_image(args: argparse.Namespace) -> dict[str, Any]:
             "manual_repair_required": manual_repair_required,
             "analysis": source_analysis,
         },
-        evidence_tier=checked_evidence_tier(getattr(args, "evidence_tier", "draft")),
+        evidence_tier=checked_authoring_evidence_tier(getattr(args, "evidence_tier", "draft")),
     )
 
 
@@ -1247,6 +1349,117 @@ def read_embedded_json(path: Path, element_id: str) -> Any:
         raise ArtifactError(f"HTML contains invalid embedded JSON: {element_id}") from exc
 
 
+def artifact_fingerprint(artifact: dict[str, Any]) -> str:
+    """Hash only the exact visual grid contract used during blind review."""
+    payload = {
+        "width": artifact["width"],
+        "height": artifact["height"],
+        "background": artifact.get("background"),
+        "palette": artifact["palette"],
+        "grid": artifact["grid"],
+    }
+    encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def validate_review_fields(review: dict[str, Any], tier: str, item_paths: tuple[str, ...] = ()) -> None:
+    reviewer = review.get("reviewer")
+    if not isinstance(reviewer, dict):
+        raise ArtifactError("visual review needs reviewer metadata")
+    reviewer_kind = str(reviewer.get("kind", "")).strip()
+    reviewer_name = str(reviewer.get("name", "")).strip()
+    if reviewer_kind not in REVIEWER_KINDS or not reviewer_name:
+        raise ArtifactError(f"reviewer kind must be one of: {', '.join(REVIEWER_KINDS)}, with a non-empty name")
+    if tier == "representative" and reviewer_kind == "self":
+        raise ArtifactError("representative promotion needs a non-builder reviewer")
+    if tier == "production-candidate" and reviewer_kind != "owner":
+        raise ArtifactError("production-candidate promotion needs an owner reviewer")
+    if review.get("blind") is not True:
+        raise ArtifactError("promotion needs a blind review")
+    if review.get("decision") != "accept":
+        raise ArtifactError("promotion needs an accept decision")
+    observations = review.get("observations")
+    if not isinstance(observations, dict):
+        raise ArtifactError("visual review needs observations")
+    missing_observations = [
+        field for field in REVIEW_OBSERVATION_FIELDS
+        if not isinstance(observations.get(field), str) or not observations[field].strip()
+    ]
+    if missing_observations:
+        raise ArtifactError(f"visual review observations need non-empty: {', '.join(missing_observations)}")
+    gates = review.get("gates")
+    if not isinstance(gates, dict):
+        raise ArtifactError("visual review needs gates")
+    failed_gates = [field for field in REVIEW_GATE_FIELDS if gates.get(field) != "passed"]
+    if failed_gates:
+        raise ArtifactError(f"visual review gates must be passed: {', '.join(failed_gates)}")
+    if item_paths:
+        item_observations = observations.get("items")
+        if not isinstance(item_observations, dict) or set(item_observations) != set(item_paths):
+            raise ArtifactError("set visual review needs one blind observation for every item path")
+        if any(not isinstance(item_observations[path], str) or not item_observations[path].strip() for path in item_paths):
+            raise ArtifactError("set visual review item observations must be non-empty")
+        if gates.get("set_context") != "passed":
+            raise ArtifactError("set visual review gate must be passed: set_context")
+
+
+def validate_promoted_review(output: Path, artifact: dict[str, Any]) -> None:
+    tier = artifact.get("evidence_tier")
+    if tier not in PROMOTED_EVIDENCE_TIERS:
+        return
+    review_path = output / "visual-review.json"
+    if not review_path.is_file():
+        raise ArtifactError(f"{tier} artifact is missing visual-review.json")
+    review = json.loads(review_path.read_text(encoding="utf-8"))
+    if not isinstance(review, dict) or review.get("schema_version") != 1:
+        raise ArtifactError("visual review record must be a schema v1 object")
+    if review.get("evidence_tier") != tier:
+        raise ArtifactError("visual review evidence tier does not match artifact")
+    validate_review_fields(review, tier)
+    expected = {"pixel-art.json": artifact_fingerprint(artifact)}
+    if review.get("artifact_fingerprints") != expected:
+        raise ArtifactError("review fingerprint does not match the canonical grid")
+
+
+def validate_promoted_manifest_review(output: Path, manifest: dict[str, Any], artifacts: list[dict[str, Any]]) -> None:
+    tiers = {artifact.get("evidence_tier") for artifact in artifacts}
+    promoted = tiers & set(PROMOTED_EVIDENCE_TIERS)
+    if not promoted:
+        return
+    if len(tiers) != 1:
+        raise ArtifactError("a promoted set cannot mix evidence tiers")
+    tier = next(iter(tiers))
+    review_path = output / "visual-review.json"
+    if not review_path.is_file():
+        raise ArtifactError(f"promoted {manifest['kind']} is missing visual-review.json")
+    review = json.loads(review_path.read_text(encoding="utf-8"))
+    paths = tuple(item["path"] for item in manifest["items"])
+    if not isinstance(review, dict) or review.get("schema_version") != 1:
+        raise ArtifactError("set visual review record must be a schema v1 object")
+    if review.get("evidence_tier") != tier:
+        raise ArtifactError("set visual review evidence tier does not match artifacts")
+    validate_review_fields(review, tier, paths)
+    expected = {
+        f"{path}/pixel-art.json": artifact_fingerprint(artifact)
+        for path, artifact in zip(paths, artifacts)
+    }
+    if review.get("artifact_fingerprints") != expected:
+        raise ArtifactError("set review fingerprint does not match the canonical grids")
+
+
+def canonical_review_record(review: dict[str, Any], tier: str, fingerprints: dict[str, str]) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "evidence_tier": tier,
+        "artifact_fingerprints": fingerprints,
+        "reviewer": review["reviewer"],
+        "blind": True,
+        "decision": "accept",
+        "observations": review["observations"],
+        "gates": review["gates"],
+    }
+
+
 def validate_output(output: Path) -> dict[str, Any]:
     manifest_path = output / "manifest.json"
     if manifest_path.is_file():
@@ -1254,11 +1467,12 @@ def validate_output(output: Path) -> dict[str, Any]:
         if not index_path.is_file():
             raise ArtifactError("collection is missing index.html")
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest.get("schema_version") != 1 or manifest.get("kind") not in {"collection", "pack"}:
-            raise ArtifactError("invalid collection or pack manifest")
+        if manifest.get("schema_version") != 1 or manifest.get("kind") not in {"collection", "pack", "study"}:
+            raise ArtifactError("invalid collection, pack, or study manifest")
         items = manifest.get("items")
-        if not isinstance(items, list) or len(items) < 2:
-            raise ArtifactError("collection manifest needs at least two items")
+        required_count = 3 if manifest.get("kind") == "study" else 2
+        if not isinstance(items, list) or len(items) < required_count or (manifest.get("kind") == "study" and len(items) != 3):
+            raise ArtifactError("study manifest needs exactly three items" if manifest.get("kind") == "study" else "collection manifest needs at least two items")
         validate_standalone_html(index_path, ("__COLLECTION_JSON__", "__TITLE_TEXT__"))
         embedded = read_embedded_json(index_path, "collection-data")
         if not isinstance(embedded, dict) or embedded.get("kind") != manifest["kind"] or embedded.get("title") != manifest.get("title"):
@@ -1267,6 +1481,7 @@ def validate_output(output: Path) -> dict[str, Any]:
         if not isinstance(embedded_items, list) or len(embedded_items) != len(items):
             raise ArtifactError("collection overview item count does not match manifest.json")
         seen: set[str] = set()
+        child_artifacts: list[dict[str, Any]] = []
         for item, embedded_item in zip(items, embedded_items):
             if not isinstance(item, dict) or not isinstance(item.get("path"), str):
                 raise ArtifactError("invalid collection manifest item")
@@ -1277,6 +1492,7 @@ def validate_output(output: Path) -> dict[str, Any]:
                 raise ArtifactError(f"duplicate collection path: {item['path']}")
             seen.add(item["path"])
             artifact = validate_output(output / item["path"])
+            child_artifacts.append(artifact)
             expected_metadata = {
                 "path": item["path"],
                 "title": artifact["title"],
@@ -1288,6 +1504,18 @@ def validate_output(output: Path) -> dict[str, Any]:
                 raise ArtifactError(f"collection manifest item does not match child: {item['path']}")
             if not isinstance(embedded_item, dict) or embedded_item.get("path") != item["path"] or embedded_item.get("artifact") != artifact:
                 raise ArtifactError(f"collection overview item does not match child: {item['path']}")
+        if manifest["kind"] == "study":
+            if [item["path"] for item in items] != ["sample-a", "sample-b", "sample-c"]:
+                raise ArtifactError("study manifest paths must be sample-a, sample-b, sample-c")
+            validate_study_artifacts(child_artifacts)
+            blind_path = output / "blind.html"
+            if not blind_path.is_file():
+                raise ArtifactError("study is missing blind.html")
+            validate_standalone_html(blind_path, ("__STUDY_JSON__",))
+            if read_embedded_json(blind_path, "study-data") != anonymous_study_payload(child_artifacts):
+                raise ArtifactError("blind study payload does not match child grids")
+        else:
+            validate_promoted_manifest_review(output, manifest, child_artifacts)
         return manifest
 
     expected = [output / "index.html", output / "pixel-art.json", output / "pixel-art.png"]
@@ -1300,12 +1528,65 @@ def validate_output(output: Path) -> dict[str, Any]:
     if read_embedded_json(output / "index.html", "pixel-art-data") != artifact:
         raise ArtifactError("HTML embedded artifact does not match pixel-art.json")
     validate_png_parity(artifact, output / "pixel-art.png")
+    validate_promoted_review(output, artifact)
     return artifact
+
+
+def promote_output(output: Path, review: dict[str, Any], tier: str) -> dict[str, Any]:
+    promoted_tier = checked_evidence_tier(tier)
+    if promoted_tier not in PROMOTED_EVIDENCE_TIERS:
+        raise ArtifactError(f"promotion evidence_tier must be one of: {', '.join(PROMOTED_EVIDENCE_TIERS)}")
+    result = validate_output(output)
+    if not isinstance(review, dict):
+        raise ArtifactError("visual review root must be an object")
+    if result.get("kind") == "study":
+        raise ArtifactError("a direction study cannot be promoted; select and build one direction")
+    if result.get("kind") in {"collection", "pack"}:
+        paths = tuple(item["path"] for item in result["items"])
+        validate_review_fields(review, promoted_tier, paths)
+        artifacts = [
+            json.loads((output / path / "pixel-art.json").read_text(encoding="utf-8"))
+            for path in paths
+        ]
+        if any(artifact.get("evidence_tier") != "draft" for artifact in artifacts):
+            raise ArtifactError("every artifact in a set must be draft before promotion")
+        promoted_artifacts: list[dict[str, Any]] = []
+        root_fingerprints: dict[str, str] = {}
+        for path, artifact in zip(paths, artifacts):
+            scale = validate_png_parity(artifact, output / path / "pixel-art.png")
+            promoted = {**artifact, "evidence_tier": promoted_tier}
+            promoted_artifacts.append(promoted)
+            fingerprint = artifact_fingerprint(promoted)
+            root_fingerprints[f"{path}/pixel-art.json"] = fingerprint
+            write_artifact(promoted, output / path, scale)
+            child_record = canonical_review_record(review, promoted_tier, {"pixel-art.json": fingerprint})
+            (output / path / "visual-review.json").write_text(json.dumps(child_record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+        render_collection_html(
+            result["title"],
+            [{"path": path, "artifact": artifact} for path, artifact in zip(paths, promoted_artifacts)],
+            output / "index.html",
+            kind=result["kind"],
+        )
+        record = canonical_review_record(review, promoted_tier, root_fingerprints)
+    else:
+        if result.get("evidence_tier") != "draft":
+            raise ArtifactError("only a draft artifact can be promoted")
+        validate_review_fields(review, promoted_tier)
+        scale = validate_png_parity(result, output / "pixel-art.png")
+        promoted = {**result, "evidence_tier": promoted_tier}
+        write_artifact(promoted, output, scale)
+        record = canonical_review_record(
+            review,
+            promoted_tier,
+            {"pixel-art.json": artifact_fingerprint(promoted)},
+        )
+    (output / "visual-review.json").write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    return validate_output(output)
 
 
 def result_summary(result: dict[str, Any], output: Path) -> dict[str, Any]:
     summary: dict[str, Any] = {"status": "ok", "output": str(output.resolve())}
-    if result.get("kind") in {"collection", "pack"}:
+    if result.get("kind") in {"collection", "pack", "study"}:
         summary["count"] = len(result["items"])
         summary["sizes"] = [f"{item['width']}x{item['height']}" for item in result["items"]]
         summary["kind"] = result["kind"]
@@ -1425,6 +1706,12 @@ def parse_args() -> argparse.Namespace:
     add_output_options(repair_parser)
     repair_parser.add_argument("--scale", type=int, default=16)
 
+    study_parser = subparsers.add_parser("study", help="Compile exactly three same-grid draft directions plus an anonymous blind board.")
+    study_parser.add_argument("specs", nargs=3, type=Path)
+    study_parser.add_argument("--output", type=Path, required=True)
+    study_parser.add_argument("--title", default="Pixel art direction study")
+    study_parser.add_argument("--scale", type=int, default=16)
+
     collection_parser = subparsers.add_parser("collection", help="Compile several exact specs into one resolution set.")
     collection_parser.add_argument("specs", nargs="+", type=Path)
     add_output_options(collection_parser)
@@ -1457,8 +1744,13 @@ def parse_args() -> argparse.Namespace:
     image_parser.add_argument("--alpha-threshold", type=int, default=10)
     image_parser.add_argument("--min-cluster", type=int, default=1, help="Merge image-derived color clusters smaller than N cells; keep 1 for no cleanup.")
     image_parser.add_argument("--title")
-    image_parser.add_argument("--evidence-tier", choices=EVIDENCE_TIERS, default="draft", help="Label the artifact's proof claim; image conversion defaults to an unreviewed draft.")
+    image_parser.add_argument("--evidence-tier", choices=AUTHORING_EVIDENCE_TIERS, default="draft", help="Label the authored artifact; promotion is a separate reviewed command.")
     image_parser.add_argument("--scale", type=int, default=16)
+
+    promote_parser = subparsers.add_parser("promote", help="Promote one draft after a fingerprint-bound blind review.")
+    promote_parser.add_argument("output", type=Path)
+    promote_parser.add_argument("review", type=Path)
+    promote_parser.add_argument("--tier", choices=PROMOTED_EVIDENCE_TIERS, required=True)
 
     validate_parser = subparsers.add_parser("validate", help="Validate a generated output directory.")
     validate_parser.add_argument("output", type=Path)
@@ -1493,6 +1785,16 @@ def main() -> int:
             write_artifact(artifact, output, args.scale)
             result = validate_output(output)
             print(json.dumps(finish_managed(result, output, library), ensure_ascii=False))
+        elif args.command == "study":
+            artifacts = []
+            for spec_path in args.specs:
+                spec = json.loads(spec_path.read_text(encoding="utf-8"))
+                if not isinstance(spec, dict):
+                    raise ArtifactError(f"spec root must be an object: {spec_path}")
+                artifacts.append(compile_spec(spec))
+            write_study(artifacts, args.output, args.scale, args.title)
+            result = validate_output(args.output)
+            print(json.dumps(result_summary(result, args.output), ensure_ascii=False))
         elif args.command == "collection":
             artifacts: list[dict[str, Any]] = []
             for spec_path in args.specs:
@@ -1547,6 +1849,12 @@ def main() -> int:
             print(json.dumps({"status": "ok", "hub": str((library / "index.html").resolve()), "count": catalog["count"]}, ensure_ascii=False))
         elif args.command == "critique":
             print(json.dumps(critique_output(args.output), ensure_ascii=False))
+        elif args.command == "promote":
+            review = json.loads(args.review.read_text(encoding="utf-8"))
+            if not isinstance(review, dict):
+                raise ArtifactError("visual review root must be an object")
+            result = promote_output(args.output, review, args.tier)
+            print(json.dumps(result_summary(result, args.output), ensure_ascii=False))
         else:
             result = validate_output(args.output)
             print(json.dumps(result_summary(result, args.output), ensure_ascii=False))

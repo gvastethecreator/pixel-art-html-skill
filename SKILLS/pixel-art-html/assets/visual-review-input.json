@@ -1,0 +1,26 @@
+{
+  "reviewer": {
+    "kind": "user",
+    "name": "REPLACE WITH THE ACTUAL REVIEWER"
+  },
+  "blind": true,
+  "decision": "revise",
+  "observations": {
+    "subject": "",
+    "orientation_action": "",
+    "material": "",
+    "focal_cue": "",
+    "signature": "",
+    "mismatch": "",
+    "items": {}
+  },
+  "gates": {
+    "blind_read": "failed",
+    "native_silhouette": "failed",
+    "value_hierarchy": "failed",
+    "material_read": "failed",
+    "focal_read": "failed",
+    "browser_proof": "failed",
+    "set_context": "failed"
+  }
+}

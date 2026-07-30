@@ -36,14 +36,15 @@
     button:focus-visible, input:focus-visible, canvas:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
     .skip-link { position: absolute; z-index: 20; top: 0; left: 10px; padding: 10px 14px; border: 1px solid var(--edge-strong); color: var(--ink); background: var(--paper-raised); transform: translateY(-120%); }
     .skip-link:focus { transform: none; }
+    body.blind-review [data-blind-sensitive] { display: none !important; }
     main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 42px; }
     .masthead { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; margin-bottom: 18px; }
     .kicker { margin: 0 0 7px; color: var(--signal-text); font: 800 12px/1 ui-monospace, "Cascadia Mono", monospace; letter-spacing: .13em; text-transform: uppercase; }
     h1 { max-width: 18ch; margin: 0; font-size: clamp(30px, 5vw, 58px); font-weight: 780; line-height: .95; letter-spacing: -.055em; overflow-wrap: anywhere; text-wrap: balance; }
     .spec-stamp { min-width: 176px; max-width: 100%; padding: 10px 12px; border: 2px solid var(--edge-strong); background: var(--paper-raised); font: 700 12px/1.45 ui-monospace, "Cascadia Mono", monospace; box-shadow: 4px 4px 0 var(--shadow); overflow-wrap: anywhere; }
     .spec-stamp strong { display: block; font-size: 15px; }
-    .workbench { display: grid; grid-template-columns: minmax(0, 1fr) 300px; min-height: 650px; border: 2px solid var(--edge-strong); background: var(--paper-raised); box-shadow: 10px 10px 0 var(--shadow); }
-    .preview { min-width: 0; display: grid; grid-template-rows: auto minmax(430px, 1fr) auto; border-right: 2px solid var(--edge); }
+    .workbench { display: grid; grid-template-columns: minmax(0, 1fr) 300px; align-items: start; min-height: 650px; border: 2px solid var(--edge-strong); background: var(--paper-raised); box-shadow: 10px 10px 0 var(--shadow); }
+    .preview { position: sticky; top: 16px; min-width: 0; height: min(760px, calc(100vh - 32px)); display: grid; grid-template-rows: auto minmax(430px, 1fr) auto; border-right: 2px solid var(--edge); }
     .preview-bar, .preview-foot { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 12px 16px; font: 700 12px/1.3 ui-monospace, "Cascadia Mono", monospace; }
     .preview-bar { border-bottom: 2px solid var(--edge); }
     .preview-foot { border-top: 2px solid var(--edge); color: var(--muted); }
@@ -101,7 +102,7 @@
       h1 { max-width: 100%; font-size: clamp(32px, 12vw, 48px); }
       .spec-stamp { min-width: 0; width: fit-content; }
       .workbench { grid-template-columns: 1fr; box-shadow: 6px 6px 0 var(--shadow); }
-      .preview { border-right: 0; border-bottom: 2px solid var(--edge); grid-template-rows: auto minmax(380px, 56vh) auto; }
+      .preview { position: static; height: auto; border-right: 0; border-bottom: 2px solid var(--edge); grid-template-rows: auto minmax(380px, 56vh) auto; }
       .stage { min-height: 380px; padding: 46px; }
       .inspector { display: grid; grid-template-columns: 1fr 1fr; }
       .panel { border-right: 2px solid var(--edge); }
@@ -124,16 +125,16 @@
   <a class="skip-link" href="#art">Skip to artwork</a>
   <main>
     <header class="masthead">
-      <div><p class="kicker">Pixel proof / offline master</p><h1 id="title"></h1></div>
-      <div class="spec-stamp" aria-label="Artifact specification"><strong id="stamp-size"></strong><span id="stamp-colors"></span></div>
+      <div><p class="kicker" data-blind-sensitive>Pixel proof / offline master</p><h1 id="title"></h1></div>
+      <div class="spec-stamp" data-blind-sensitive aria-label="Artifact specification"><strong id="stamp-size"></strong><span id="stamp-colors"></span></div>
     </header>
     <section class="workbench" aria-label="Pixel art proofing workbench">
       <section class="preview" aria-label="Artwork preview">
-        <div class="preview-bar"><span class="status" id="proof-status"></span><span id="source-label"></span></div>
+        <div class="preview-bar" data-blind-sensitive><span class="status" id="proof-status"></span><span id="source-label"></span></div>
         <div class="stage" id="stage">
           <div class="proof-frame"><canvas id="art" tabindex="0" aria-label="Pixel art canvas"></canvas></div>
         </div>
-        <div class="preview-foot"><span>Painted cells <strong id="painted-count"></strong></span><span>Hard edges / exact grid</span></div>
+        <div class="preview-foot" data-blind-sensitive><span>Painted cells <strong id="painted-count"></strong></span><span>Hard edges / exact grid</span></div>
       </section>
       <aside class="inspector" aria-label="Artifact controls and metadata">
         <section class="panel">
@@ -141,7 +142,7 @@
           <label class="control-label" for="zoom"><span>Cell scale</span><output id="zoom-value" for="zoom"></output></label>
           <input id="zoom" type="range" min="4" max="32" step="1" value="16">
           <label class="check-row" for="grid"><input id="grid" type="checkbox" checked><span>Show grid overlay</span></label>
-          <label class="check-row" id="source-grid-row" for="source-grid" hidden><input id="source-grid" type="checkbox"><span id="source-grid-label">Show recovered source lattice</span></label>
+          <label class="check-row" id="source-grid-row" data-blind-sensitive for="source-grid" hidden><input id="source-grid" type="checkbox"><span id="source-grid-label">Show recovered source lattice</span></label>
           <label class="check-row" for="blind-review"><input id="blind-review" type="checkbox"><span>Hide title for blind review</span></label>
           <button class="fit-button" id="fit" type="button">Fit artwork to stage</button>
         </section>
@@ -155,18 +156,18 @@
             </div>
           </div>
           <div class="proof-strip" id="native-scale-proof" aria-label="Native, scaled, silhouette, and value pixel-art proofs"></div>
-          <div class="quality-notes" id="quality-notes" aria-live="polite"></div>
+          <div class="quality-notes" id="quality-notes" data-blind-sensitive aria-live="polite"></div>
         </section>
-        <section class="panel">
+        <section class="panel" data-blind-sensitive>
           <h2 class="panel-title"><span>Color ledger</span><span class="panel-index">03</span></h2>
           <div class="color-tape" id="color-tape" aria-label="Color usage distribution"></div>
           <div class="palette" id="palette"></div>
         </section>
-        <section class="panel">
+        <section class="panel" data-blind-sensitive>
           <h2 class="panel-title"><span>Artifact</span><span class="panel-index">04</span></h2>
           <dl class="facts" id="facts"></dl>
         </section>
-        <section class="panel exports">
+        <section class="panel exports" data-blind-sensitive>
           <h2 class="panel-title"><span>Export master</span><span class="panel-index">05</span></h2>
           <button class="primary" id="download-png" type="button">Download PNG</button>
           <button id="download-json" type="button">Download JSON</button>
@@ -445,6 +446,7 @@
     sourceGridToggle.addEventListener('change', render);
     blindReviewToggle.addEventListener('change', () => {
       const blind = blindReviewToggle.checked;
+      document.body.classList.toggle('blind-review', blind);
       titleHeading.textContent = blind ? 'Blind review' : artifactTitle;
       document.title = blind ? 'Blind pixel-art review' : artifactTitle;
       if (baselineGrid) {

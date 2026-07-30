@@ -63,6 +63,15 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertIn("evidence_tier", proof)
         with self.assertRaisesRegex(module.ArtifactError, "evidence_tier must be one of"):
             module.compile_spec({"width": 8, "height": 8, "evidence_tier": "production", "background": "#123"})
+        for promoted_tier in ("representative", "production-candidate"):
+            with self.subTest(promoted_tier=promoted_tier):
+                with self.assertRaisesRegex(module.ArtifactError, "authoring evidence_tier"):
+                    module.compile_spec({
+                        "width": 8,
+                        "height": 8,
+                        "evidence_tier": promoted_tier,
+                        "background": "#123",
+                    })
 
     def test_motifs_support_reuse_flips_and_palette_maps(self) -> None:
         artifact = module.compile_spec({
@@ -193,6 +202,298 @@ class PixelArtBuilderTests(unittest.TestCase):
             self.assertTrue((output / "copper-key" / "pixel-art.png").is_file())
             self.assertEqual(module.critique_output(output)["kind"], "pack")
             self.assertEqual(module.result_summary(manifest, output)["evidence_tiers"], ["draft", "draft"])
+
+    def test_direction_study_writes_three_exact_children_and_an_anonymous_blind_board(self) -> None:
+        artifacts = []
+        for index, x in enumerate((2, 3, 4), start=1):
+            artifacts.append(module.compile_spec({
+                "title": f"Named direction {index}",
+                "width": 8,
+                "height": 8,
+                "evidence_tier": "draft",
+                "art_direction": {"thesis": f"materially different thesis {index}"},
+                "palette": {"i": "#123"},
+                "pixels": [{"x": x, "y": 3, "color": "i"}],
+            }))
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "study"
+            manifest = module.write_study(artifacts, output, 8, "Direction study")
+            verified = module.validate_output(output)
+            self.assertEqual(manifest, verified)
+            self.assertEqual(manifest["kind"], "study")
+            self.assertEqual([item["path"] for item in manifest["items"]], ["sample-a", "sample-b", "sample-c"])
+            self.assertTrue(all((output / item["path"] / "pixel-art.json").is_file() for item in manifest["items"]))
+            blind = (output / "blind.html").read_text(encoding="utf-8")
+            self.assertIn("Sample A", blind)
+            self.assertIn("Native 1x", blind)
+            self.assertNotIn("Named direction", blind)
+            self.assertNotIn("materially different thesis", blind)
+            self.assertNotIn("evidence_tier", blind)
+            self.assertNotIn("source", blind)
+            self.assertNotIn("https://", blind)
+
+    def test_direction_study_rejects_duplicate_or_incomparable_candidates(self) -> None:
+        first = module.compile_spec({"title": "A", "width": 8, "height": 8, "background": "#123"})
+        duplicate = module.compile_spec({"title": "B", "width": 8, "height": 8, "background": "#123"})
+        different_size = module.compile_spec({"title": "C", "width": 12, "height": 12, "background": "#123"})
+        topology = module.compile_spec({
+            "title": "Topology A",
+            "width": 8,
+            "height": 8,
+            "palette": {"a": "#112233", "b": "#445566"},
+            "pixels": [{"x": 2, "y": 2, "color": "a"}, {"x": 3, "y": 2, "color": "b"}],
+        })
+        palette_swap = module.compile_spec({
+            "title": "Topology B",
+            "width": 8,
+            "height": 8,
+            "palette": {"a": "#AA2233", "b": "#44BB66"},
+            "pixels": [{"x": 2, "y": 2, "color": "b"}, {"x": 3, "y": 2, "color": "a"}],
+        })
+        other_shape = module.compile_spec({
+            "title": "Topology C",
+            "width": 8,
+            "height": 8,
+            "palette": {"a": "#112233"},
+            "pixels": [{"x": 4, "y": 4, "color": "a"}],
+        })
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "study"
+            with self.assertRaisesRegex(module.ArtifactError, "materially different grids"):
+                module.write_study([first, duplicate, first], output, 4, "Duplicates")
+            with self.assertRaisesRegex(module.ArtifactError, "palette-only variants"):
+                module.write_study([topology, palette_swap, other_shape], output, 4, "Palette swap")
+            with self.assertRaisesRegex(module.ArtifactError, "same exact grid dimensions"):
+                module.write_study([first, different_size, module.compile_spec({
+                    "title": "D",
+                    "width": 8,
+                    "height": 8,
+                    "palette": {"i": "#456"},
+                    "pixels": [{"x": 1, "y": 1, "color": "i"}],
+                })], output, 4, "Mixed dimensions")
+
+    def test_promotion_requires_a_blind_non_builder_review_tied_to_the_grid(self) -> None:
+        artifact = module.compile_spec({
+            "title": "Review candidate",
+            "width": 8,
+            "height": 8,
+            "palette": {"i": "#123", "l": "#EEE"},
+            "rects": [{"x": 2, "y": 2, "width": 4, "height": 4, "color": "i"}],
+            "pixels": [{"x": 3, "y": 2, "color": "l"}],
+        })
+        review = {
+            "reviewer": {"kind": "user", "name": "Blind fixture reviewer"},
+            "blind": True,
+            "decision": "accept",
+            "observations": {
+                "subject": "compact beacon",
+                "orientation_action": "upright",
+                "material": "dark housing and pale lamp",
+                "focal_cue": "pale top cell",
+                "signature": "offset lamp",
+                "mismatch": "none",
+            },
+            "gates": {
+                "blind_read": "passed",
+                "native_silhouette": "passed",
+                "value_hierarchy": "passed",
+                "material_read": "passed",
+                "focal_read": "passed",
+                "browser_proof": "passed",
+            },
+        }
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "candidate"
+            module.write_artifact(artifact, output, 4)
+            self_review = {**review, "reviewer": {"kind": "self", "name": "Builder"}}
+            with self.assertRaisesRegex(module.ArtifactError, "non-builder reviewer"):
+                module.promote_output(output, self_review, "representative")
+            promoted = module.promote_output(output, review, "representative")
+            self.assertEqual(promoted["evidence_tier"], "representative")
+            verified = module.validate_output(output)
+            self.assertEqual(verified["evidence_tier"], "representative")
+            record_path = output / "visual-review.json"
+            record = json.loads(record_path.read_text(encoding="utf-8"))
+            self.assertEqual(record["artifact_fingerprints"], {"pixel-art.json": module.artifact_fingerprint(verified)})
+            record["artifact_fingerprints"]["pixel-art.json"] = "0" * 64
+            record_path.write_text(json.dumps(record), encoding="utf-8")
+            with self.assertRaisesRegex(module.ArtifactError, "review fingerprint"):
+                module.validate_output(output)
+
+    def test_production_candidate_promotion_requires_owner_review(self) -> None:
+        artifact = module.compile_spec({"title": "Candidate", "width": 8, "height": 8, "background": "#123"})
+        review = {
+            "reviewer": {"kind": "user", "name": "Reviewer"},
+            "blind": True,
+            "decision": "accept",
+            "observations": {
+                "subject": "square",
+                "orientation_action": "front",
+                "material": "flat",
+                "focal_cue": "center",
+                "signature": "none",
+                "mismatch": "none",
+            },
+            "gates": {
+                "blind_read": "passed",
+                "native_silhouette": "passed",
+                "value_hierarchy": "passed",
+                "material_read": "passed",
+                "focal_read": "passed",
+                "browser_proof": "passed",
+            },
+        }
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "candidate"
+            module.write_artifact(artifact, output, 4)
+            with self.assertRaisesRegex(module.ArtifactError, "owner reviewer"):
+                module.promote_output(output, review, "production-candidate")
+
+    def test_pack_promotion_requires_item_reads_and_binds_every_grid(self) -> None:
+        first = module.compile_spec({"title": "Copper key", "width": 8, "height": 8, "background": "#123"})
+        second = module.compile_spec({"title": "Moon key", "width": 8, "height": 8, "background": "#456"})
+        review = {
+            "reviewer": {"kind": "user", "name": "Blind set reviewer"},
+            "blind": True,
+            "decision": "accept",
+            "observations": {
+                "subject": "two distinct key tokens",
+                "orientation_action": "upright",
+                "material": "copper and pale metal",
+                "focal_cue": "contrasting key heads",
+                "signature": "different head cuts",
+                "mismatch": "none",
+                "items": {
+                    "copper-key": "warm square-headed key",
+                    "moon-key": "pale round-headed key",
+                },
+            },
+            "gates": {
+                "blind_read": "passed",
+                "native_silhouette": "passed",
+                "value_hierarchy": "passed",
+                "material_read": "passed",
+                "focal_read": "passed",
+                "browser_proof": "passed",
+                "set_context": "passed",
+            },
+        }
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "pack"
+            module.write_collection([first, second], output, 4, "Key set", kind="pack")
+            missing_item = json.loads(json.dumps(review))
+            del missing_item["observations"]["items"]["moon-key"]
+            with self.assertRaisesRegex(module.ArtifactError, "every item path"):
+                module.promote_output(output, missing_item, "representative")
+            self.assertEqual(module.validate_output(output)["kind"], "pack")
+            promoted = module.promote_output(output, review, "representative")
+            self.assertEqual(promoted["kind"], "pack")
+            self.assertEqual(module.result_summary(promoted, output)["evidence_tiers"], ["representative", "representative"])
+            record = json.loads((output / "visual-review.json").read_text(encoding="utf-8"))
+            self.assertEqual(
+                set(record["artifact_fingerprints"]),
+                {"copper-key/pixel-art.json", "moon-key/pixel-art.json"},
+            )
+            self.assertTrue((output / "copper-key" / "visual-review.json").is_file())
+
+    def test_direction_study_cannot_be_promoted_or_hide_a_tampered_grid(self) -> None:
+        artifacts = [
+            module.compile_spec({
+                "title": f"Direction {index}",
+                "width": 8,
+                "height": 8,
+                "palette": {"i": color},
+                "pixels": [{"x": index, "y": 2, "color": "i"}],
+            })
+            for index, color in enumerate(("#112233", "#445566", "#778899"), start=1)
+        ]
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "study"
+            module.write_study(artifacts, output, 4, "Study")
+            review = {
+                "reviewer": {"kind": "user", "name": "Reviewer"},
+                "blind": True,
+                "decision": "accept",
+                "observations": {
+                    "subject": "three marks",
+                    "orientation_action": "static",
+                    "material": "flat",
+                    "focal_cue": "single cell",
+                    "signature": "position",
+                    "mismatch": "none",
+                },
+                "gates": {field: "passed" for field in module.REVIEW_GATE_FIELDS},
+            }
+            with self.assertRaisesRegex(module.ArtifactError, "direction study cannot be promoted"):
+                module.promote_output(output, review, "representative")
+            blind_path = output / "blind.html"
+            blind_path.write_text(blind_path.read_text(encoding="utf-8").replace("#112233", "#FFFFFF"), encoding="utf-8")
+            with self.assertRaisesRegex(module.ArtifactError, "blind study payload"):
+                module.validate_output(output)
+
+    def test_study_build_and_promote_commands_cover_the_public_workflow(self) -> None:
+        review = {
+            "reviewer": {"kind": "user", "name": "CLI fixture reviewer"},
+            "blind": True,
+            "decision": "accept",
+            "observations": {
+                "subject": "small beacon",
+                "orientation_action": "upright",
+                "material": "dark housing",
+                "focal_cue": "light cell",
+                "signature": "offset light",
+                "mismatch": "none",
+            },
+            "gates": {field: "passed" for field in module.REVIEW_GATE_FIELDS},
+        }
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            specs = []
+            for index, color in enumerate(("#112233", "#445566", "#778899"), start=1):
+                path = root / f"{index}.json"
+                path.write_text(json.dumps({
+                    "title": f"Direction {index}",
+                    "width": 8,
+                    "height": 8,
+                    "palette": {"i": color},
+                    "pixels": [{"x": index, "y": 2, "color": "i"}],
+                }), encoding="utf-8")
+                specs.append(path)
+            study_output = root / "study"
+            study_run = subprocess.run(
+                [sys.executable, str(MODULE_PATH), "study", *(str(path) for path in specs), "--output", str(study_output)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(study_run.returncode, 0, study_run.stderr)
+            self.assertEqual(json.loads(study_run.stdout)["kind"], "study")
+            final_output = root / "final"
+            build_run = subprocess.run(
+                [sys.executable, str(MODULE_PATH), "from-spec", str(specs[0]), "--output", str(final_output)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(build_run.returncode, 0, build_run.stderr)
+            review_path = root / "review.json"
+            review_path.write_text(json.dumps(review), encoding="utf-8")
+            promote_run = subprocess.run(
+                [sys.executable, str(MODULE_PATH), "promote", str(final_output), str(review_path), "--tier", "representative"],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(promote_run.returncode, 0, promote_run.stderr)
+            self.assertEqual(json.loads(promote_run.stdout)["evidence_tier"], "representative")
+            self.assertEqual(module.validate_output(final_output)["evidence_tier"], "representative")
+
+    def test_proof_template_keeps_art_visible_and_hides_context_in_blind_mode(self) -> None:
+        template = module.TEMPLATE_PATH.read_text(encoding="utf-8")
+        self.assertIn("position: sticky", template)
+        self.assertIn("body.blind-review", template)
+        self.assertIn("document.body.classList.toggle('blind-review', blind)", template)
+        self.assertIn("data-blind-sensitive", template)
 
     def test_validation_rejects_png_pixels_that_drift_from_grid(self) -> None:
         artifact = module.compile_spec({"width": 8, "height": 8, "background": "#123"})

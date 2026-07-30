@@ -48,20 +48,22 @@
   <script>
     const data = JSON.parse(document.querySelector('#collection-data').textContent);
     const isPack = data.kind === 'pack';
-    document.querySelector('#collection-kicker').textContent = isPack ? 'Pixel proof / asset pack' : 'Pixel proof / resolution set';
+    const isStudy = data.kind === 'study';
+    const isNamedSet = isPack || isStudy;
+    document.querySelector('#collection-kicker').textContent = isStudy ? 'Pixel proof / named direction study' : (isPack ? 'Pixel proof / asset pack' : 'Pixel proof / resolution set');
     document.querySelector('#title').textContent = data.title;
-    document.querySelector('#count').textContent = `${data.items.length} ${isPack ? 'assets' : 'masters'}`;
+    document.querySelector('#count').textContent = `${data.items.length} ${isStudy ? 'directions' : (isPack ? 'assets' : 'masters')}`;
     const sizes = data.items.map(item => `${item.artifact.width}x${item.artifact.height}`);
     document.querySelector('#range').textContent = [...new Set(sizes)].join(' / ');
     const grid = document.querySelector('#grid');
-    grid.setAttribute('aria-label', isPack ? 'Pixel art asset pack' : 'Pixel art resolution variants');
+    grid.setAttribute('aria-label', isStudy ? 'Named pixel art direction study' : (isPack ? 'Pixel art asset pack' : 'Pixel art resolution variants'));
     data.items.forEach(item => {
       const artifact = item.artifact;
       const flat = artifact.grid.flat();
       const usage = new Map(artifact.palette.map(color => [color, flat.filter(cell => cell === color).length]));
       const article = document.createElement('article');
       const head = document.createElement('div'); head.className = 'card-head';
-      const label = document.createElement('span'); label.className = 'size'; label.textContent = isPack ? artifact.title : `${artifact.width} x ${artifact.height}`;
+      const label = document.createElement('span'); label.className = 'size'; label.textContent = isNamedSet ? artifact.title : `${artifact.width} x ${artifact.height}`;
       const colorCount = document.createElement('span'); colorCount.textContent = `${artifact.palette.length} colors`;
       const cardMeta = document.createElement('span'); cardMeta.className = 'card-meta';
       const tier = document.createElement('span'); tier.className = 'tier'; tier.textContent = artifact.evidence_tier || 'unlabeled';
@@ -86,7 +88,7 @@
       const tape = document.createElement('div'); tape.className = 'tape'; tape.setAttribute('aria-label','Color usage distribution');
       artifact.palette.forEach(color => { const segment=document.createElement('span'); segment.style.background=color; segment.style.flexGrow=String(Math.max(1,usage.get(color)||0)); segment.title=`${color}: ${usage.get(color)||0} cells`; tape.appendChild(segment); });
       const facts = document.createElement('div'); facts.className = 'facts';
-      const painted = document.createElement('span'); painted.textContent = isPack ? `${artifact.width} x ${artifact.height}` : `${flat.filter(Boolean).length} painted`;
+      const painted = document.createElement('span'); painted.textContent = isNamedSet ? `${artifact.width} x ${artifact.height}` : `${flat.filter(Boolean).length} painted`;
       const source = document.createElement('span'); source.textContent = artifact.source?.kind || 'spec';
       facts.append(painted,source);
       const open = document.createElement('a'); open.className='open'; open.href=`${item.path}/index.html`; open.textContent='Open exact proof';
