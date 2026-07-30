@@ -2,7 +2,7 @@
 
 Use this reference for Codex ImageGen, an attached image, a local render, or a photo/reference that will become exact-grid pixel art. A source image supplies composition and shape evidence; it does not satisfy the final pixel-art contract.
 
-For a representative, production-candidate, or recovery task with direction risk, generate or sketch three materially different concepts from the same source brief before selecting one. The concepts prove a direction decision only; the manually repixelized exact grid remains the artifact.
+For recovery or direction-risk work, generate or sketch three materially different draft concepts from the same source brief before selecting one. The concepts prove a direction decision only; the manually repixelized exact grid remains the artifact, and any promoted tier comes later through blind review.
 
 ## Build the source brief
 

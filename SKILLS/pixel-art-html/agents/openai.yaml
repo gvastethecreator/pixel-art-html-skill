@@ -1,6 +1,6 @@
 interface:
   display_name: "Pixel Art HTML"
   short_description: "Author and prove exact-grid pixel art"
-  default_prompt: "Use $pixel-art-html to design, critique, and package an authored exact-grid pixel-art master or resolution set with native-scale browser proof."
+  default_prompt: "Use $pixel-art-html to study three directions when needed, author an exact-grid master, prove its native read in a browser, and keep it draft unless a bound blind review permits promotion."
 policy:
   allow_implicit_invocation: true

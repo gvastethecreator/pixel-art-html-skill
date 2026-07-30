@@ -1,87 +1,123 @@
 {
+  "schema_version": 2,
   "skill_name": "pixel-art-html",
+  "protocol": {
+    "mechanical_verdicts": [
+      "passed",
+      "failed"
+    ],
+    "perceptual_verdicts": [
+      "win",
+      "tie",
+      "loss",
+      "not-assessed"
+    ],
+    "promotion_rule": "A mechanical pass cannot replace the required blind perceptual review."
+  },
   "evals": [
     {
-      "id": "text-authored-lighthouse-16",
-      "prompt": "Create a 16x16 exact-grid pixel-art lighthouse in a night storm. It must read at native size, use one warm lantern focal point against cool water, and ship as standalone HTML, editable JSON, and PNG.",
-      "expected_output": "A self-contained 16x16 artifact whose lighthouse silhouette, directional light, waves, and warm focal cue survive native-scale review.",
+      "id": "text-storm-lighthouse-16",
+      "route": "text",
+      "prompt": "Create a 16x16 exact-grid lighthouse in a night storm. It must read at native size, use one warm lantern against cool water, and ship as standalone HTML, editable JSON, and PNG.",
+      "expected_output": "A draft 16x16 lighthouse with three anonymous same-grid directions, explicit silhouette/value checkpoints, a warm focal cue, exact standalone artifacts, and an honest blind-read verdict.",
       "files": [],
-      "assertions": [
-        "The artifact contains index.html, pixel-art.json, and pixel-art.png with exact 16x16 canonical dimensions.",
-        "The source spec records projection, light, and focal intent and uses semantic palette roles.",
-        "At native 1x a human reviewer identifies a lighthouse without reading the title.",
-        "The tower silhouette is shaped rather than left as a plain rectangle, and same-color clusters dominate over accidental single pixels.",
-        "The browser proof exposes 1x, 2x, and 4x samples and no remote requests or console errors."
+      "required_evidence": [
+        "brief.md",
+        "study/manifest.json",
+        "study/blind.html",
+        "selected-spec.json",
+        "checkpoints/silhouette/pixel-art.json",
+        "checkpoints/value/pixel-art.json",
+        "final/index.html",
+        "final/pixel-art.json",
+        "final/pixel-art.png",
+        "validator.json",
+        "critique.json",
+        "browser-proof.json",
+        "blind-review.json",
+        "duration.json"
+      ],
+      "mechanical_assertions": [
+        "The study contains exactly three materially different 16x16 draft grids and its anonymous payload matches all child grids.",
+        "Silhouette, value, and final checkpoints keep exact 16x16 dimensions.",
+        "Validation proves JSON, PNG, and HTML parity with no remote URL."
+      ],
+      "perceptual_questions": [
+        "Without title or source context, what subject and orientation are visible at 1x?",
+        "Which sample has the clearest tower/lantern silhouette and why?",
+        "Does cool storm mass stay subordinate to the warm focal cue?",
+        "What one signature survives after looking away, and what still reads as generic?"
       ]
     },
     {
-      "id": "image-derived-character-32",
-      "prompt": "Convert the supplied full-body character reference into a transparent 32x32 exact pixel master with at most 16 colors. Preserve the pose and oversized red scarf, remove source noise, and provide editable HTML/JSON/PNG proof.",
-      "expected_output": "A manually cleaned character master derived directly from the source, with a readable pose, intact scarf cue, clean alpha, controlled ramps, and authored clusters.",
+      "id": "image-red-scarf-character-32",
+      "route": "image",
+      "prompt": "Recover the supplied full-body character into a transparent 32x32 exact pixel master with at most 16 colors. Preserve the pose and oversized red scarf, remove source noise, and provide editable HTML, JSON, and PNG proof.",
+      "expected_output": "A transparent authored 32x32 runner draft whose pose and trailing red scarf survive native review, with source provenance, exact parity, and an explicit comparison against automatic conversion.",
       "files": [
         "evals/fixtures/character-source.ppm"
       ],
-      "assertions": [
-        "Conversion uses contain and targets the original source directly at 32x32.",
-        "The final grid is manually repixelized beyond raw quantization: silhouette stair steps, alpha fringe, value groups, and singleton noise are reviewed.",
-        "Palette count is at most 16 and the red scarf remains the focal identity cue at native 1x.",
-        "The artifact passes deterministic validation and warnings are resolved or explicitly justified with visual evidence."
-      ]
-    },
-    {
-      "id": "seamless-top-down-grass-16",
-      "prompt": "Author a reusable 16x16 top-down grass tile and two restrained variants. Keep the palette compact, avoid an obvious repeated landmark, and prove the base plus variants in a repeated 3x3 context before packaging exact-grid outputs.",
-      "expected_output": "A compact tile collection with seamless edges, coherent repeated cluster grammar, negative space, palette consistency, and browser-visible repetition proof.",
-      "files": [],
-      "assertions": [
-        "All tile edges loop without seams and every variant preserves the same projection, palette roles, and cluster grammar.",
-        "The repeated 3x3 proof has no dominant cross, diagonal, isolated landmark, or busy-on-busy noise.",
-        "Motifs or an equally reviewable exact-grid representation reuse cluster topology instead of scattering independent pixels.",
-        "Each canonical grid and PNG matches its declared dimensions and the proof HTML remains standalone."
-      ]
-    },
-    {
-      "id": "same-size-rpg-pickup-pack-16",
-      "prompt": "Author a coherent pack of four transparent 16x16 RPG pickups: health potion, key, shield, and crystal. Share one upper-left light, baseline, padding language, and compact palette roles while keeping every silhouette distinct.",
-      "expected_output": "A named same-size asset pack with four independently editable exact masters, a standalone overview, distinct native-size reads, and validated PNG parity.",
-      "files": [],
-      "assertions": [
-        "The pack manifest has kind pack and four unique title-derived item paths even though every master is 16x16.",
-        "Every item contains index.html, pixel-art.json, and pixel-art.png and validation proves PNG dimensions and RGBA cells match its canonical grid.",
-        "A human reviewer identifies all four items at native 1x without labels and sees one coherent light, baseline, palette-role, and padding system.",
-        "The overview is standalone, exposes every item, and links to each exact proof without remote requests or console errors."
-      ]
-    },
-    {
-      "id": "recover-rejected-generic-pickups",
-      "prompt": "The previous potion, key, shield, and crystal pack is structurally valid but looks generic and amateur. Treat it as a losing baseline, recover the visual direction, and deliver a representative exact-grid pack whose quality is visible without reading labels. Keep 32x32 if the selected thesis survives; otherwise prove and document why 48x48 is the smallest honest grid.",
-      "expected_output": "A representative recovery pack with three comparable direction artifacts, one explicit choice, a useful shared signature, independently authored exact masters, title-free perceptual evidence, and a real before/after render.",
-      "files": [],
-      "assertions": [
-        "The rejected pack begins with artifact verdict loss; passing manifests or critique warnings are not used to defend its art quality.",
-        "Exactly three materially different shape-language or material-story directions use the same four-item brief and grid before one is selected; palette swaps do not count.",
-        "The selected direction records one useful signature to preserve and one generic construction to remove, without defaulting to a hybrid.",
-        "Every canonical artifact declares evidence_tier representative and the proof UI exposes that label; a move from 32x32 to 48x48 is backed by an information-budget comparison rather than aesthetic hand-waving.",
-        "With titles hidden and pack order shuffled, a reviewer identifies potion, key, shield, and crystal, names their materials, and records any mismatch in visual-review.md.",
-        "A like-for-like browser comparison shows a visible gain over the rejected pack in silhouette specificity, material planes, focal hierarchy, and set cohesion.",
-        "Validation still proves standalone HTML, exact canonical grids at the selected size, PNG RGBA parity, and no remote requests."
-      ]
-    },
-    {
-      "id": "recover-uncertain-source-small-grid-ladder",
-      "prompt": "Recover this softly scaled character reference into exact 8x8, 16x16, 24x24, and 32x32 runtime masters. Diagnose the source structure, preserve the pose and red scarf cue, compare reconstruction evidence, then manually repair the two smallest grids so they read without labels.",
-      "expected_output": "A target-aware resolution set with source-analysis provenance, independently reviewed small-grid drafts, bounded palettes, clean alpha, browser-visible lattice evidence, and explicit separation between technical reconstruction and artistic acceptance.",
-      "files": [
-        "evals/fixtures/character-source.ppm"
+      "required_evidence": [
+        "source-brief.md",
+        "automatic-draft/pixel-art.json",
+        "selected-spec.json",
+        "checkpoints/silhouette/pixel-art.json",
+        "checkpoints/value/pixel-art.json",
+        "final/index.html",
+        "final/pixel-art.json",
+        "final/pixel-art.png",
+        "validator.json",
+        "critique.json",
+        "browser-proof.json",
+        "blind-review.json",
+        "duration.json"
       ],
-      "assertions": [
-        "Every artifact records source class, confidence, detector, target grid, inferred lattice when available, and applied reconstruction without allowing detection to change the requested target size.",
-        "The 8x8, 16x16, 24x24, and 32x32 artifacts are reconstructed directly from the original source with alpha and palette limits preserved.",
-        "The proof page exposes the source-lattice toggle and source metadata without external network requests or executable path leaks.",
-        "Exactly three materially different 8x8 silhouette/material directions are compared before one is selected; palette-only variants do not count.",
-        "The 8x8 and 16x16 grids are independently authored through the repair command with explicit silhouette, identity-cue, and subtraction decisions; reconstruction metrics alone are not used to promote them.",
-        "Each repair preserves the losing same-size canonical baseline and exposes an equal-scale before/after proof whose blind mode uses neutral Sample A / Sample B captions.",
-        "A title-free native-scale review records what is actually recognized at every size, and validation proves canonical JSON/PNG parity."
+      "mechanical_assertions": [
+        "The original source is targeted directly at 32x32 with contain fit, clean alpha, and at most 16 colors.",
+        "The final canonical grid differs from raw automatic conversion and retains explicit source-analysis provenance.",
+        "Validation proves JSON, PNG, and HTML parity with no remote URL."
+      ],
+      "perceptual_questions": [
+        "Without the prompt, is this a full-body character and what pose is visible?",
+        "Does the scarf read as a trailing cloth mass rather than an unrelated red stripe?",
+        "Are body, scarf, and background separation clear at native 1x?",
+        "Which automatic-source artifacts remain, if any?"
+      ]
+    },
+    {
+      "id": "severe-grid-scout-ship-8",
+      "route": "severe-grid-repair",
+      "prompt": "Recover the supplied 32x32 scout-ship fixture into an exact 8x8 master. Preserve top-down orientation, an amber cockpit cue, and two cool engine cues. Keep the automatic 8x8 baseline and prove an authored same-grid repair without labels.",
+      "expected_output": "An 8x8 repair case with a preserved losing baseline, three anonymous direction grids, explicit repair decisions, exact proof artifacts, and a blind verdict that may remain draft if craft recognition is ambiguous.",
+      "files": [
+        "examples/small-grid-repair/transfer/sources/ship-32.json"
+      ],
+      "required_evidence": [
+        "source/pixel-art.json",
+        "automatic-baseline/pixel-art.json",
+        "study/manifest.json",
+        "study/blind.html",
+        "repair-spec.json",
+        "final/index.html",
+        "final/pixel-art.json",
+        "final/pixel-art.png",
+        "validator.json",
+        "critique.json",
+        "browser-proof.json",
+        "blind-review.json",
+        "duration.json"
+      ],
+      "mechanical_assertions": [
+        "The automatic baseline and authored repair are both exact 8x8 artifacts derived from the versioned 32x32 fixture.",
+        "The study contains exactly three materially different 8x8 draft grids.",
+        "The repair records non-empty silhouette, identity_cue, and subtraction decisions and preserves the losing baseline.",
+        "Validation proves JSON, PNG, and HTML parity with no remote URL."
+      ],
+      "perceptual_questions": [
+        "Without title or source, does the final grid read as a top-down craft rather than an abstract badge?",
+        "Is the amber cockpit distinct from the hull at native 1x?",
+        "Do two engine cues remain separate without turning into noise?",
+        "Is the authored repair visibly better than the automatic baseline, or should the verdict remain loss/not-assessed?"
       ]
     }
   ]

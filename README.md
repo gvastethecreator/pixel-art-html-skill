@@ -9,8 +9,8 @@ Pixel Art HTML turns text-authored grids, local images, or accepted Codex ImageG
 - Convert locally with Pillow using target-aware structure/color packing while enforcing exact dimensions and palette limits.
 - Repair losing 8x8/16x16 drafts through a declarative authored spec that preserves the exact baseline, required silhouette/identity/subtraction decisions, changed-cell evidence, and blind before/after proof.
 - Reuse exact cluster motifs with flips and palette maps instead of scattering one-off pixels.
-- Label every output as fixture, draft, representative, or production-candidate so structural smoke cannot masquerade as art-quality proof.
-- Compare three materially different directions for rejected or direction-sensitive quality work, then record a title-free perceptual read.
+- Author only fixture or draft output; promote to representative or production-candidate only through a reviewer-bound exact-grid fingerprint.
+- Compile exactly three same-grid directions into a separate anonymous board for rejected or direction-sensitive quality work.
 - Surface bounds, cluster, singleton, value-span, and boundary-contrast risks without pretending to score subjective quality.
 - Review every artifact at native 1x, 2x, 4x, flat silhouette, and grayscale value inside the standalone proof workbench.
 - Review tile/texture intent in an automatic 3x repetition proof, and group same-size icons or variants into named asset packs.
@@ -36,6 +36,14 @@ Create a managed artifact from a compact scene spec:
 ```powershell
 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py from-spec .\scene.json --project-root . --slug night-beacon
 ```
+
+Compare three draft directions without titles or provenance:
+
+```powershell
+python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py study .\a.json .\b.json .\c.json --output .\direction-study
+```
+
+Open `direction-study/blind.html` before the named overview.
 
 Convert an image into the recommended resolution ladder:
 
@@ -68,6 +76,14 @@ python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py validate .\output
 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py critique .\output
 ```
 
+After a real blind review, promote the exact draft:
+
+```powershell
+python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py promote .\output .\review-input.json --tier representative
+```
+
+The command refuses self-review, binds the review to every exact cell, and makes later grid drift fail validation. Production-candidate promotion requires an owner review.
+
 Package related same-size assets without pretending they are a resolution ladder:
 
 ```powershell
@@ -82,7 +98,7 @@ Node 20 or newer and Python 3.11 or newer are recommended:
 npm run check:core
 ```
 
-`check:core` validates the pack and runs the 25 dependency-free tests. `test:full` and `check:full` require Pillow and run all 34 tests; they stop with an install command when Pillow is missing instead of silently reporting a partial gate. CI installs `pillow==11.0.0` and runs `check:full` on Windows and Ubuntu.
+`check:core` validates the pack and runs the 33 dependency-free tests. `test:full` and `check:full` require Pillow and run all 42 tests; they stop with an install command when Pillow is missing instead of silently reporting a partial gate. CI installs `pillow==11.0.0` and runs `check:full` on Windows and Ubuntu.
 
 ```powershell
 python -m pip install pillow==11.0.0
@@ -103,14 +119,14 @@ The image-conversion test runs when Pillow is installed; all other tests use the
 - [Command and artifact reference](./SKILLS/pixel-art-html/references/command-reference.md)
 - [Artifact schema](./SKILLS/pixel-art-html/references/artifact-schema.md)
 - [Craft workflow](./SKILLS/pixel-art-html/references/craft-workflow.md)
-- [Subject recipes and 62-module transfer map](./SKILLS/pixel-art-html/references/subject-recipes.md)
+- [Subject routing](./SKILLS/pixel-art-html/references/subject-recipes.md)
 - [Image-source brief and repixelization](./SKILLS/pixel-art-html/references/image-source-brief.md)
 - [Small-grid source recovery](./SKILLS/pixel-art-html/references/source-recovery.md)
 - [Project library contract](./SKILLS/pixel-art-html/references/project-library.md)
 - [Visual quality contract](./SKILLS/pixel-art-html/references/quality-contract.md)
 - [Visual review and evidence tiers](./SKILLS/pixel-art-html/references/visual-review.md)
-- [Representative recovery example](./SKILLS/pixel-art-html/examples/cursed-salvage/README.md)
-- [Representative 8x8/16x16 authored repair](./SKILLS/pixel-art-html/examples/small-grid-repair/README.md)
+- [Recovery draft case study](./SKILLS/pixel-art-html/examples/cursed-salvage/README.md)
+- [8x8/16x16 repair draft case study](./SKILLS/pixel-art-html/examples/small-grid-repair/README.md)
 
 ## Background
 
@@ -120,7 +136,7 @@ The craft workflow and subject routing also synthesize lessons from Raymond Schl
 
 ## Status
 
-Preview skill pack. The deterministic spec and HTML paths are dependency-free; image conversion requires Pillow. Craft references, motif primitives, diagnostics, evidence labels, direction search, and proof views improve the feedback loop, while final visual judgment still belongs to a real native-scale review.
+Preview skill pack. The deterministic spec and HTML paths are dependency-free; image conversion requires Pillow. Direction study, native-read checkpoints, exact parity, blind review, and fingerprint-bound promotion make the proof boundary explicit. Final artistic acceptance still belongs to a real native-scale reviewer.
 
 ## License
 

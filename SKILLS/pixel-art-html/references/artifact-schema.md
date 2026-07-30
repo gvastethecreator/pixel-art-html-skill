@@ -43,7 +43,7 @@ Author a JSON object. Dimensions must be integers from 8 through 128.
 
 - `title`: optional label.
 - `width`, `height`: required unless both default to 32.
-- `evidence_tier`: `fixture`, `draft`, `representative`, or `production-candidate`. Defaults to `draft`. The compiler rejects `production` because a spec cannot approve itself.
+- `evidence_tier`: authoring accepts only `fixture` or `draft` and defaults to `draft`. `representative` and `production-candidate` are written only by the reviewed `promote` command.
 - `art_direction`: optional string-to-string direction card preserved in canonical source metadata. Record use, projection, light, focus, or other proof-relevant decisions.
 - `background`: `null`, `.`, `transparent`, a palette alias, or `#RGB`/`#RRGGBB`.
 - `palette`: alias-to-color object. Aliases keep specs compact.
@@ -58,7 +58,7 @@ Apply order: background, `grid`, `rects`, `runs`, `stamps`, `pixels`. Later oper
 
 Use rectangles and runs for scaffolding and broad planes. Use motifs for repeated foliage, clouds, brick chips, foam, lights, panel marks, or other coherent cluster grammar. Use a full grid when the silhouette needs one-off local control; do not force a complex subject into rectangles.
 
-The compiler emits canonical JSON with a complete `grid` of `#RRGGBB` or `null` cells, the declared `evidence_tier`, source metadata, derived proof intent, and a deterministic `quality` risk report. `proofs.repeat_3x` is true only when `art_direction.use` identifies a tile, tileset, texture, or seamless master. Do not hand-author canonical output when a compact source spec is easier to review. The report is diagnostic and never a semantic quality score.
+The compiler emits canonical JSON with a complete `grid` of `#RRGGBB` or `null` cells, the authored evidence tier, source metadata, derived proof intent, and a deterministic `quality` risk report. `proofs.repeat_3x` is true only when `art_direction.use` identifies a tile, tileset, texture, or seamless master. Do not hand-author canonical output when a compact source spec is easier to review. The report is diagnostic and never a semantic quality score.
 
 Image-derived canonical output also records:
 
@@ -120,6 +120,21 @@ Recommended square masters: `16`, `24`, `32`, `40`, `48`, and `64`. Single artif
 
 The collection compiler writes `manifest.json`, a standalone comparison `index.html`, and one exact artifact directory per dimension.
 
+## Direction studies
+
+`study` accepts exactly three draft specs. All must have the same width and height and materially different grid topology. Validation canonicalizes color roles before comparison, so a palette swap over the same masses is rejected. It writes:
+
+```text
+index.html
+blind.html
+manifest.json
+sample-a/{index.html,pixel-art.json,pixel-art.png}
+sample-b/{index.html,pixel-art.json,pixel-art.png}
+sample-c/{index.html,pixel-art.json,pixel-art.png}
+```
+
+The named overview preserves full direction metadata. The separate blind payload contains only anonymous labels, dimensions, background, palette, and exact grids. Validation proves that the blind grids still match the three children.
+
 ## Asset packs
 
 Use `pack` when related artifacts share a resolution or when item identity matters more than a resolution ladder. Each spec remains an independent master with its own title, direction card, canonical grid, PNG, and exact proof. The pack compiler derives Unicode-safe, accent-normalized stable item folders from titles and adds numeric suffixes only when titles collide.
@@ -129,3 +144,9 @@ python scripts/build_pixel_art.py pack potion.json key.json shield.json crystal.
 ```
 
 The pack writes a `kind: pack` manifest and a standalone overview. Same dimensions are expected; shared projection, lighting, palette roles, baseline, and padding must be reviewed as a set-level contract.
+
+## Promoted review record
+
+`promote` changes a validated draft to `representative` or `production-candidate` only after a valid blind review. The generated `visual-review.json` stores reviewer authority, observations, passed gates, the promoted tier, and SHA-256 fingerprints over width, height, background, palette, and exact grid.
+
+For a single artifact the fingerprint key is `pixel-art.json`. For a pack or collection the root keys are `<item-path>/pixel-art.json`, every item has a bound child record, and the review input must include one observation per item path. The record is generated, not hand-authored; later grid drift fails validation.

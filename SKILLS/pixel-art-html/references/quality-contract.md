@@ -8,9 +8,9 @@ The artifact must pass all applicable rows. Record `N/A` only with a concrete re
 
 | Gate | Acceptance |
 |---|---|
-| Evidence tier | artifact declares `fixture`, `draft`, `representative`, or `production-candidate`; claims stay inside that tier |
+| Evidence tier | authoring creates only `fixture` or `draft`; promoted tiers have a valid fingerprint-bound `visual-review.json` |
 | Resolution fit | fixed runtime grids are honored; otherwise the chosen grid has enough cells for the declared identity, materials, and signature without using resolution to hide a weak silhouette |
-| Direction | recovery and direction-risk quality work compares three materially different candidates; selection, signature, and subtraction are recorded |
+| Direction | recovery and direction-risk quality work uses a validated three-item same-grid study; blind selection, signature, and subtraction are recorded |
 | Silhouette | subject, orientation, and pose read at native 1x without interior detail |
 | Composition | one dominant mass/read, one focal cue, intentional padding or edge contact |
 | Projection | every compatible element follows one view, scale, and overlap convention |
@@ -25,16 +25,16 @@ The artifact must pass all applicable rows. Record `N/A` only with a concrete re
 | Context | tiles loop, repeated props avoid obvious landmarks, backgrounds do not compete, as applicable; tile/texture specs expose the automatic 3x repeat proof |
 | Animation handoff | frame masters preserve identity and native cell scale; state workflow, order, durations, loop, runtime cell, safe margin, and ground/contact pivot are explicit before atlas extraction |
 | Output | canonical JSON, PNG, and standalone HTML agree exactly and use no network requests; validation checks PNG dimensions and RGBA cell parity |
-| Blind read | representative and production-candidate evidence is reviewed title-free; observed subject, material, focus, signature, family read, and mismatch are recorded |
+| Blind read | promoted evidence records title-free subject, orientation/action, material, focus, signature, mismatch, browser proof, and per-item set reads when applicable |
 
 ## Evidence tiers and claim safety
 
 - `fixture` proves a mechanic such as alpha, timing, extraction, atlas layout, or parity. It is invalid evidence for artistic quality even when every structural check passes.
 - `draft` is incomplete or unreviewed. Use it for direction decisions, not as a finished showcase.
-- `representative` demonstrates the skill's normal quality path and requires a completed `visual-review.md` beside the output.
-- `production-candidate` targets a real project and requires the same record plus explicit owner/reviewer approval. The label itself is never approval.
+- `representative` demonstrates the skill's normal quality path and can be created only by `promote` with a non-builder review bound to the exact grid.
+- `production-candidate` targets a real project and can be created only by `promote` with an owner review. The label is still not deployment approval.
 
-The compiler defaults to `draft` and rejects the self-certifying label `production`. Read [visual-review.md](visual-review.md) for direction search, the title-free perceptual gate, and review-record requirements.
+Authoring defaults to `draft` and rejects `representative`, `production-candidate`, and the unsupported label `production`. Read [visual-review.md](visual-review.md) for direction search, the title-free perceptual gate, and promotion requirements.
 
 ## Resolution ladder
 
@@ -82,7 +82,7 @@ Resolve every warning through visual inspection or state why it is intentional.
 
 - The native 1x read needs the title or source image to be understood.
 - A clean deterministic report is presented as proof that the art is good.
-- A fixture or draft is presented as representative or production evidence.
+- A fixture or draft is presented as representative or production evidence, or a source spec tries to self-assign a promoted tier.
 - Three candidate directions differ only by palette, ornament, or detail density.
 - Rectangular scaffolds, default ellipses, or generic outlines remain visible as construction shortcuts.
 - Pillow shading, contradictory projection, light, scale, or shadow rules flatten the form.
@@ -92,6 +92,6 @@ Resolve every warning through visual inspection or state why it is intentional.
 - Every item is recognizable but interchangeable with a stock pictogram because no useful signature or specific construction survives.
 - The background has equal or greater contrast/detail than the focal subject.
 - Any requested collection master is missing or mechanically resized from another master.
-- An image-derived 8x8/16x16 artifact is promoted without an authored same-grid repair record and title-hidden baseline comparison.
+- An image-derived 8x8/16x16 artifact is promoted without an authored same-grid repair record, title-hidden baseline comparison, and fingerprint-bound reviewer record.
 - Browser proof is absent, blurry, clipped, empty, or not the final generated artifact.
 - HTML depends on a server, CDN, external font, framework, or network request.

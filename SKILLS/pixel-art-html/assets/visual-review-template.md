@@ -1,66 +1,51 @@
-# Visual Review
+# Blind Review Worksheet
+
+Use this as human-readable working notes. Promotion consumes [visual-review-input.json](visual-review-input.json), not this Markdown file.
 
 ```text
-Artifact:
-Evidence tier: representative | production-candidate
-Use and exact grid:
-Resolution decision:
-Baseline or acceptance target:
-Reviewer: self-review | <independent reviewer>
+Artifact and exact grid:
+Current tier: draft
+Target tier: representative | production-candidate
+Actual reviewer and kind:
+Final proof path:
+Real context:
 ```
 
-## Direction record
+## Direction choice
 
-| Direction | Thesis change | Representative artifact | Verdict and reason |
+| Anonymous sample | Native read | Strongest construction | Losing reason |
 |---|---|---|---|
 | A | | | |
 | B | | | |
 | C | | | |
 
-Selected direction:
+Selected sample:
 
 Useful signature preserved:
 
 Generic element removed:
 
-## Gate record
-
-| Gate | required / conditional / N/A | Evidence | passed / failed / limited |
-|---|---|---|---|
-| Exact grid and PNG parity | required | | |
-| Native 1x silhouette | required | | |
-| Value hierarchy | required | | |
-| Material read | required | | |
-| Focal/gameplay read | required | | |
-| Set or repeated context | conditional | | |
-| Blind title-free read | required | | |
-| Browser proof | required | | |
-
-## Blind read
+## Blind observations
 
 ```text
-Understood subject / orientation / action:
-Material read:
+Subject:
+Orientation / action:
+Material:
 Focal cue:
-Useful signature remembered:
-Set-family read, if applicable:
-Mismatch or ambiguity:
-Repair or acceptance decision:
+Signature remembered:
+Mismatch:
+Per-item reads, if a set:
 ```
 
-## Before / after
+## Proof gates
 
-Baseline:
+| Gate | Evidence | passed / failed |
+|---|---|---|
+| Native silhouette | | |
+| Value hierarchy | | |
+| Material read | | |
+| Focal read | | |
+| Browser proof | | |
+| Set/repeat context, if applicable | | |
 
-Final:
-
-Visible delta:
-
-## Final verdict
-
-```text
-Artifact verdict: win | tie | loss | not-assessed
-Verification state: verified | limited | unverified
-Remaining risk:
-Approval, if production-candidate:
-```
+If any required gate fails, revise the draft. If no authorized reviewer inspected the unlabeled final proof, keep the artifact at `draft`.

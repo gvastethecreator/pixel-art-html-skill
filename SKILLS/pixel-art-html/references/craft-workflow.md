@@ -1,154 +1,97 @@
-# Pixel-art craft workflow
+# Craft passes
 
-Use this reference for text-authored art, manual cleanup after conversion, or critique of an existing master. It distills recurring craft rules from the 62-module SLYNYRD Pixelblog study; the workflow and wording here are original synthesis, not a substitute for the source tutorials.
-
-## Evidence and direction first
-
-Label the artifact `fixture`, `draft`, `representative`, or `production-candidate` before drawing. For recovery or direction-risk quality work, make three same-brief thumbnails before the direction card:
-
-- change shape language, silhouette thesis, or material story, not only palette;
-- keep the grid, subject list, use, and proof context comparable;
-- choose one against native-size readability, useful signature, feasibility, and material potential;
-- preserve one memorable functional move and remove one stock/default construction.
-
-A fixture may be ugly and still useful, but it must never become visual-quality evidence. Read [visual-review.md](visual-review.md) for the full claim boundary.
+Use these passes for text-authored grids, same-grid repair, and manual cleanup after conversion. Keep each checkpoint buildable. Advance only when the current proof works at native 1x.
 
 ## Direction card
 
-Write this before painting cells:
-
 ```text
-Use: icon | sprite | tile | prop | portrait | scene | background
-Grid and display scale:
-Subject, action, and one-sentence read:
-Projection and scale convention:
-Silhouette cue and focal cue:
-Light direction, hardness, and mood:
-Value groups: dark / mid / light / accent
-Palette ramps and shared colors:
-Material or texture cluster grammar:
-Background, padding, and overlap rules:
-Evidence tier and proof claim:
-Selected direction, signature, and subtraction:
+Use and exact grid:
+Subject / orientation / action:
+Projection and scale cue:
+Silhouette thesis and negative gap:
+Light direction and hardness:
+Value jobs: dark / mid / light / accent:
+Material plane and edge grammar:
+Focal cue:
+Useful signature:
+Element to remove:
+Background, padding, and context:
 ```
 
-If a field is unknown, decide it before detail. Projection, light, scale, and palette are scene-wide contracts; changing them late usually creates a patchwork result.
+If these fields cannot fit in a short card, the direction is not yet decided.
 
-## Build in passes
+## BLOCK — silhouette
 
-Keep a buildable spec throughout. Render after every material pass; do not wait until the end to discover that the native-size read failed.
+- Allocate cells to the dominant mass, secondary mass, negative space, and one cue.
+- Start smaller than the canvas. Add edge contact only when the composition needs it.
+- Use a full grid for a unique contour. Keep rectangles and runs as broad scaffolds.
+- Prefer connected clusters and controlled stair steps.
+- Judge one flat foreground color against the actual background.
 
-### 1. Gesture and silhouette
+Pass when a title-free viewer can identify subject, orientation, and pose/action. If the result reads as a generic box, bottle, person, or ship, change the contour before continuing.
 
-- Start smaller than feels necessary. Allocate the canvas to the dominant mass, secondary mass, negative space, and one focal cue.
-- For a character, place the line of action and weight before costume. For architecture, vehicle, or mech, block structural primitives before surface panels. For an organic subject, block the large blob before leaf, fur, or rock marks.
-- Judge the shape as one flat color. The subject must remain identifiable without interior detail.
-- Use asymmetry for action, personality, or a unique landmark. Use symmetry when an asset will repeat or mirror.
+## LIGHT — projection and value
 
-Done when the native 1x silhouette communicates subject, orientation, and pose.
+- Select one frontal, side, top-down, three-quarter, or isometric convention.
+- Use overlap and vertical placement for depth. Detail cannot repair contradictory faces.
+- Assign each color a job. On small grids, begin with dark, base, light, and one accent.
+- Increase value through each ramp and shift hue only when it supports light or material.
+- Reserve the strongest contrast for the focal cue.
+- Place light as connected plane-shaped clusters; avoid a bright center with uniformly dark edges.
 
-### 2. Projection and volume
+Pass when grayscale separates the main planes and focus. If silhouette or value fails twice, reset the direction instead of polishing it.
 
-- Select one projection: frontal, side, 3/4 side, 3/4 top-down, top-down, cabinet-like side view, or isometric 2:1. Apply it to every compatible element.
-- In 3/4 views, clean readable angles beat mathematically delicate perspective. In isometric work, count the 2:1 stair pattern; do not eyeball it.
-- Map hidden edges mentally for buildings, vehicles, and isometric objects. Visible faces should agree on scale and shared corners.
-- Use overlap and vertical placement to show depth. Do not ask detail to repair contradictory geometry.
+## FINISH — material and signature
 
-Done when flat face colors already produce coherent depth.
+Define two to six cluster shapes per important material:
 
-### 3. Value plan and palette ramps
+- metal or glass: clean planes, narrow hard highlights, selective dark seams;
+- cloth, hair, or foliage: one main mass, flow direction, a few subordinate breaks;
+- stone or wood: structural fractures, grain, strata, or chips with quiet gaps;
+- water or clouds: connected rhythm and overlapping light/shadow masses;
+- brick or panels: structural cadence first, sparse wear last.
 
-- Design in HSV/HSB terms: hue identity, saturation intensity, and value/lightness.
-- Assign colors jobs: outline/deep shadow, shadow, base, light, highlight, accent, environment bridge. Reuse colors across nearby materials when the scene allows it.
-- Build each ramp by increasing value. Shift hue along the ramp; a warm-light/cool-shadow drift is a strong default. Keep the brightest colors less saturated unless a hot accent is intentional.
-- Prioritize value separation over extra hues. A large palette is a library; the artifact should use a small sub-palette.
-- Reserve pure white or maximum chroma for the focal point, emissive effects, or critical gameplay information.
+Repeat the vocabulary with controlled variation. Scale detail down with depth. Add the selected signature through construction—cutout, asymmetry, wraparound band, unusual mass—not a floating decal.
 
-Suggested working budgets:
+Pass when material can be named from shape, planes, edges, and highlights without relying on hue.
 
-| Grid/asset | Starting colors | Texture clusters | Information target |
-|---|---:|---:|---|
-| 8x8 | 2-4 | 0-2 | orientation, identity cue, strong outline or separation |
-| 16x16 | 3-8 | 2-3 | silhouette, pose, one material/focal break |
-| 24-32px | 6-16 | 3-5 | secondary form, controlled light, material distinction |
-| 40-64px | 8-24 | 5-6 per major surface | hierarchy plus selective surface detail |
-| compact scene | 8-16 shared colors | by depth plane | focal subject remains above the environment |
+## CUT — native subtraction
 
-These are starting budgets, not hard limits. Add a color only when it creates a new readable job.
+At 1x:
 
-Done when a grayscale read separates silhouette, major planes, and focal point.
+- remove any cell visible only while zoomed;
+- merge near-duplicate colors with no separate job;
+- delete orphan pixels unless they are a deliberate eye, glint, star, spark, or particle;
+- clear tangencies that merge forms;
+- lower detail and contrast away from the focus;
+- compare against the losing baseline or alternate directions.
 
-### 4. Directional light and shadow
+Pass when another removal weakens recognition, material, focus, or the useful signature.
 
-- Establish the source before shading: direction, elevation, hardness, and ambient color.
-- Use at least three functional values on important volumes: shadow, local/base, light. Tiny assets may collapse this to two plus an accent.
-- Place light as connected slabs or clusters on planes facing the source. Place cast shadows consistently across nearby assets.
-- Shape corners with contrast: hard materials can drop a middle edge color; soft materials keep a gentler transition.
-- Match shadow edges to atmosphere: hard in clear or airless scenes, softer and lower contrast in haze.
-- Avoid pillow shading. A bright center with uniformly dark edges describes a sticker, not a lit volume.
+## PROVE — clean surface
 
-Done when removing texture still leaves convincing volume and mood.
+Inspect in this order:
 
-### 5. Material and texture grammar
+1. native 1x;
+2. flat silhouette;
+3. grayscale/value;
+4. 2x and 4x cluster rhythm;
+5. real background, neighboring assets, or 3x repeat;
+6. blind title-free read;
+7. named/provenance view only after observations are recorded.
 
-For every material, define a small cluster vocabulary, then repeat it with controlled variation:
+The deterministic critique reports bounds, cluster count, singleton count, value span, and low-contrast boundaries. These are questions, not grades. A clean report can still describe bad anatomy, generic design, or the wrong material.
 
-- simplify the real detail into clusters;
-- repeat a few cluster shapes instead of inventing every mark;
-- balance dense and quiet areas;
-- vary spacing or hue enough to avoid wallpaper repetition;
-- keep same-color pixels connected when possible;
-- allow isolated pixels only as intentional sparkles, stars, particles, or micro-accents.
+## Repair map
 
-Scale texture with depth. Near surfaces can carry larger, higher-contrast clusters. Distant surfaces use fewer, smaller, lower-contrast marks or none. Never draw every leaf, brick, blade, scale, or muscle.
-
-Useful material cues:
-
-- foliage/clouds: overlapping rounded masses, then light/shadow zones, then a few repeated edge clusters;
-- rock: angular fractures for hard igneous forms, horizontal strata for sedimentary forms, folded veins for metamorphic forms;
-- brick/walls: grout and structural rhythm first, selective aging last; leave quiet gaps;
-- metal/mech: large clean planes, edge highlights, accent stripes that wrap the volume;
-- food: warm appetizing local colors, distinct ingredient signatures, readable outline or cluster separation;
-- water: connected wave or blob rhythm, brighter surface crests, reflection colors pulled toward the water ramp;
-- hair/fabric: one mass and flow lines first, separated locks/folds only where they reinforce motion.
-
-Done when the material reads from its cluster rhythm, not from noisy single pixels.
-
-### 6. Focus and subtraction
-
-- Protect one dominant read and one focal cue. A secondary cue must support rather than compete.
-- Put the strongest value/chroma contrast at the focus. Lower contrast and detail away from it.
-- Remove details that only become visible while zoomed in. If a detail does not improve identity, material, depth, mood, or gameplay readability, delete it.
-- Blend outlines toward adjacent ramps instead of surrounding every form with straight black. Keep stronger outlines where separation or gameplay demands them.
-- Recheck transparent edges, repeated motifs, tangencies, accidental edge contact, and inconsistent shadow lengths.
-
-Done when subtraction no longer improves the 1x read.
-
-### 7. Proof, not decoration
-
-Inspect the final HTML and PNG through all of these views:
-
-1. Native 1x: identity, pose, focus, and scale.
-2. 2x and 4x: cluster shapes, stair-step rhythm, edge cleanup.
-3. Flat silhouette: structure without interior rendering.
-4. Grayscale/value: plane and focus separation.
-5. Repeated context for tiles/props: seams, obvious motifs, visual fatigue.
-6. Neighbor context for game assets: collision silhouette, overlap, HUD/background competition.
-
-The deterministic critique report is a risk detector only. A clean report does not certify good art; a warning must be inspected in context because a star, eye highlight, or particle may be an intentional singleton.
-
-## Common failure repairs
-
-| Symptom | Likely source | Repair |
+| Symptom | Return to | Change |
 |---|---|---|
-| Valid but generic/blocky | rectangles survived past scaffold | reshape silhouette with a local grid or motif stamps before detail |
-| Recognizable but forgettable | first feasible direction was accepted | compare three shape/material theses, preserve one useful signature, remove one stock cue |
-| Muddy despite many colors | weak value jobs, excess near-duplicates | merge colors, widen dark/mid/light separation, reserve accent |
-| Flat volume | light direction undefined or pillow shading | choose one source and rebuild plane-facing clusters |
-| Noisy surface | unique marks and orphan pixels | reduce to 2-6 repeatable cluster motifs with quiet gaps |
-| Scene feels inconsistent | mixed projection, scale, ramps, or shadow rules | restate the scene contract and normalize every asset |
-| Character feels stiff | costume painted before gesture | return to line of action, weight, and large body masses |
-| Tiny asset unreadable | realistic proportions/details exceed grid | enlarge identity cue, simplify anatomy, remove secondary detail |
-| Converted image looks like a thumbnail | quantization preserved source noise | manually repixelize silhouette, value groups, and material clusters |
-| Tile repetition obvious | landmark-like motif repeats or edges do not loop | neutralize the base, overlap edges, add restrained variants, test 3x3 |
-| Background competes with subject | equal contrast/detail at every depth | lower distant contrast/saturation and remove fine clusters |
+| valid but generic | STUDY / BLOCK | choose a different silhouette thesis; preserve one specific construction |
+| recognizable only by title | BLOCK | enlarge the identity cue and negative gap |
+| muddy despite many colors | LIGHT | merge colors and widen value jobs |
+| flat volume | LIGHT | choose one source and rebuild plane clusters |
+| wrong material | FINISH | change plane, edge, and highlight grammar |
+| noisy | FINISH / CUT | reduce to reusable clusters and quiet gaps |
+| tiny conversion looks like a thumbnail | BLOCK | author a same-grid repair; remove sampled micro-detail |
+| tile repeats visibly | FINISH / PROVE | neutralize the base, fix edges, move landmarks to variants |
+| set looks coherent but interchangeable | STUDY / BLOCK | strengthen item-specific silhouette cues |

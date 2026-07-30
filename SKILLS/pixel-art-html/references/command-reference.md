@@ -10,7 +10,7 @@
 
 ## Prerequisites
 
-- Run the dependency-free `from-spec`, `repair`, `collection`, `pack`, `validate`, `critique`, and `hub` commands with Python.
+- Run the dependency-free `from-spec`, `study`, `repair`, `collection`, `pack`, `promote`, `validate`, `critique`, and `hub` commands with Python.
 - Run local image conversion and the small-grid benchmark with Pillow. `uv run --with pillow==11.0.0` keeps that dependency local to the command.
 - Use `--output` for an unindexed scratch artifact. Use `--project-root` plus `--slug` for a managed project iteration.
 
@@ -27,6 +27,14 @@ Iterative scratch build:
 ```bash
 python <skill-dir>/scripts/build_pixel_art.py from-spec <spec.json> --output <scratch-output>
 ```
+
+Three-way same-grid direction study:
+
+```bash
+python <skill-dir>/scripts/build_pixel_art.py study <a.json> <b.json> <c.json> --output <study-output> --title "Direction study"
+```
+
+Open `<study-output>/blind.html` before the named overview. The command requires exactly three materially different draft grids with identical dimensions.
 
 Image route; local Pillow dependency, no model API:
 
@@ -64,6 +72,14 @@ Same-size or mixed-size asset pack:
 python <skill-dir>/scripts/build_pixel_art.py pack <potion.json> <key.json> <shield.json> <crystal.json> --project-root <project> --slug pickups --title "RPG pickups"
 ```
 
+Promote one artifact or a complete pack/collection after blind review:
+
+```bash
+python <skill-dir>/scripts/build_pixel_art.py promote <draft-output> <review-input.json> --tier representative
+```
+
+Use `--tier production-candidate` only with an owner review. Authoring commands reject promoted tiers. See [visual-review.md](visual-review.md) for the review schema and set-level item observations.
+
 Deterministic recovery benchmark:
 
 ```bash
@@ -99,7 +115,18 @@ Single artifact:
 index.html
 pixel-art.json
 pixel-art.png
-visual-review.md  # required beside representative / production-candidate evidence
+visual-review.json  # generated only after reviewed promotion
+```
+
+Direction study:
+
+```text
+index.html
+blind.html
+manifest.json
+sample-a/{index.html,pixel-art.json,pixel-art.png}
+sample-b/{index.html,pixel-art.json,pixel-art.png}
+sample-c/{index.html,pixel-art.json,pixel-art.png}
 ```
 
 Resolution collection:
@@ -123,4 +150,6 @@ manifest.json
 <asset-slug>/{index.html,pixel-art.json,pixel-art.png}
 ```
 
-Managed mode also writes `iteration.json` and regenerates `pixel-art/catalog.json` plus `pixel-art/index.html`; read [project-library.md](project-library.md) for that contract. Every proof HTML remains standalone and network-free. `pixel-art.json` is the canonical editable grid; `pixel-art.png` is its nearest-neighbor preview/export, and validation proves its dimensions and every RGBA cell still match the canonical grid. A repair artifact also embeds its exact baseline grid, authored decisions, and recomputed delta evidence. The proof page displays the declared evidence tier so a fixture or draft cannot masquerade as accepted art.
+A promoted collection or pack also has a root `visual-review.json` and one bound `visual-review.json` inside every child directory.
+
+Managed mode also writes `iteration.json` and regenerates `pixel-art/catalog.json` plus `pixel-art/index.html`; read [project-library.md](project-library.md) for that contract. Every proof HTML remains standalone and network-free. `pixel-art.json` is the canonical editable grid; `pixel-art.png` is its nearest-neighbor preview/export, and validation proves its dimensions and every RGBA cell still match the canonical grid. A repair artifact also embeds its exact baseline grid, authored decisions, and recomputed delta evidence. A promoted output additionally proves that its review fingerprints still match the final grid.
