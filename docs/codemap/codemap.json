@@ -1,0 +1,283 @@
+{
+  "generated_at": "2026-08-15T06:22:40Z",
+  "generated_from_commit": "c7200d5fcb3e842c655bf7d741f78c903bd65cc5",
+  "scope": [
+    "."
+  ],
+  "nodes": [
+    {
+      "id": "external-dependencies",
+      "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+      "role": "Represents external packages referenced by tracked source files.",
+      "type": "external",
+      "boundary": "External",
+      "entrypoints": [
+        "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py:__future__"
+      ],
+      "tests": [],
+      "constraints": [
+        "Only dependencies with literal tracked-source references appear here."
+      ],
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+            "symbol": "__future__"
+          }
+        ]
+      }
+    },
+    {
+      "id": "repository",
+      "path": "README.md",
+      "role": "Owns the tracked files for the repository module.",
+      "type": "module",
+      "boundary": "Repository",
+      "entrypoints": [
+        "README.md:Shipped examples"
+      ],
+      "tests": [],
+      "constraints": [
+        "This baseline uses tracked source and explicit dependency references only."
+      ],
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "README.md",
+            "symbol": "Shipped examples"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scripts",
+      "path": "scripts",
+      "role": "Owns the tracked files for the scripts module.",
+      "type": "service",
+      "boundary": "Scripts",
+      "entrypoints": [
+        "scripts/run-pixel-art-tests.py:main"
+      ],
+      "tests": [],
+      "constraints": [
+        "This baseline uses tracked source and explicit dependency references only."
+      ],
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "scripts/run-pixel-art-tests.py",
+            "symbol": "main"
+          }
+        ]
+      }
+    },
+    {
+      "id": "skills",
+      "path": "SKILLS",
+      "role": "Owns the tracked files for the SKILLS module.",
+      "type": "module",
+      "boundary": "Skills",
+      "entrypoints": [
+        "SKILLS/pixel-art-html/SKILL.md:Pixel Art HTML"
+      ],
+      "tests": [],
+      "constraints": [
+        "This baseline uses tracked source and explicit dependency references only."
+      ],
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "SKILLS/pixel-art-html/SKILL.md",
+            "symbol": "Pixel Art HTML"
+          }
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "repository",
+      "to": "scripts",
+      "type": "calls",
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "package.json",
+            "symbol": "scripts/validate-skill-pack.mjs"
+          },
+          {
+            "path": "package.json",
+            "symbol": "scripts/run-pixel-art-tests.py"
+          }
+        ]
+      }
+    },
+    {
+      "from": "repository",
+      "to": "skills",
+      "type": "reads",
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/pixel-art-html/SKILL.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/pixel-art-html/references/command-reference.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/pixel-art-html/references/artifact-schema.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/pixel-art-html/references/craft-workflow.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/pixel-art-html/references/subject-recipes.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/pixel-art-html/references/image-source-brief.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/pixel-art-html/references/source-recovery.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/pixel-art-html/references/project-library.md"
+          }
+        ]
+      }
+    },
+    {
+      "from": "scripts",
+      "to": "external-dependencies",
+      "type": "imports",
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "scripts/run-pixel-art-tests.py",
+            "symbol": "__future__"
+          },
+          {
+            "path": "scripts/run-pixel-art-tests.py",
+            "symbol": "pathlib"
+          },
+          {
+            "path": "scripts/run-pixel-art-tests.py",
+            "symbol": "argparse"
+          },
+          {
+            "path": "scripts/run-pixel-art-tests.py",
+            "symbol": "importlib.util"
+          },
+          {
+            "path": "scripts/run-pixel-art-tests.py",
+            "symbol": "sys"
+          },
+          {
+            "path": "scripts/run-pixel-art-tests.py",
+            "symbol": "unittest"
+          }
+        ]
+      }
+    },
+    {
+      "from": "skills",
+      "to": "external-dependencies",
+      "type": "imports",
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+            "symbol": "__future__"
+          },
+          {
+            "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+            "symbol": "collections"
+          },
+          {
+            "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+            "symbol": "io"
+          },
+          {
+            "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+            "symbol": "pathlib"
+          },
+          {
+            "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+            "symbol": "statistics"
+          },
+          {
+            "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+            "symbol": "types"
+          },
+          {
+            "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+            "symbol": "typing"
+          },
+          {
+            "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+            "symbol": "PIL"
+          }
+        ]
+      }
+    }
+  ],
+  "flows": [
+    {
+      "trigger": "Tracked reference package.json:scripts/validate-skill-pack.mjs",
+      "steps": [
+        "repository",
+        "scripts",
+        "external-dependencies"
+      ],
+      "outcome": "The verified dependency path reaches external-dependencies through 2 step(s)."
+    },
+    {
+      "trigger": "Tracked reference README.md:./SKILLS/pixel-art-html/SKILL.md",
+      "steps": [
+        "repository",
+        "skills",
+        "external-dependencies"
+      ],
+      "outcome": "The verified dependency path reaches external-dependencies through 2 step(s)."
+    },
+    {
+      "trigger": "Tracked reference package.json:scripts/validate-skill-pack.mjs to scripts",
+      "steps": [
+        "repository",
+        "scripts"
+      ],
+      "outcome": "The verified dependency path reaches scripts through 1 step(s)."
+    },
+    {
+      "trigger": "Tracked reference README.md:./SKILLS/pixel-art-html/SKILL.md to skills",
+      "steps": [
+        "repository",
+        "skills"
+      ],
+      "outcome": "The verified dependency path reaches skills through 1 step(s)."
+    },
+    {
+      "trigger": "Tracked reference scripts/run-pixel-art-tests.py:__future__",
+      "steps": [
+        "scripts",
+        "external-dependencies"
+      ],
+      "outcome": "The verified dependency path reaches external-dependencies through 1 step(s)."
+    }
+  ]
+}

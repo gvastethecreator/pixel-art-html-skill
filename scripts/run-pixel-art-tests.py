@@ -23,8 +23,8 @@ def main() -> int:
 
     if args.profile == "full" and not pillow_available():
         print("Full image test profile unavailable: Pillow is not installed.", file=sys.stderr)
-        print("Install the declared dependency with `python -m pip install pillow==11.0.0`, then rerun `npm run test:full`.", file=sys.stderr)
-        print("`npm run test:core` remains a complete dependency-free gate.", file=sys.stderr)
+        print("Install the declared dependency with `python -m pip install pillow==12.3.0`, then rerun `pnpm run test:full`.", file=sys.stderr)
+        print("`pnpm run test:core` remains a complete dependency-free gate.", file=sys.stderr)
         return 2
 
     selected = cases if args.profile == "full" else [case for case in cases if case not in image_cases]

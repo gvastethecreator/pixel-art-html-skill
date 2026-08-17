@@ -1169,7 +1169,7 @@ def artifact_from_image(args: argparse.Namespace) -> dict[str, Any]:
     try:
         from PIL import Image
     except ImportError as exc:
-        raise ArtifactError("Pillow is required for from-image. Run with: uv run --with pillow==11.0.0 python ...") from exc
+        raise ArtifactError("Pillow is required for from-image. Run with: uv run --with pillow==12.3.0 python ...") from exc
 
     width = checked_dimension(args.width or args.size, "width")
     height = checked_dimension(args.height or args.size, "height")

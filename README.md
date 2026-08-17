@@ -1,8 +1,33 @@
-# Pixel Art HTML
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/header/document.svg?title=Pixel+Art+HTML&subtitle=Craft+the+grid.+Prove+every+cell.&logo=grid3x3&theme=red&align=center&mode=dark" />
+    <img alt="Pixel Art HTML — craft the grid and prove every cell" src="https://shieldcn.dev/header/document.svg?title=Pixel+Art+HTML&subtitle=Craft+the+grid.+Prove+every+cell.&logo=grid3x3&theme=red&align=center&mode=light" />
+  </picture>
+</p>
+
+<p align="center">
+  <a href="https://github.com/gvastethecreator/pixel-art-html-skill/actions/workflows/ci.yml"><img alt="CI status" src="https://shieldcn.dev/github/ci/gvastethecreator/pixel-art-html-skill.svg?workflow=ci&branch=main&variant=secondary&size=xs" /></a>
+  <a href="https://gvastethecreator.github.io/pixel-art-html-skill/"><img alt="Project site" src="https://shieldcn.dev/badge/site-proof%20workbench-b33b2e.svg?logo=githubpages&variant=branded&size=xs" /></a>
+  <a href="https://www.python.org/"><img alt="Python 3.11 or newer" src="https://shieldcn.dev/badge/Python-3.11%2B-3776ab.svg?logo=python&variant=secondary&size=xs" /></a>
+  <a href="https://skills.sh/gvastethecreator/pixel-art-html-skill/pixel-art-html"><img alt="Skills CLI" src="https://shieldcn.dev/badge/install-Skills%20CLI-343434.svg?variant=secondary&size=xs" /></a>
+  <a href="LICENSE"><img alt="MIT license" src="https://shieldcn.dev/github/license/gvastethecreator/pixel-art-html-skill.svg?variant=secondary&size=xs" /></a>
+</p>
 
 > Codex skill for creating exact-grid pixel art and self-contained HTML artifact libraries without calling a model API.
 
 Pixel Art HTML turns text-authored grids, local images, or accepted Codex ImageGen outputs into deterministic JSON, PNG, and standalone HTML. Its craft loop builds silhouette, projection, value, light, palette, and material clusters before detail. Managed builds are stored as chronological project iterations and automatically indexed in a dark, local-first gallery.
+
+[Project site](https://gvastethecreator.github.io/pixel-art-html-skill/) · [Skill workflow](./SKILLS/pixel-art-html/SKILL.md) · [Contributing](./CONTRIBUTING.md) · [Sponsor](https://github.com/sponsors/gvastethecreator)
+
+## Shipped examples
+
+These are committed skill fixtures, not newly generated maintenance art.
+
+| Cursed potion | Hook key |
+| --- | --- |
+| ![Cursed red potion rendered on its exact pixel grid](docs/assets/examples/cursed-potion.png) | ![Angular gold hook key rendered on its exact pixel grid](docs/assets/examples/hook-key.png) |
+| **Automatic 16×16 recovery** | **Authored 16×16 repair** |
+| ![Automatic small-grid potion recovery](docs/assets/examples/automatic-16.png) | ![Authored small-grid potion repair with a clearer silhouette](docs/assets/examples/authored-16.png) |
 
 - Build single images or deliberate multi-resolution sets from 8x8 through 128x128.
 - Classify exact-grid, pseudo-pixel, and painterly sources before conversion, then record the detector, confidence, inferred lattice, and applied reconstruction in canonical metadata.
@@ -48,13 +73,13 @@ Open `direction-study/blind.html` before the named overview.
 Convert an image into the recommended resolution ladder:
 
 ```powershell
-uv run --with pillow==11.0.0 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py from-image .\source.png --project-root . --slug character-set --sizes all
+uv run --with pillow==12.3.0 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py from-image .\source.png --project-root . --slug character-set --sizes all
 ```
 
 For very small runtime grids, request them explicitly and treat every result as a repair draft:
 
 ```powershell
-uv run --with pillow==11.0.0 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py from-image .\source.png --output .\small-grid-drafts --sizes 8,16,24,32 --colors 8 --reconstruction auto
+uv run --with pillow==12.3.0 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py from-image .\source.png --output .\small-grid-drafts --sizes 8,16,24,32 --colors 8 --reconstruction auto
 ```
 
 The proof page shows the source class, detection confidence, inferred source lattice, reconstruction route, and a toggleable recovered-lattice overlay. `auto` preserves an exact matching lattice with nearest-neighbor sampling and otherwise uses two-stage target packing. It does not turn an 8x8 draft into authored art; repair silhouette and identity cues per size.
@@ -95,20 +120,20 @@ python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py pack .\potion.json .\k
 Node 20 or newer and Python 3.11 or newer are recommended:
 
 ```powershell
-npm run check:core
+pnpm run check:core
 ```
 
-`check:core` validates the pack and runs the 33 dependency-free tests. `test:full` and `check:full` require Pillow and run all 42 tests; they stop with an install command when Pillow is missing instead of silently reporting a partial gate. CI installs `pillow==11.0.0` and runs `check:full` on Windows and Ubuntu.
+`check:core` validates the pack and runs the 33 dependency-free tests. `test:full` and `check:full` require Pillow and run all 42 tests; they stop with an install command when Pillow is missing instead of silently reporting a partial gate. CI installs `pillow==12.3.0` and runs `check:full` on Windows and Ubuntu.
 
 ```powershell
-python -m pip install pillow==11.0.0
-npm run check:full
+python -m pip install pillow==12.3.0
+pnpm run check:full
 ```
 
 Run the deterministic recovery benchmark separately when changing classification or image packing:
 
 ```powershell
-uv run --with pillow==11.0.0 python .\SKILLS\pixel-art-html\scripts\benchmark_small_grids.py --output .\.scratch\small-grid-benchmark
+uv run --with pillow==12.3.0 python .\SKILLS\pixel-art-html\scripts\benchmark_small_grids.py --output .\.scratch\small-grid-benchmark
 ```
 
 The image-conversion test runs when Pillow is installed; all other tests use the Python standard library.
@@ -141,3 +166,7 @@ Preview skill pack. The deterministic spec and HTML paths are dependency-free; i
 ## License
 
 [MIT](./LICENSE)
+
+## Support
+
+Support continued maintenance through [GitHub Sponsors](https://github.com/sponsors/gvastethecreator) or [Ko-fi](https://ko-fi.com/gvaste).

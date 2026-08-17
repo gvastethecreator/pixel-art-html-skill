@@ -77,7 +77,7 @@ If the subject cannot read after subtraction, change the crop, pose, or source d
 ## 5. Run the deterministic reconstruction benchmark
 
 ```bash
-uv run --with pillow==11.0.0 python <skill-dir>/scripts/benchmark_small_grids.py --output <benchmark-output>
+uv run --with pillow==12.3.0 python <skill-dir>/scripts/benchmark_small_grids.py --output <benchmark-output>
 ```
 
 The benchmark authors known masters at 8, 16, 24, and 32 cells, applies deterministic nearest, fractional, soft, affine-drift, noise, and JPEG degradations, and compares `legacy` with `two-stage`. It writes:
