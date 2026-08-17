@@ -2,6 +2,7 @@
   "name": "pixel-art-html-skill",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.21.0",
   "description": "Codex skill for deterministic pixel-art conversion and standalone HTML artifact libraries.",
   "type": "module",
   "engines": {
@@ -9,11 +10,11 @@
   },
   "scripts": {
     "validate": "node scripts/validate-skill-pack.mjs",
-    "test": "npm run test:full",
+    "test": "python scripts/run-pixel-art-tests.py --profile full",
     "test:core": "python scripts/run-pixel-art-tests.py --profile core",
     "test:full": "python scripts/run-pixel-art-tests.py --profile full",
-    "check:core": "npm run validate && npm run test:core",
-    "check:full": "npm run validate && npm run test:full",
-    "check": "npm run check:full"
+    "check:core": "node scripts/validate-skill-pack.mjs && python scripts/run-pixel-art-tests.py --profile core",
+    "check:full": "node scripts/validate-skill-pack.mjs && python scripts/run-pixel-art-tests.py --profile full",
+    "check": "node scripts/validate-skill-pack.mjs && python scripts/run-pixel-art-tests.py --profile full"
   }
 }

@@ -11,7 +11,7 @@
 ## Prerequisites
 
 - Run the dependency-free `from-spec`, `study`, `repair`, `collection`, `pack`, `promote`, `validate`, `critique`, and `hub` commands with Python.
-- Run local image conversion and the small-grid benchmark with Pillow. `uv run --with pillow==11.0.0` keeps that dependency local to the command.
+- Run local image conversion and the small-grid benchmark with Pillow. `uv run --with pillow==12.3.0` keeps that dependency local to the command.
 - Use `--output` for an unindexed scratch artifact. Use `--project-root` plus `--slug` for a managed project iteration.
 
 ## Build And Repair Commands
@@ -39,19 +39,19 @@ Open `<study-output>/blind.html` before the named overview. The command requires
 Image route; local Pillow dependency, no model API:
 
 ```bash
-uv run --with pillow==11.0.0 python <skill-dir>/scripts/build_pixel_art.py from-image <image> --project-root <project> --slug <request-slug> --size 32 --colors 16 --fit contain --dither none --background transparent --evidence-tier draft
+uv run --with pillow==12.3.0 python <skill-dir>/scripts/build_pixel_art.py from-image <image> --project-root <project> --slug <request-slug> --size 32 --colors 16 --fit contain --dither none --background transparent --evidence-tier draft
 ```
 
 Small-grid recovery ladder from the same original source:
 
 ```bash
-uv run --with pillow==11.0.0 python <skill-dir>/scripts/build_pixel_art.py from-image <image> --output <scratch-output> --sizes 8,16,24,32 --colors 8 --source-class auto --reconstruction auto
+uv run --with pillow==12.3.0 python <skill-dir>/scripts/build_pixel_art.py from-image <image> --output <scratch-output> --sizes 8,16,24,32 --colors 8 --source-class auto --reconstruction auto
 ```
 
 Full image-derived resolution set:
 
 ```bash
-uv run --with pillow==11.0.0 python <skill-dir>/scripts/build_pixel_art.py from-image <image> --project-root <project> --slug <request-slug> --sizes all --colors 16 --fit contain --dither none --background transparent
+uv run --with pillow==12.3.0 python <skill-dir>/scripts/build_pixel_art.py from-image <image> --project-root <project> --slug <request-slug> --sizes all --colors 16 --fit contain --dither none --background transparent
 ```
 
 Authored same-grid repair from one canonical draft:
@@ -83,7 +83,7 @@ Use `--tier production-candidate` only with an owner review. Authoring commands 
 Deterministic recovery benchmark:
 
 ```bash
-uv run --with pillow==11.0.0 python <skill-dir>/scripts/benchmark_small_grids.py --output <benchmark-output>
+uv run --with pillow==12.3.0 python <skill-dir>/scripts/benchmark_small_grids.py --output <benchmark-output>
 ```
 
 ## Inspect And Maintain Outputs
