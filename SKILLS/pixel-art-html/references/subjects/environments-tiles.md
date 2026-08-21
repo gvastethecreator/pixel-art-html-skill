@@ -4,7 +4,7 @@
 
 - Establish depth bands through value, saturation, scale, overlap, and vertical position.
 - Define a small cluster vocabulary for each material and one quiet-area rule.
-- A tile base must be neutral enough to repeat; landmarks belong in sparse variants or overlays.
+- A tile base must be neutral enough to repeat. Landmarks belong in sparse variants or overlays.
 - Backgrounds serve the focal subject. Lower distant contrast and cluster density.
 
 ## Build
@@ -17,10 +17,10 @@
 
 ## Reject
 
-- homogeneous noise or unique marks everywhere;
-- isolated pixels used as general texture;
-- one high-contrast landmark repeated in every tile;
-- seams, dominant crosses, or accidental diagonals in 3x context;
-- equal detail and contrast across all depth planes;
-- water, foliage, rock, or brick distinguished only by hue;
-- mechanically downscaled backgrounds whose clusters no longer match depth.
+- homogeneous noise or unique marks everywhere
+- isolated pixels used as general texture
+- one high-contrast landmark repeated in every tile
+- seams, dominant crosses, or accidental diagonals in 3x context
+- equal detail and contrast across all depth planes
+- water, foliage, rock, or brick distinguished only by hue
+- mechanically downscaled backgrounds whose clusters no longer match depth

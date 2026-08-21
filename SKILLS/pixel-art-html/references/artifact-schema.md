@@ -43,22 +43,22 @@ Author a JSON object. Dimensions must be integers from 8 through 128.
 
 - `title`: optional label.
 - `width`, `height`: required unless both default to 32.
-- `evidence_tier`: authoring accepts only `fixture` or `draft` and defaults to `draft`. `representative` and `production-candidate` are written only by the reviewed `promote` command.
-- `art_direction`: optional string-to-string direction card preserved in canonical source metadata. Record use, projection, light, focus, or other proof-relevant decisions.
+- `evidence_tier`: authoring accepts only `fixture` or `draft`; defaults to `draft`. `representative` and `production-candidate` are written only by the reviewed `promote` command.
+- `art_direction`: optional string-to-string direction card in canonical source metadata. Record use, projection, light, focus, or other proof-relevant decisions.
 - `background`: `null`, `.`, `transparent`, a palette alias, or `#RGB`/`#RRGGBB`.
 - `palette`: alias-to-color object. Aliases keep specs compact.
-- `grid`: optional full grid. Each row may be a compact character string, a whitespace-separated string, or a JSON array. Compact rows require one-character palette aliases and are ideal for unique silhouettes; `"....iill...."` is twelve cells. Use `.`, `..`, `null`, or `transparent` for clear cells.
+- `grid`: optional full grid. Rows: compact character string, whitespace-separated string, or JSON array. Compact rows need one-character aliases; suit unique silhouettes. `"....iill...."` is twelve cells. Clear cells: `.`, `..`, `null`, or `transparent`.
 - `rects`: filled rectangles with `x`, `y`, `width`, `height`, `color`.
 - `runs`: horizontal runs with `x`, `y`, `length`, `color`.
-- `motifs`: reusable local cluster patterns. Each value is an equal-width row list; rows may be whitespace-separated strings, compact one-character strings, or JSON arrays. A row string that exactly matches a semantic palette alias is one cell, so a one-column motif may use `"grass"`; use arrays to remove ambiguity. Clear tokens are transparent/no-op inside a motif.
-- `stamps`: motif placements with `motif`, `x`, and `y`; optional `flip_x`, `flip_y`, and `map` recolor aliases while preserving cluster topology.
+- `motifs`: reusable local cluster patterns. Each value is an equal-width row list: whitespace-separated strings, compact one-character strings, or JSON arrays. A row string that exactly matches a semantic palette alias is one cell, so a one-column motif can use `"grass"`. Use arrays to remove ambiguity. Clear tokens are transparent/no-op inside a motif.
+- `stamps`: motif placements with `motif`, `x`, and `y`. Optional `flip_x`, `flip_y`, and `map` recolor aliases while preserving cluster topology.
 - `pixels`: individual cells with `x`, `y`, `color`.
 
-Apply order: background, `grid`, `rects`, `runs`, `stamps`, `pixels`. Later operations overwrite earlier cells. All coordinates are zero-based. A clear motif cell leaves the earlier layer unchanged.
+Apply order: background, `grid`, `rects`, `runs`, `stamps`, `pixels`. Later ops overwrite earlier cells. Coordinates are zero-based. A clear motif cell leaves the earlier layer unchanged.
 
-Use rectangles and runs for scaffolding and broad planes. Use motifs for repeated foliage, clouds, brick chips, foam, lights, panel marks, or other coherent cluster grammar. Use a full grid when the silhouette needs one-off local control; do not force a complex subject into rectangles.
+Rectangles and runs for scaffolding and broad planes. Motifs for repeated foliage, clouds, brick chips, foam, lights, panel marks, or other coherent cluster grammar. Silhouette needing one-off local control: use a full grid. Do not force a complex subject into rectangles.
 
-The compiler emits canonical JSON with a complete `grid` of `#RRGGBB` or `null` cells, the authored evidence tier, source metadata, derived proof intent, and a deterministic `quality` risk report. `proofs.repeat_3x` is true only when `art_direction.use` identifies a tile, tileset, texture, or seamless master. Do not hand-author canonical output when a compact source spec is easier to review. The report is diagnostic and never a semantic quality score.
+Compiler emits canonical JSON with a complete `grid` of `#RRGGBB` or `null` cells, plus authored evidence tier, source metadata, derived proof intent, and a deterministic `quality` risk report. `proofs.repeat_3x` is true only if `art_direction.use` identifies a tile, tileset, texture, or seamless master. If a compact source spec is easier to review, do not hand-author canonical output. The report is diagnostic, never a semantic quality score.
 
 Image-derived canonical output also records:
 
@@ -83,7 +83,7 @@ Image-derived canonical output also records:
 }
 ```
 
-`analysis` is diagnostic provenance. Its inferred source grid never changes the requested runtime dimensions, and neither detector confidence nor reconstruction fidelity promotes an artifact beyond its declared evidence tier. `manual_repair_required` is true for image-derived 8x8/16x16 output unless an exact matching source lattice was preserved; the proof page surfaces the requirement as a review warning. An optional external detector is recorded by stable detector/mode/result metadata; executable paths are never serialized.
+`analysis` is diagnostic provenance. Its inferred source grid never changes requested runtime dimensions. Detector confidence and reconstruction fidelity do not promote an artifact beyond its declared evidence tier. `manual_repair_required` is true for image-derived 8x8/16x16 unless an exact matching source lattice was preserved. Proof page surfaces that as a review warning. Optional external detector: stable detector/mode/result metadata. Never serialize executable paths.
 
 ## Authored repair specs
 
@@ -105,20 +105,20 @@ Use the normal spec fields plus three mandatory decisions:
 }
 ```
 
-Compile it with `repair <canonical-baseline.json> <repair-spec.json>`. Dimensions default to the baseline but may never differ. The canonical repair source records `kind: manual-repair`, `manual_repair_status: authored-review-required`, full baseline grid/palette, the decisions, original analysis when present, and exact delta evidence. Validation recomputes the baseline palette, dimensions, subject cells, changed cells, repaired subject cells, proof intents, and status so edited metadata cannot fake the comparison.
+Compile with `repair <canonical-baseline.json> <repair-spec.json>`. Dimensions default to the baseline but must never differ. Canonical repair source records `kind: manual-repair`, `manual_repair_status: authored-review-required`, full baseline grid/palette, the decisions, original analysis if present, and exact delta evidence. Validation recomputes baseline palette, dimensions, subject cells, changed cells, repaired subject cells, proof intents, and status. Edited metadata cannot fake the comparison.
 
-Canonical palette arrays follow first raster appearance, not source declaration order. Compare palette sets or semantic source aliases when order is not itself part of the test.
+Canonical palette arrays follow first raster appearance, not source declaration order. If order is not part of the test, compare palette sets or semantic source aliases.
 
 ## Resolution collections
 
-Recommended square masters: `16`, `24`, `32`, `40`, `48`, and `64`. Single artifacts may use any width and height from 8 through 128.
+Recommended square masters: `16`, `24`, `32`, `40`, `48`, and `64`. Single artifacts: any width and height from 8 through 128.
 
-- Image input: pass `--sizes all` or a comma-separated list. Convert each target directly from the original image. `--reconstruction auto` preserves a trustworthy exact lattice only when it matches the target and otherwise uses two-stage target packing; use `legacy` only for comparison.
+- Image input: pass `--sizes all` or a comma-separated list. Convert each target directly from the original image. `--reconstruction auto` preserves a trustworthy exact lattice only if it matches the target. Otherwise it uses two-stage target packing. Use `legacy` only for comparison.
 - Text input: author one spec per target size, then pass the files to `collection`.
 - Keep subject identity, pose, palette roles, and framing coherent across the set.
 - Change detail density intentionally. Do not mechanically cascade from the largest grid.
 
-The collection compiler writes `manifest.json`, a standalone comparison `index.html`, and one exact artifact directory per dimension.
+Collection compiler writes `manifest.json`, a standalone comparison `index.html`, and one exact artifact directory per dimension.
 
 ## Direction studies
 
@@ -133,20 +133,20 @@ sample-b/{index.html,pixel-art.json,pixel-art.png}
 sample-c/{index.html,pixel-art.json,pixel-art.png}
 ```
 
-The named overview preserves full direction metadata. The separate blind payload contains only anonymous labels, dimensions, background, palette, and exact grids. Validation proves that the blind grids still match the three children.
+Named overview preserves full direction metadata. Blind payload: anonymous labels, dimensions, background, palette, and exact grids. Validation proves blind grids still match the three children.
 
 ## Asset packs
 
-Use `pack` when related artifacts share a resolution or when item identity matters more than a resolution ladder. Each spec remains an independent master with its own title, direction card, canonical grid, PNG, and exact proof. The pack compiler derives Unicode-safe, accent-normalized stable item folders from titles and adds numeric suffixes only when titles collide.
+Use `pack` if related artifacts share a resolution, or if item identity matters more than a resolution ladder. Each spec remains an independent master with its own title, direction card, canonical grid, PNG, and exact proof. Pack compiler derives Unicode-safe, accent-normalized stable item folders from titles; numeric suffixes only if titles collide.
 
 ```bash
 python scripts/build_pixel_art.py pack potion.json key.json shield.json crystal.json --output pickup-pack --title "RPG pickups"
 ```
 
-The pack writes a `kind: pack` manifest and a standalone overview. Same dimensions are expected; shared projection, lighting, palette roles, baseline, and padding must be reviewed as a set-level contract.
+Pack writes a `kind: pack` manifest and a standalone overview. Same dimensions expected. Shared projection, lighting, palette roles, baseline, and padding must be reviewed as a set-level contract.
 
 ## Promoted review record
 
-`promote` changes a validated draft to `representative` or `production-candidate` only after a valid blind review. The generated `visual-review.json` stores reviewer authority, observations, passed gates, the promoted tier, and SHA-256 fingerprints over width, height, background, palette, and exact grid.
+`promote` changes a validated draft to `representative` or `production-candidate` only after a valid blind review. Generated `visual-review.json` stores reviewer authority, observations, passed gates, the promoted tier, and SHA-256 fingerprints over width, height, background, palette, and exact grid.
 
-For a single artifact the fingerprint key is `pixel-art.json`. For a pack or collection the root keys are `<item-path>/pixel-art.json`, every item has a bound child record, and the review input must include one observation per item path. The record is generated, not hand-authored; later grid drift fails validation.
+Single artifact fingerprint key: `pixel-art.json`. Pack or collection root keys: `<item-path>/pixel-art.json`. Every item has a bound child record. Review input must include one observation per item path. The record is generated, not hand-authored. Later grid drift fails validation.

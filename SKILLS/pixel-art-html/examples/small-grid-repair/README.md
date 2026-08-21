@@ -1,6 +1,6 @@
 # Small-grid repair draft case study
 
-This case keeps the real automatic 8x8/16x16 potion baselines, three same-grid directions, and two authored repairs. It demonstrates the repair seam and information-budget choices. It does not claim independent artistic acceptance.
+Automatic 8x8/16x16 potion baselines, three same-grid directions, two authored repairs. Repair seam and information-budget choices — not artistic acceptance.
 
 ## Before and after
 
@@ -9,7 +9,7 @@ This case keeps the real automatic 8x8/16x16 potion baselines, three same-grid d
 | 8x8 | ![Automatic 8x8 draft](previews/automatic-8.png) | ![Authored 8x8 repair](previews/authored-8.png) |
 | 16x16 | ![Automatic 16x16 draft](previews/automatic-16.png) | ![Authored 16x16 repair](previews/authored-16.png) |
 
-The 8x8 repair replaces sampled fragments with a bottle mass and spends its remaining cells on one diagonal amber cue. The 16x16 repair adds only the glass/liquid planes that survive native size. Lower singleton counts support inspection but do not prove a better read.
+8x8: sampled fragments → bottle mass; remaining cells on one diagonal amber cue. 16x16: only glass/liquid planes that survive native size. Lower singleton counts support inspection; don't prove a better read.
 
 ## Anonymous direction study
 
@@ -17,11 +17,11 @@ The 8x8 repair replaces sampled fragments with a bottle mass and spends its rema
 python ..\..\scripts\build_pixel_art.py study .\directions\a-bound-flask.json .\directions\b-signal-vial.json .\directions\c-heart-reliquary.json --output .\output\study --title "8x8 potion direction study" --scale 24
 ```
 
-Open `output/study/blind.html` first. The intended selection is Sample A because it preserves bottle identity and a diagonal binding; Sample B tends toward a beacon and Sample C toward a heart emblem. Re-check that observation rather than inheriting it.
+Open `output/study/blind.html` first. Intended selection: Sample A — bottle identity + diagonal binding. Sample B tends toward a beacon; Sample C toward a heart emblem. Confirm the observation; don't inherit it.
 
 ## Repair contract
 
-Every repair spec supplies:
+Every repair spec:
 
 ```json
 {
@@ -33,7 +33,7 @@ Every repair spec supplies:
 }
 ```
 
-The runner rejects a no-op or dimension change, preserves the exact losing grid, records the delta, and generates a neutral Sample A/Sample B proof.
+Runner rejects a no-op or dimension change. Preserves the exact losing grid, records the delta, generates a neutral Sample A/B proof.
 
 ## Rebuild
 
@@ -44,8 +44,8 @@ python ..\..\scripts\build_pixel_art.py validate .\output\8x8
 python ..\..\scripts\build_pixel_art.py validate .\output\16x16
 ```
 
-Both authored repairs remain `draft` until an authorized blind review is recorded and promoted.
+Both authored repairs stay `draft` until an authorized blind review is recorded and promoted.
 
 ## Transfer fixtures
 
-The character and ship fixtures prove that baseline preservation and repair metadata work on other subjects. Their authored 8x8 previews are still near-abstract blocks and do not substantiate the old prose claims of a running scout or arrowhead ship. Treat them as negative semantic fixtures: mechanics pass, recognition is unassessed or failing.
+Character and ship fixtures prove baseline preservation and repair metadata on other subjects. Authored 8x8 previews are near-abstract blocks — they don't support old prose of a running scout or arrowhead ship. Negative semantic fixtures: mechanics pass; recognition unassessed or failing.
