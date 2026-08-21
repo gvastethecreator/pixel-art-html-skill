@@ -1,21 +1,21 @@
 # Cursed salvage draft case study
 
-This pack is a reproducible recovery draft, not representative evidence and not a style prescription. It preserves a useful lesson from an earlier rejected pickup pack: change construction and silhouette before polishing.
+Reproducible recovery draft — not representative evidence, not a style prescription. Preserves a useful lesson from an earlier rejected pickup pack. Change construction and silhouette before you polish.
 
 | Bound blood flask | Hooked ruin key | Bitten crimson shield | Fractured mana crystal |
 |---|---|---|---|
 | ![Bound blood flask](previews/potion.png) | ![Hooked ruin key](previews/key.png) | ![Bitten crimson shield](previews/shield.png) | ![Fractured mana crystal](previews/crystal.png) |
 
-The four specs use different damaged silhouettes and share an amber repair motif, violet shadow family, light direction, and frame. The motif follows each volume instead of acting as a palette-only variant.
+Four specs use different damaged silhouettes and share an amber repair motif, violet shadow family, light direction, and frame. The motif follows each volume — not a palette-only variant.
 
 Known limits:
 
-- the published materials were assessed only through structured author review;
-- the key remains darker and less immediate than the other three items;
-- the earlier direction search was not emitted through the anonymous `study` helper;
-- no fingerprint-bound non-builder review exists.
+- published materials assessed only through structured author review
+- the key remains darker and less immediate than the other three items
+- earlier direction search was not emitted through the anonymous `study` helper
+- no fingerprint-bound non-builder review exists
 
-The specs therefore declare `draft`. Use them to inspect compact full-grid authoring, family constraints, and subtraction—not as proof that the skill reliably produces accepted art.
+Because of these limits, the specs declare `draft`. Use them to inspect compact full-grid authoring, family constraints, and subtraction. Do not use them as proof that the skill reliably produces accepted art.
 
 ## Rebuild
 

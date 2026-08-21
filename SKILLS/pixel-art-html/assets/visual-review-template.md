@@ -1,6 +1,6 @@
 # Blind Review Worksheet
 
-Use this as human-readable working notes. Promotion consumes [visual-review-input.json](visual-review-input.json), not this Markdown file.
+Human-readable working notes. Promotion consumes [visual-review-input.json](visual-review-input.json), not this Markdown file.
 
 ```text
 Artifact and exact grid:
