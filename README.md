@@ -161,7 +161,7 @@ The craft workflow and subject routing also synthesize lessons from Raymond Schl
 
 ## Status
 
-Preview skill pack. The deterministic spec and HTML paths are dependency-free; image conversion requires Pillow. Direction study, native-read checkpoints, exact parity, blind review, and fingerprint-bound promotion make the proof boundary explicit. Final artistic acceptance still belongs to a real native-scale reviewer.
+The skill pack is available. The deterministic spec and HTML paths are dependency-free; image conversion requires Pillow. Direction study, native-read checkpoints, exact parity, blind review, and fingerprint-bound promotion make the proof boundary explicit. Final artistic acceptance still belongs to a real native-scale reviewer.
 
 ## License
 
@@ -170,3 +170,4 @@ Preview skill pack. The deterministic spec and HTML paths are dependency-free; i
 ## Support
 
 Support continued maintenance through [GitHub Sponsors](https://github.com/sponsors/gvastethecreator) or [Ko-fi](https://ko-fi.com/gvaste).
+

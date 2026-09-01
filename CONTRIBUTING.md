@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for improving Pixel Art HTML.
+Thanks for improving Pixel Art HTML. Keep public documentation in American English.
 
 1. Keep generated drafts and scratch evidence out of the repository.
 2. Preserve exact-grid metadata, provenance, and reviewer boundaries.
@@ -9,3 +9,4 @@ Thanks for improving Pixel Art HTML.
 5. Include a focused fixture or regression only when behavior changes.
 
 Do not promote an artifact to representative or production-candidate without the required independent review.
+
