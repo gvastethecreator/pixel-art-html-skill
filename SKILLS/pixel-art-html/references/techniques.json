@@ -1,0 +1,1013 @@
+{
+  "schema_version": 1,
+  "attribution": "Original operational synthesis informed by Raymond Schlitter's SLYNYRD Pixelblogs and the user's local study collections. Chapter links identify references, not a license to redistribute their media. Local wiki notes are interpretations, not verbatim primary text.",
+  "sources": [
+    {
+      "chapter": 1,
+      "title": "1 - Color Palettes",
+      "wiki_chapter": "01-color-palettes",
+      "url": "https://www.slynyrd.com/blog/2018/1/10/pixelblog-1-color-palettes"
+    },
+    {
+      "chapter": 2,
+      "title": "2 - Texture",
+      "wiki_chapter": "02-texture",
+      "url": "https://www.slynyrd.com/blog/2018/2/15/pixelblog-2-texture"
+    },
+    {
+      "chapter": 3,
+      "title": "3 - Graphical Projection Part 1",
+      "wiki_chapter": "03-graphical-projection-part-1",
+      "url": "https://www.slynyrd.com/blog/2018/3/14/pixelblog-3-graphical-projections-1"
+    },
+    {
+      "chapter": 4,
+      "title": "4 - Graphical Projection Part 2",
+      "wiki_chapter": "04-graphical-projection-part-2",
+      "url": "https://www.slynyrd.com/blog/2018/4/12/pixelblog-4-graphical-projection-part-2"
+    },
+    {
+      "chapter": 5,
+      "title": "5 - Back To Basics",
+      "wiki_chapter": "05-back-to-basics",
+      "url": "https://www.slynyrd.com/blog/2018/5/16/pixelblog-5-back-to-basics"
+    },
+    {
+      "chapter": 6,
+      "title": "6 - Light And Shadow",
+      "wiki_chapter": "06-light-and-shadow",
+      "url": "https://www.slynyrd.com/blog/2018/6/15/pixelblog-6-light-and-shadow"
+    },
+    {
+      "chapter": 7,
+      "title": "7 - Developing Style",
+      "wiki_chapter": "07-developing-style",
+      "url": "https://www.slynyrd.com/blog/2018/7/14/pixelblog-7-developing-style"
+    },
+    {
+      "chapter": 8,
+      "title": "8 - Intro To Animation",
+      "wiki_chapter": "08-intro-to-animation",
+      "url": "https://www.slynyrd.com/blog/2018/8/19/pixelblog-8-intro-to-animation"
+    },
+    {
+      "chapter": 9,
+      "title": "9 - Melee Attacks",
+      "wiki_chapter": "09-melee-attacks",
+      "url": "https://www.slynyrd.com/blog/2018/9/8/pixelblog-9-melee-attacks"
+    },
+    {
+      "chapter": 10,
+      "title": "10 - Water In Motion",
+      "wiki_chapter": "10-water-in-motion",
+      "url": "https://www.slynyrd.com/blog/2018/10/12/pixelblog-10-water-in-motion"
+    },
+    {
+      "chapter": 11,
+      "title": "11 - Landscape Pixeling",
+      "wiki_chapter": "11-landscape-pixeling",
+      "url": "https://www.slynyrd.com/blog/2018/11/16/pixelblog-11-landscape-pixeling"
+    },
+    {
+      "chapter": 12,
+      "title": "12 - To The Stars",
+      "wiki_chapter": "12-to-the-stars",
+      "url": "https://www.slynyrd.com/blog/2018/12/12/pixelblog-12-to-the-stars"
+    },
+    {
+      "chapter": 13,
+      "title": "13 - Rocks",
+      "wiki_chapter": "13-rocks",
+      "url": "https://www.slynyrd.com/blog/2019/1/22/pixelblog-13-rocks"
+    },
+    {
+      "chapter": 14,
+      "title": "14 - Cityscapes",
+      "wiki_chapter": "14-cityscapes",
+      "url": "https://www.slynyrd.com/blog/2019/2/23/pixelblog-14-cityscapes"
+    },
+    {
+      "chapter": 15,
+      "title": "15 - Plant Life",
+      "wiki_chapter": "15-plant-life",
+      "url": "https://www.slynyrd.com/blog/2019/3/7/pixelblog-15-plant-life"
+    },
+    {
+      "chapter": 16,
+      "title": "16 - Medieval Fantasy",
+      "wiki_chapter": "16-medieval-fantasy",
+      "url": "https://www.slynyrd.com/blog/2019/4/23/pixelblog-16-medieval-fantasy"
+    },
+    {
+      "chapter": 17,
+      "title": "17 - Human Anatomy",
+      "wiki_chapter": "17-human-anatomy",
+      "url": "https://www.slynyrd.com/blog/2019/5/21/pixelblog-17-human-anatomy"
+    },
+    {
+      "chapter": 18,
+      "title": "18 - Age Of Flight",
+      "wiki_chapter": "18-age-of-flight",
+      "url": "https://www.slynyrd.com/blog/2019/6/18/pixelblog-18-age-of-flight"
+    },
+    {
+      "chapter": 19,
+      "title": "19 - Mecha Mania",
+      "wiki_chapter": "19-mecha-mania",
+      "url": "https://www.slynyrd.com/blog/2019/7/23/pixelblog-19-mecha-mania"
+    },
+    {
+      "chapter": 20,
+      "title": "20 - Top Down Tiles",
+      "wiki_chapter": "20-top-down-tiles",
+      "url": "https://www.slynyrd.com/blog/2019/8/27/pixelblog-20-top-down-tiles"
+    },
+    {
+      "chapter": 21,
+      "title": "21 - Top Down Objects",
+      "wiki_chapter": "21-top-down-objects",
+      "url": "https://www.slynyrd.com/blog/2019/9/18/pixelblog-21-top-down-objects"
+    },
+    {
+      "chapter": 22,
+      "title": "22 - Top Down Character Sprites",
+      "wiki_chapter": "22-top-down-character-sprites",
+      "url": "https://www.slynyrd.com/blog/2019/10/21/pixelblog-22-top-down-character-sprites"
+    },
+    {
+      "chapter": 23,
+      "title": "23 - Parallax Scrolling",
+      "wiki_chapter": "23-parallax-scrolling",
+      "url": "https://www.slynyrd.com/blog/2019/11/12/pixelblog-23-parallax-scrolling"
+    },
+    {
+      "chapter": 24,
+      "title": "24 - Items",
+      "wiki_chapter": "24-items",
+      "url": "https://www.slynyrd.com/blog/2019/12/21/pixelblog-24-items"
+    },
+    {
+      "chapter": 25,
+      "title": "25 - Motion Cycles",
+      "wiki_chapter": "25-motion-cycles",
+      "url": "https://www.slynyrd.com/blog/2020/1/23/pixelblog-25-motion-cycles"
+    },
+    {
+      "chapter": 26,
+      "title": "26 - Uxui Design Basics",
+      "wiki_chapter": "26-uxui-design-basics",
+      "url": "https://www.slynyrd.com/blog/2020/2/23/pixelblog-26-uxui-design-basics"
+    },
+    {
+      "chapter": 27,
+      "title": "27 - Under The Sea",
+      "wiki_chapter": "27-under-the-sea",
+      "url": "https://www.slynyrd.com/blog/2020/3/24/pixelblog-27-under-the-sea"
+    },
+    {
+      "chapter": 28,
+      "title": "28 - Side View Tiles",
+      "wiki_chapter": "28-side-view-tiles",
+      "url": "https://www.slynyrd.com/blog/2020/5/21/pixelblog-28-side-view-tiles"
+    },
+    {
+      "chapter": 29,
+      "title": "29 - Anime Faces And Hair",
+      "wiki_chapter": "29-anime-faces-and-hair",
+      "url": "https://www.slynyrd.com/blog/2020/7/28/pixelblog-29-anime-faces-and-hair"
+    },
+    {
+      "chapter": 30,
+      "title": "30 - Food",
+      "wiki_chapter": "30-food",
+      "url": "https://www.slynyrd.com/blog/2020/9/30/pixelblog-30-food"
+    },
+    {
+      "chapter": 31,
+      "title": "31 - Shmup Design Part 1",
+      "wiki_chapter": "31-shmup-design-part-1",
+      "url": "https://www.slynyrd.com/blog/2020/12/14/pixelblog-31-shmup-sprite-design"
+    },
+    {
+      "chapter": 32,
+      "title": "32 - Shmup Design Part 2",
+      "wiki_chapter": "32-shmup-design-part-2",
+      "url": "https://www.slynyrd.com/blog/2021/2/15/pixelblog-32-shmup-design-part-2"
+    },
+    {
+      "chapter": 33,
+      "title": "33 - Wind Effects",
+      "wiki_chapter": "33-wind-effects",
+      "url": "https://www.slynyrd.com/blog/2021/7/16/pixelblog-33-wind-effects"
+    },
+    {
+      "chapter": 34,
+      "title": "34 - On The Farm",
+      "wiki_chapter": "34-on-the-farm",
+      "url": "https://www.slynyrd.com/blog/2021/10/24/pixelblog-34-on-the-farm"
+    },
+    {
+      "chapter": 35,
+      "title": "35 - Top Down Interiors",
+      "wiki_chapter": "35-top-down-interiors",
+      "url": "https://www.slynyrd.com/blog/2021/11/30/pixelblog-35-top-down-interiors"
+    },
+    {
+      "chapter": 36,
+      "title": "36 - 8 Bit Adventure",
+      "wiki_chapter": "36-8-bit-adventure",
+      "url": "https://www.slynyrd.com/blog/2022/1/25/pixelblog-36-8-bit-adventure"
+    },
+    {
+      "chapter": 37,
+      "title": "37 - Castlevania Study",
+      "wiki_chapter": "37-castlevania-study",
+      "url": "https://www.slynyrd.com/blog/2022/3/19/pixelblog-37-classic-castlevania-study"
+    },
+    {
+      "chapter": 38,
+      "title": "38 - Metroid Study",
+      "wiki_chapter": "38-metroid-study",
+      "url": "https://www.slynyrd.com/blog/2022/5/24/pixelblog-38-metroid-study"
+    },
+    {
+      "chapter": 39,
+      "title": "39 - Sci Fi Rpg",
+      "wiki_chapter": "39-sci-fi-rpg",
+      "url": "https://www.slynyrd.com/blog/2022/7/24/pixelblog-39-sci-fi-rpg"
+    },
+    {
+      "chapter": 40,
+      "title": "40 - 3d Pixel Art Animation",
+      "wiki_chapter": "40-3d-pixel-art-animation",
+      "url": "https://www.slynyrd.com/blog/2022/9/25/pixelblog-40-3d-animation"
+    },
+    {
+      "chapter": 41,
+      "title": "41 - Isometric Pixel Art",
+      "wiki_chapter": "41-isometric-pixel-art",
+      "url": "https://www.slynyrd.com/blog/2022/11/28/pixelblog-41-isometric-pixel-art"
+    },
+    {
+      "chapter": 42,
+      "title": "42 - Cyberpunk Pixel Art",
+      "wiki_chapter": "42-cyberpunk-pixel-art",
+      "url": "https://www.slynyrd.com/blog/2023/1/30/pixelblog-42-cyberpunk-pixel-art"
+    },
+    {
+      "chapter": 43,
+      "title": "43 - Top Down Tiles Part 2",
+      "wiki_chapter": "43-top-down-tiles-part-2",
+      "url": "https://www.slynyrd.com/blog/2023/3/26/pixelblog-43-top-down-tiles-part-2"
+    },
+    {
+      "chapter": 44,
+      "title": "44 - Top Down Trees",
+      "wiki_chapter": "44-top-down-trees",
+      "url": "https://www.slynyrd.com/blog/2023/5/22/pixelblog-44-top-down-trees"
+    },
+    {
+      "chapter": 45,
+      "title": "45 - Bricks Walls Doors And More",
+      "wiki_chapter": "45-bricks-walls-doors-and-more",
+      "url": "https://www.slynyrd.com/blog/2023/7/21/pixelblog-45-bricks-walls-doors-and-more"
+    },
+    {
+      "chapter": 46,
+      "title": "46 - Anti Gravity Racers",
+      "wiki_chapter": "46-anti-gravity-racers",
+      "url": "https://www.slynyrd.com/blog/2023/9/25/pixelblog-46-anti-gravity-racing-scene"
+    },
+    {
+      "chapter": 47,
+      "title": "47 - Tiny Pixels",
+      "wiki_chapter": "47-tiny-pixels",
+      "url": "https://www.slynyrd.com/blog/2023/11/26/pixelblog-47-tiny-pixels"
+    },
+    {
+      "chapter": 48,
+      "title": "48 - Military Shmup",
+      "wiki_chapter": "48-military-shmup",
+      "url": "https://www.slynyrd.com/blog/2024/1/23/pixelblog-48-military-shmup"
+    },
+    {
+      "chapter": 49,
+      "title": "49 - Realistic Human Anatomy",
+      "wiki_chapter": "49-realistic-human-anatomy",
+      "url": "https://www.slynyrd.com/blog/2024/3/25/pixelblog-49-realistic-human-anatomy"
+    },
+    {
+      "chapter": 50,
+      "title": "50 - Human Walk Cycle",
+      "wiki_chapter": "50-human-walk-cycle",
+      "url": "https://www.slynyrd.com/blog/2024/5/24/pixelblog-50-human-walk-cycle"
+    },
+    {
+      "chapter": 51,
+      "title": "51 - City Builder",
+      "wiki_chapter": "51-city-builder",
+      "url": "https://www.slynyrd.com/blog/2024/7/25/pixelblog-51-city-builder"
+    },
+    {
+      "chapter": 52,
+      "title": "52 - Idle Fighting Stance",
+      "wiki_chapter": "52-idle-fighting-stance",
+      "url": "https://www.slynyrd.com/blog/2024/9/26/pixelblog-52-idle-fighting-stance"
+    },
+    {
+      "chapter": 53,
+      "title": "53 - Punches And Kicks",
+      "wiki_chapter": "53-punches-and-kicks",
+      "url": "https://www.slynyrd.com/blog/2024/11/25/pixelblog-53-punches-and-kicks"
+    },
+    {
+      "chapter": 54,
+      "title": "54 - More Isometric Pixels",
+      "wiki_chapter": "54-more-isometric-pixels",
+      "url": "https://www.slynyrd.com/blog/2025/1/23/pixelblog-54-isometric-pixel-art"
+    },
+    {
+      "chapter": 55,
+      "title": "55 - Top Down Character Animation",
+      "wiki_chapter": "55-top-down-character-animation",
+      "url": "https://www.slynyrd.com/blog/2025/3/24/pixelblog-55-top-down-character-animation"
+    },
+    {
+      "chapter": 56,
+      "title": "56 - Top Down Character Attack Animation",
+      "wiki_chapter": "56-top-down-character-attack-animation",
+      "url": "https://www.slynyrd.com/blog/2025/5/23/pixelblog-56-top-down-character-attack-animation"
+    },
+    {
+      "chapter": 57,
+      "title": "57 - Knights Monsters Castles",
+      "wiki_chapter": "57-knights-monsters-castles",
+      "url": "https://www.slynyrd.com/blog/2025/7/28/pixelblog-57-knights-monsters-amp-castles"
+    },
+    {
+      "chapter": 58,
+      "title": "58 - Top Down Character Animation Part 3",
+      "wiki_chapter": "58-top-down-character-animation-part-3",
+      "url": "https://www.slynyrd.com/blog/2025/10/2/pixelblog-58-top-down-character-animation-part-3"
+    },
+    {
+      "chapter": 59,
+      "title": "59 - Tiny Sci Fi Pixels",
+      "wiki_chapter": "59-tiny-sci-fi-pixels",
+      "url": "https://www.slynyrd.com/blog/2025/11/28/pixelblog-59-tiny-sci-fi-pixels"
+    },
+    {
+      "chapter": 60,
+      "title": "60 - Side View Run N Gun",
+      "wiki_chapter": "60-side-view-run-n-gun",
+      "url": "https://www.slynyrd.com/blog/2026/1/26/side-view-run-n-gun"
+    },
+    {
+      "chapter": 61,
+      "title": "61 - Isometric Mecha Tactics",
+      "wiki_chapter": "61-isometric-mecha-tactics",
+      "url": "https://www.slynyrd.com/blog/2026/4/1/pixelblog-61-isometric-mecha-tactics"
+    },
+    {
+      "chapter": 62,
+      "title": "62 - Landscape Backgrounds",
+      "wiki_chapter": "62-landscape-backgrounds",
+      "url": "https://www.slynyrd.com/blog/2026/5/27/pixelblog-62-landscape-backgrounds"
+    }
+  ],
+  "techniques": [
+    {
+      "id": "contour-and-clusters",
+      "title": "Turn a rough mass into deliberate clusters",
+      "tags": [
+        "cluster",
+        "contour",
+        "jaggies",
+        "banding",
+        "edge",
+        "noise",
+        "silueta",
+        "bordes",
+        "ruido"
+      ],
+      "chapters": [
+        5,
+        7,
+        15,
+        54
+      ],
+      "when": "A silhouette reads at a distance but looks accidental on its native grid.",
+      "decisions": [
+        "Separate silhouette edges, overlap edges, and light boundaries. Each needs a different contour.",
+        "Choose a short staircase rhythm for each straight segment. Let curved segments change run length gradually.",
+        "Reserve deliberate interruptions for joints, chips, leaves, or identity cues."
+      ],
+      "pixel_actions": [
+        "Inspect the suspect rectangle with pixel_lab. Follow the boundary in row order.",
+        "Remove a double-width elbow or relocate one step where a line changes slope by accident.",
+        "Break a highlight that follows every outline step; join it to the plane it describes.",
+        "Merge unrelated flecks into a larger shape or remove them. Keep isolated eyes and glints when they carry the read."
+      ],
+      "check": "The contour remains clear at 1x and the enlarged edge describes the same surface.",
+      "failure": "Cleaning every irregularity produces a sterile outline or removes the identity cue.",
+      "exercise": "Repair one awkward contour with the same grid and palette. State which coordinates change and what they clarify."
+    },
+    {
+      "id": "palette-as-roles",
+      "title": "Design reusable color roles",
+      "tags": [
+        "palette",
+        "ramp",
+        "hue",
+        "value",
+        "color",
+        "paleta",
+        "rampa",
+        "contraste"
+      ],
+      "chapters": [
+        1,
+        7,
+        36,
+        38
+      ],
+      "when": "Extra colors do not improve the separation of forms.",
+      "decisions": [
+        "Assign colors to visible jobs before tuning individual hex values.",
+        "Share a shadow or highlight across materials when the lighting supports it.",
+        "Choose hue shifts from the light and environment. Straight ramps remain valid when the brief calls for them."
+      ],
+      "pixel_actions": [
+        "Build a dark/base/light trial on the actual object, not just a palette strip.",
+        "Merge two colors occupying the same value job, then inspect the lost boundaries.",
+        "Spend a separate accent on the focal cue only after the object reads without it."
+      ],
+      "check": "At native size the intended planes separate in grayscale and color; the accent has a useful location.",
+      "failure": "A pleasing swatch arrangement becomes muddy when adjacent clusters use neighboring colors.",
+      "exercise": "Render one form with two different value allocations while keeping its silhouette fixed."
+    },
+    {
+      "id": "light-as-planes",
+      "title": "Construct light from surface orientation",
+      "tags": [
+        "light",
+        "shadow",
+        "volume",
+        "pillow",
+        "shading",
+        "luz",
+        "sombra",
+        "volumen"
+      ],
+      "chapters": [
+        6,
+        13,
+        54
+      ],
+      "when": "The sprite looks inflated, flat, or lit from incompatible directions.",
+      "decisions": [
+        "Name the primary source, visible planes, and where one mass occludes another.",
+        "Use only the value groups the grid can distinguish. Two values can suffice; three are a useful experiment, not a minimum.",
+        "Additional lights need a declared role and must not erase the main form."
+      ],
+      "pixel_actions": [
+        "Fill whole planes before adding specular marks.",
+        "Move a central highlight onto the surface facing the light.",
+        "Add a narrow contact shadow where two masses overlap; avoid outlining every plane equally."
+      ],
+      "check": "Without texture, a viewer can infer the main volume and light direction.",
+      "failure": "Uniform dark rims explain the outline but contradict the surface.",
+      "exercise": "Relight one unchanged silhouette from the opposite side. Rebuild plane clusters, not just the palette."
+    },
+    {
+      "id": "projection-scaffold",
+      "title": "Use a measured scaffold for volume",
+      "tags": [
+        "projection",
+        "isometric",
+        "2:1",
+        "perspective",
+        "iso",
+        "perspectiva",
+        "proyeccion"
+      ],
+      "chapters": [
+        3,
+        4,
+        41,
+        54
+      ],
+      "when": "Roof, wall, wheel, or limb depths disagree.",
+      "decisions": [
+        "Choose the screen-space axes and a scale unit. A two-across/one-up diagonal is a useful pixel dimetric convention, not every form's contour.",
+        "Map hidden box edges in the construction sketch so visible corners agree.",
+        "Separate structural symmetry from the asymmetry of lighting."
+      ],
+      "pixel_actions": [
+        "Place anchor points and construct visible faces from their shared corners.",
+        "Check parallel segments against the chosen step pattern.",
+        "Replace scaffolds with authored bevels and contours after the volume agrees.",
+        "Mirror unlit geometry if appropriate, then relight it; do not blindly mirror the finished highlight."
+      ],
+      "check": "The object occupies a coherent volume when its decorative details are hidden.",
+      "failure": "Forcing every organic edge onto the construction axes destroys its shape.",
+      "exercise": "Build a small stepped block with a cutout and one overhang before constructing an isometric machine."
+    },
+    {
+      "id": "foliage-bundles",
+      "title": "Build foliage from lit overlapping masses",
+      "tags": [
+        "tree",
+        "foliage",
+        "leaf",
+        "plant",
+        "forest",
+        "arbol",
+        "hojas",
+        "bosque"
+      ],
+      "chapters": [
+        2,
+        15,
+        21,
+        44
+      ],
+      "when": "A canopy is a green blob or a field of unrelated bright pixels.",
+      "decisions": [
+        "Choose species through crown shape, trunk gesture, and branch spacing.",
+        "Create a small leaf-bundle motif whose contour is useful even without its texture.",
+        "Use related dark/base/light mappings to place bundle depth."
+      ],
+      "pixel_actions": [
+        "Place rear bundles, trunk, and front bundles in an explicit overlap order.",
+        "Put leaf-shaped marks where the crown turns into light; keep broad quiet areas.",
+        "Repair tiny holes and accidental peaks created where motifs overlap.",
+        "For conifers, construct branch tiers around a trunk guide instead of reusing a round deciduous bundle."
+      ],
+      "check": "Crown volume survives flat values, and the species cue survives removal of leaf detail.",
+      "failure": "A distinctive speck repeated in every bundle reveals the stamp.",
+      "exercise": "Make two trees from the same original motif vocabulary with different crown silhouettes."
+    },
+    {
+      "id": "stone-facets",
+      "title": "Make rock structure carry the material",
+      "tags": [
+        "rock",
+        "stone",
+        "cliff",
+        "mountain",
+        "roca",
+        "piedra",
+        "acantilado"
+      ],
+      "chapters": [
+        13,
+        21,
+        43
+      ],
+      "when": "Stone looks like a speckled ball or a metal gem.",
+      "decisions": [
+        "Choose fracture behavior: broad sedimentary bands, angular breaks, or rounded weathering.",
+        "Allocate a few unequal facets instead of many equal triangles.",
+        "Let cliff strata and object rocks share a geological vocabulary."
+      ],
+      "pixel_actions": [
+        "Cut the silhouette with one dominant face and an offset secondary ledge.",
+        "Shade the top and side as connected regions.",
+        "Put one fracture across a face; taper or stop it before every edge becomes outlined."
+      ],
+      "check": "Facets explain volume in grayscale while fractures remain subordinate.",
+      "failure": "Uniform glints and perfectly repeated diagonals turn rough stone into polished crystal.",
+      "exercise": "Use one palette to make a rounded boulder and a split slab with visibly different structures."
+    },
+    {
+      "id": "water-flow",
+      "title": "Build connected flow and reflection shapes",
+      "tags": [
+        "water",
+        "wave",
+        "river",
+        "sea",
+        "underwater",
+        "agua",
+        "olas",
+        "rio"
+      ],
+      "chapters": [
+        10,
+        27,
+        43
+      ],
+      "when": "Water becomes scattered white dashes or blue terrain.",
+      "decisions": [
+        "Choose surface direction, shoreline, and whether the view shows reflection or submerged objects.",
+        "Separate waterfall lip, falling sheet, and splash if all are visible.",
+        "Use the flow direction to organize highlights."
+      ],
+      "pixel_actions": [
+        "Draw connected dark and light surface masses first.",
+        "Break a few bands into subordinate fragments without losing their common direction.",
+        "Compress reflected shapes along the surface and interrupt them where ripples cross.",
+        "Keep shoreline foam distinct from specular highlights in open water."
+      ],
+      "check": "Flow and surface orientation read without animation.",
+      "failure": "Every region has the same streak density, so neither depth nor focus survives.",
+      "exercise": "Create one still wave crest and one calm shoreline using different cluster rhythms."
+    },
+    {
+      "id": "masonry-rhythm",
+      "title": "Design masonry around its structural cadence",
+      "tags": [
+        "brick",
+        "wall",
+        "door",
+        "masonry",
+        "ladrillo",
+        "pared",
+        "puerta"
+      ],
+      "chapters": [
+        28,
+        35,
+        45
+      ],
+      "when": "Brick detail overwhelms the wall or creates a visible grid in repeats.",
+      "decisions": [
+        "Choose a brick-and-grout period that fits the tile extent when seamless repetition is required.",
+        "Separate top faces, wall faces, and recesses by their spatial role.",
+        "Treat damage as a variation layer, not the defining base pattern."
+      ],
+      "pixel_actions": [
+        "Lay out joints as a temporary construction guide.",
+        "Fill the structural blocks, then suppress joints that compete with the whole wall.",
+        "Add selected chipped corners or value shifts; leave some runs uninterrupted.",
+        "Inspect the center junction of a 3x3 repeat and around the doorway."
+      ],
+      "check": "The wall remains a large form; individual bricks become secondary information.",
+      "failure": "A high-contrast grout lattice appears more strongly than the building.",
+      "exercise": "Author a plain wall tile and one damaged variant with matching edge behavior."
+    },
+    {
+      "id": "metal-glass",
+      "title": "Separate metal, glass, and matte surfaces by edge behavior",
+      "tags": [
+        "metal",
+        "glass",
+        "armor",
+        "window",
+        "cristal",
+        "vidrio",
+        "armadura"
+      ],
+      "chapters": [
+        19,
+        30,
+        54,
+        57
+      ],
+      "when": "Several materials differ only in hue.",
+      "decisions": [
+        "Choose where a hard reflection crosses a plane and where the surface stays quiet.",
+        "Distinguish a transparent window boundary from an opaque armor seam.",
+        "Use a broader light region for matte surfaces than for a hard specular edge."
+      ],
+      "pixel_actions": [
+        "Bevel a structural corner before adding a glint.",
+        "Place a compact high-contrast reflection and preserve an adjacent dark region.",
+        "For glass, retain the rim and one selective interior cue instead of filling the whole object with shine."
+      ],
+      "check": "The intended materials differ in grayscale at the target resolution.",
+      "failure": "Bright dots on every corner make all surfaces glitter and erase the focal cue.",
+      "exercise": "Render the same simple container as metal and glass without changing its hue family."
+    },
+    {
+      "id": "anatomy-before-costume",
+      "title": "Use a posed dummy to control anatomy",
+      "tags": [
+        "anatomy",
+        "character",
+        "creature",
+        "pose",
+        "monster",
+        "personaje",
+        "monstruo",
+        "anatomia"
+      ],
+      "chapters": [
+        17,
+        25,
+        49,
+        57
+      ],
+      "when": "Equipment hides a weak pose, or limbs attach in implausible places.",
+      "decisions": [
+        "Choose proportion from the character and runtime grid, not a universal head count.",
+        "Place the support point, pelvis, rib cage, head, and limb endpoints before costume.",
+        "Reserve negative gaps that separate the action's important limbs or equipment."
+      ],
+      "pixel_actions": [
+        "Use a few temporary colors to separate body parts.",
+        "Shift the torso and pelvis until the support and line of action agree.",
+        "Give the nearest limb a useful overlap; omit a far detail if it muddies the pose.",
+        "Fit armor, fur, or clothing around the dummy instead of replacing its anatomy."
+      ],
+      "check": "The pose and weight read as a silhouette before facial or costume details.",
+      "failure": "Symmetric limbs erase a turning gesture, or equipment floats away from the grip.",
+      "exercise": "Construct a braced and a relaxed pose on the same grid with the same body proportions."
+    },
+    {
+      "id": "face-hair-masses",
+      "title": "Allocate face cues and hair as separate masses",
+      "tags": [
+        "face",
+        "hair",
+        "portrait",
+        "anime",
+        "cara",
+        "pelo",
+        "retrato"
+      ],
+      "chapters": [
+        17,
+        29,
+        39
+      ],
+      "when": "A face reads only when enlarged or hair dissolves into strands.",
+      "decisions": [
+        "Reserve room for the expression cue before decorating the hair.",
+        "Choose a skull mass, facial plane, and hairline that explain the head angle.",
+        "Keep the most recognizable hair break in the outer contour."
+      ],
+      "pixel_actions": [
+        "Place eye/brow relationships as a compact group.",
+        "Join locks into a few masses that follow the head, then add selective breaks.",
+        "Delete a mouth or nose pixel if it changes the intended expression incorrectly."
+      ],
+      "check": "Facing and expression survive the native read without a title.",
+      "failure": "Every feature is individually present but their spacing implies a different face.",
+      "exercise": "Change one expression using only a small face region while protecting the head contour."
+    },
+    {
+      "id": "tiny-information-budget",
+      "title": "Spend tiny grids on distinctive relationships",
+      "tags": [
+        "tiny",
+        "8x8",
+        "16x16",
+        "economy",
+        "small",
+        "diminuto",
+        "pequeno"
+      ],
+      "chapters": [
+        36,
+        37,
+        47,
+        59,
+        60
+      ],
+      "when": "A small asset is a miniature of a large drawing instead of a readable symbol.",
+      "decisions": [
+        "Rank subject, facing, action, and identity cues. Declare which information is intentionally omitted.",
+        "Reserve cells for one separating gap and one identity cue before surface detail.",
+        "Redesign each requested size around the relationships it can retain."
+      ],
+      "pixel_actions": [
+        "Widen a head, tool, cockpit, or handle if its relationship defines the subject.",
+        "Remove sampled micro-detail and merge neighboring surface regions.",
+        "Move a single cue by one cell and compare at native size; a tiny change can alter the whole read."
+      ],
+      "check": "The strongest plausible blind interpretation matches the brief.",
+      "failure": "All requested details exist as isolated pixels, but the object is not recognizable.",
+      "exercise": "Author an 8x8 and a 16x16 version independently; state the information removed from the smaller master."
+    },
+    {
+      "id": "icon-affordance",
+      "title": "Make an item identifiable among its neighbors",
+      "tags": [
+        "icon",
+        "item",
+        "food",
+        "ui",
+        "pickup",
+        "icono",
+        "comida",
+        "objeto"
+      ],
+      "chapters": [
+        24,
+        26,
+        30,
+        34
+      ],
+      "when": "A polished item looks generic or is confused with another item in the set.",
+      "decisions": [
+        "Define the action or resource the item represents.",
+        "Choose a mass relationship, cutout, or protrusion that distinguishes it from its nearest competitor.",
+        "Fix family padding, baseline, light, and outline policy before authoring variations."
+      ],
+      "pixel_actions": [
+        "Block the main mass and its distinguishing attachment.",
+        "Place material shading inside that construction.",
+        "Test on the actual interface background next to the most similar item.",
+        "Remove a decorative mark if it competes with the affordance."
+      ],
+      "check": "The family looks related, but each item can be identified without its color or label.",
+      "failure": "Palette swaps are doing the work of different silhouettes.",
+      "exercise": "Make a key, tool, and consumable that share light and palette roles but have distinct outlines."
+    },
+    {
+      "id": "tiles-and-transitions",
+      "title": "Build a usable neighborhood before expanding a tileset",
+      "tags": [
+        "tile",
+        "tiles",
+        "tileset",
+        "seam",
+        "terrain",
+        "suelo",
+        "terreno",
+        "baldosa"
+      ],
+      "chapters": [
+        20,
+        28,
+        35,
+        43,
+        45
+      ],
+      "when": "One tile looks good but repeats, corners, or terrain transitions fail.",
+      "decisions": [
+        "Separate a neutral base, transitions, and optional landmarks.",
+        "Choose whether shadows and vegetation are baked or overlaid from the runtime contract.",
+        "Build only the connection cases the requested neighborhood needs."
+      ],
+      "pixel_actions": [
+        "Author the base and inspect a 3x3 repeat before adding variants.",
+        "Construct edge, outer corner, and inner corner masters on that base.",
+        "Assemble an actual concave and convex patch; inspect its central junctions.",
+        "Break conspicuous stripes and landmarks while retaining the edge contract."
+      ],
+      "check": "The surface reads continuously in a repeated and mixed neighborhood.",
+      "failure": "Opposite edge colors match, but a diagonal or repeated landmark remains obvious.",
+      "exercise": "Use a base and a few transitions to assemble one small terrain patch with an inner corner."
+    },
+    {
+      "id": "landscape-depth",
+      "title": "Allocate contrast across depth bands",
+      "tags": [
+        "landscape",
+        "scene",
+        "background",
+        "cloud",
+        "depth",
+        "paisaje",
+        "fondo",
+        "nube"
+      ],
+      "chapters": [
+        11,
+        12,
+        23,
+        32,
+        42,
+        46,
+        62
+      ],
+      "when": "A background is busy or its planes collapse into one layer.",
+      "decisions": [
+        "Choose the focal subject and the quiet area around it.",
+        "Map sky, distance, middle ground, and foreground as value bands adapted to the scene.",
+        "Define how contrast, cluster size, and color shift with distance; fog and emissive scenes may change the default."
+      ],
+      "pixel_actions": [
+        "Draw large overlapping masses before texture.",
+        "Use fewer internal boundaries in distant planes.",
+        "Build clouds from overlapping lobes whose lit edges share a direction.",
+        "Place the foreground subject in the scene before spending detail on the background."
+      ],
+      "check": "Depth and focus remain visible in grayscale and at the intended display size.",
+      "failure": "Every plane uses the same dark outline and the same texture scale.",
+      "exercise": "Create a valley and a forest using the same palette roles but different depth spacing."
+    },
+    {
+      "id": "constructive-architecture",
+      "title": "Build architecture from linked volumes",
+      "tags": [
+        "building",
+        "castle",
+        "house",
+        "city",
+        "roof",
+        "edificio",
+        "castillo",
+        "casa"
+      ],
+      "chapters": [
+        14,
+        16,
+        34,
+        35,
+        51,
+        54,
+        57
+      ],
+      "when": "A building is a decorated rectangle with no convincing structure.",
+      "decisions": [
+        "Pick a recognizable roof, tower, entrance, or industrial mass as the main identity cue.",
+        "Use the doorway or tile foundation as the scale unit.",
+        "Plan front/back relationships and overhangs before windows."
+      ],
+      "pixel_actions": [
+        "Place the dominant roof or tower, then connect its supporting wall planes.",
+        "Align additions to the same construction axes.",
+        "Use eave and doorway shadows to explain recesses.",
+        "Add window rhythm only where it supports scale; leave large wall regions quiet."
+      ],
+      "check": "The building remains coherent when windows and wall texture are hidden.",
+      "failure": "Every surface has equal detail, but walls do not meet the roof.",
+      "exercise": "Make two structures with different functions using one shared scale and construction convention."
+    },
+    {
+      "id": "functional-machines",
+      "title": "Encode machine function in the silhouette",
+      "tags": [
+        "mech",
+        "mecha",
+        "ship",
+        "vehicle",
+        "aircraft",
+        "robot",
+        "nave",
+        "vehiculo"
+      ],
+      "chapters": [
+        18,
+        19,
+        31,
+        46,
+        48,
+        61
+      ],
+      "when": "A ship or robot has many panels but no convincing function or weight.",
+      "decisions": [
+        "Choose propulsion, payload, controls, and support modules.",
+        "Express speed, armor, or reach through unequal mass allocation.",
+        "For mechs, set the torso, hip support, and feet before extremities; a mechanical torso need not imitate a human chest."
+      ],
+      "pixel_actions": [
+        "Block the functional modules and one cutout or spacing cue.",
+        "Establish facing with cockpit placement, taper, or leg overlap.",
+        "Attach weapons and engines structurally, then bevel large faces.",
+        "Reserve a few optics or vents as accents; remove decorative panel grids."
+      ],
+      "check": "Function, orientation, and weight remain plausible in flat silhouette.",
+      "failure": "A symmetric badge replaces a directional craft, or heavy equipment has no support.",
+      "exercise": "Make fast and heavy variants at one resolution by changing their mass allocation, not their palette."
+    },
+    {
+      "id": "frame-master-handoff",
+      "title": "Use motion references to construct a readable frame master",
+      "tags": [
+        "animation",
+        "frame",
+        "gesture",
+        "dummy",
+        "motion",
+        "animacion",
+        "movimiento",
+        "pose"
+      ],
+      "chapters": [
+        8,
+        9,
+        22,
+        25,
+        33,
+        40,
+        50,
+        52,
+        53,
+        55,
+        56,
+        58,
+        60
+      ],
+      "when": "The asset will animate, or a reference GIF contains useful construction stages.",
+      "decisions": [
+        "Classify the reference as a process recording, an animation loop, or a changing presentation.",
+        "For a process, compare structure, planes, and finish. For motion, inspect actual key poses and contact points.",
+        "Keep the frame's action phase, equipment ownership, and contact pivot explicit."
+      ],
+      "pixel_actions": [
+        "Sample a few frames to locate useful sections, then inspect chosen originals.",
+        "Build a posed dummy before the costume or equipment.",
+        "Preserve identity masses and action gaps when detailing the frame.",
+        "Hand exact frame masters, durations, order, and pivots to spritesheet-expert when animation is requested."
+      ],
+      "check": "A still frame reads on its own; motion claims require playback and timing review elsewhere.",
+      "failure": "A contact sheet is mistaken for full animation proof, or a mirrored frame changes the equipped hand.",
+      "exercise": "Extract evidence from a process GIF and translate one observed construction decision into an original still master."
+    }
+  ]
+}
