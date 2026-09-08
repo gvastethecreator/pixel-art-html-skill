@@ -219,6 +219,8 @@ def compile_spec(spec: dict[str, Any]) -> dict[str, Any]:
 def compile_repair(baseline: dict[str, Any], spec: dict[str, Any]) -> dict[str, Any]:
     """Compile an authored same-grid repair while preserving the losing baseline."""
     validate_artifact(baseline)
+    if baseline.get("source", {}).get("kind") == "construction":
+        raise ArtifactError("Construction repair must preserve parts: use construct.py edit on its source, then build with the reviewed predecessor")
     decisions = spec.get("repair_decisions")
     if not isinstance(decisions, dict):
         raise ArtifactError("repair_decisions must be an object")

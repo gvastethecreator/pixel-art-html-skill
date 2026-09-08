@@ -19,6 +19,7 @@ sys.path.insert(0, str(MODULE_PATH.parent))
 import pixel_lab
 import reference_library
 import compose_scene
+import construct
 
 
 def requires_pillow(test_method):
@@ -1214,6 +1215,119 @@ class SceneTests(unittest.TestCase):
             module.write_png({'width': 8, 'height': 8, 'grid': [['#FFFFFF'] * 8 for _ in range(8)]}, root / 'result/scene.png', 1)
             with self.assertRaises(module.ArtifactError):
                 compose_scene.validate_output(root / 'result')
+
+
+class ConstructionTests(unittest.TestCase):
+    def test_color_repair_preserves_parts_and_rejects_flattening(self):
+        source = self.source()
+        source['stage'] = 'material'
+        artifact, _ = construct.compile_parts(source)
+        with self.assertRaisesRegex(module.ArtifactError, 'preserve parts'):
+            module.compile_repair(artifact, {})
+        repaired = construct.edit(source, {'source_fingerprint': construct.digest(source),
+            'hypothesis': 'Change flag light without losing its attachment',
+            'operations': [{'kind': 'replace-grid', 'part': 'flag', 'grid': ['lllll', 'ffff.', 'fff..']}]})
+        self.assertEqual(repaired['stage'], 'material')
+        self.assertEqual(construct.structure(source), construct.structure(repaired))
+        self.assertEqual(repaired['parts'][1]['parent'], 'pole')
+        self.assertEqual(construct.compile_parts(repaired)[0]['grid'][3][6], '#E4B568')
+
+    def source(self):
+        return {'kind': 'construction', 'schema_version': 1, 'stage': 'block',
+                'title': 'Flag attachment', 'intent': 'A pole carries a flag', 'light': 'Upper left',
+                'width': 16, 'height': 16, 'palette_budget': 3, 'background': None,
+                'palette': {'p': '#586466', 'f': '#9E4051', 'l': '#E4B568'},
+                'parts': [
+                    {'id': 'pole', 'origin': [6, 3], 'grid': ['p'] * 8, 'anchors': {'hook': [0, 0]}},
+                    {'id': 'flag', 'parent': 'pole', 'origin': [0, 0], 'grid': ['fffff', 'ffff.', 'fff..'], 'anchors': {'hook': [0, 0]}}],
+                'constraints': [
+                    {'id': 'hook', 'kind': 'anchor', 'a': ['pole', 'hook'], 'b': ['flag', 'hook'], 'max_distance': 0},
+                    {'id': 'shaft', 'kind': 'visible', 'part': 'pole', 'min_cells': 5},
+                    {'id': 'gap', 'kind': 'clear', 'region': [7, 7, 4, 3], 'parts': ['flag']}]}
+
+    def review(self, source, decision='advance'):
+        _, report = construct.compile_parts(source)
+        return {k: report[k] for k in ('source_fingerprint', 'artifact_fingerprint', 'stage')} | {
+            'decision': decision, 'reviewer_kind': 'self', 'reviewer': 'Test fixture',
+            'views': {'native': True, 'silhouette': True, 'value': True},
+            'observed_read': 'Mechanical test declaration, not art evidence',
+            'remaining_limit': 'No perceptual claim', 'evidence': 'Test fixture only', 'issues': []}
+
+    def test_parent_translation_preserves_attachment_and_exact_occlusion(self):
+        source = self.source()
+        artifact, report = construct.compile_parts(source)
+        self.assertTrue(report['constraints_passed'])
+        self.assertEqual(report['checks'][1]['visible_cells'], 5)
+        moved = construct.edit(source, {'source_fingerprint': construct.digest(source), 'hypothesis': 'Move whole assembly',
+                               'operations': [{'part': 'pole', 'kind': 'translate', 'delta': [2, 1]}]})
+        changed, after = construct.compile_parts(moved)
+        self.assertEqual(after['origins']['flag'], [8, 4])
+        self.assertTrue(after['checks'][0]['passed'])
+        self.assertEqual(changed['grid'][4][8], '#9E4051')
+        self.assertEqual(changed['grid'][3][6], None)
+        self.assertEqual(artifact['grid'][3][6], '#9E4051')
+        self.assertEqual(source['parts'][0]['origin'], [6, 3])
+
+    def test_stage_transition_rejects_skips_rework_and_structural_drift(self):
+        source = self.source()
+        planes = json.loads(json.dumps(source))
+        planes['stage'] = 'planes'
+        planes['parts'][1]['grid'][0] = 'lllll'
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            construct.build(source, root / 'block')
+            with self.assertRaisesRegex(ValueError, 'skip'):
+                construct.build(planes, root / 'skipped')
+            rework = self.review(source, 'rework')
+            rework['issues'] = [{'region_or_part': 'flag', 'observed': 'Broad mass', 'cause': 'Width', 'intervention': 'Narrow', 'preserve': 'Hook'}]
+            with self.assertRaisesRegex(ValueError, 'rework review'):
+                construct.build(planes, root / 'rework', root / 'block', rework)
+            accepted = self.review(source)
+            construct.build(planes, root / 'planes', root / 'block', accepted)
+            material = json.loads(json.dumps(planes))
+            material['stage'] = 'material'
+            construct.build(material, root / 'material', root / 'planes', self.review(planes))
+            self.assertEqual(len(construct.validate_output(root / 'material')['lineage']), 2)
+            planes['parts'][1]['origin'][0] = 1
+            with self.assertRaisesRegex(ValueError, 'Structure changed'):
+                construct.build(planes, root / 'drift', root / 'block', accepted)
+            self.assertFalse((root / 'drift').exists())
+
+    def test_hidden_masks_and_stale_reviews_cannot_bypass_constraints(self):
+        source = self.source()
+        review = self.review(source)
+        source['parts'][1]['anchors']['hook'] = [1, 0]
+        with self.assertRaisesRegex(ValueError, 'does not bind'):
+            construct.check_review(source, review)
+        with self.assertRaisesRegex(ValueError, 'failed constraints'):
+            construct.check_review(source, self.review(source))
+        # A hidden painted pole cell is still forbidden by a clear-mask constraint.
+        source['constraints'].append({'id': 'hidden paint', 'kind': 'clear', 'region': [6, 3, 1, 1], 'parts': ['pole']})
+        _, report = construct.compile_parts(source)
+        self.assertEqual(report['owner'][3][6], 'flag')
+        self.assertFalse(report['checks'][-1]['passed'])
+
+    def test_part_viewer_drift_and_reused_outputs_are_rejected(self):
+        source = self.source()
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'stage'
+            construct.build(source, output)
+            with self.assertRaisesRegex(ValueError, 'new directory'):
+                construct.build(source, output)
+            page = output / 'parts.html'
+            page.write_text(page.read_text(encoding='utf-8').replace('A pole carries a flag', 'A different intent'), encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, 'payload drift'):
+                construct.validate_output(output)
+
+    def test_support_anchor_must_lie_in_surface_and_outside_front_rim(self):
+        source = self.source()
+        source['constraints'] = [{'id': 'support', 'kind': 'inside', 'at': ['pole', 'hook'], 'container': 'flag', 'exclude': []}]
+        self.assertTrue(construct.compile_parts(source)[1]['constraints_passed'])
+        source['constraints'][0]['exclude'] = ['pole']
+        self.assertFalse(construct.compile_parts(source)[1]['constraints_passed'])
+        source['constraints'][0]['exclude'] = []
+        source['parts'][1]['origin'] = [2, 0]
+        self.assertFalse(construct.compile_parts(source)[1]['constraints_passed'])
 
 
 if __name__ == "__main__":
