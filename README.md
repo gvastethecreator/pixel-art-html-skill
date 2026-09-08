@@ -32,6 +32,7 @@ The new [construction-repair examples](SKILLS/pixel-art-html/examples/constructi
 | ![Automatic small-grid potion recovery](docs/assets/examples/automatic-16.png) | ![Authored small-grid potion repair with a clearer silhouette](docs/assets/examples/authored-16.png) |
 
 - Build single images or deliberate multi-resolution sets from 8x8 through 128x128.
+- Compose native masters into a larger world with exact depth order and a standalone canvas for pan, anchored zoom, group visibility, and actor silhouette proof. The [original city scene](SKILLS/pixel-art-html/examples/city-clash/README.md) includes a reproducible builder.
 - Retrieve 18 construction techniques with source links across 62 SLYNYRD Pixelblog chapters, without requiring a local corpus.
 - Index local text, images, GIFs, and videos; recover gallery captions, collapse byte duplicates, and create sampled reference boards with provenance.
 - Inspect coordinate regions and cluster locations, render labeled comparison loupes, then apply fingerprinted patches with expected colors, protected regions, and a palette budget.

@@ -5,6 +5,7 @@
 - [Prerequisites](#prerequisites)
 - [Reference and repair lab](#reference-and-repair-lab)
 - [Build and repair commands](#build-and-repair-commands)
+- [Compose a scene](#compose-a-scene)
 - [Inspect and maintain outputs](#inspect-and-maintain-outputs)
 - [Image options](#image-options)
 - [Artifact layouts](#artifact-layouts)
@@ -34,6 +35,19 @@ Reference provenance and sampling limits: [reference-library.md](reference-libra
 `loupe` writes a new diagnostic PNG and JSON receipt with native context, coordinate labels, shared palette aliases, exact ROI rows, and source fingerprints. Limit the ROI to 32 by 32 cells; omit `--region` for a smaller whole grid. `--compare` requires the same dimensions and declared background. Labels and cell gaps belong only to the diagnostic. The command does not alter either artifact or decide whether a repair improves it.
 
 ## Build and repair commands
+
+For native assets and direction studies, use the existing compiler commands below.
+
+### Compose a scene
+
+```bash
+python <skill-dir>/scripts/compose_scene.py build <scene-source.json> --output <new-scene>
+python <skill-dir>/scripts/compose_scene.py validate <new-scene>
+```
+
+The compositor needs only Python. It combines validated native masters without changing the single-asset size limit. It writes standalone HTML with pan/zoom, embedded scene JSON, and a native PNG. Use its own `validate` command for these scene outputs. Read [scene-composition.md](scene-composition.md) for placement, groups, contact height, and camera proof. The city example's authoring script additionally uses Pillow.
+
+### Single-master and study commands
 
 Managed text/spec:
 

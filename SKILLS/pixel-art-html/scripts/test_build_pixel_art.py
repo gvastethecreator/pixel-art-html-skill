@@ -18,6 +18,7 @@ sys.modules["build_pixel_art"] = module
 sys.path.insert(0, str(MODULE_PATH.parent))
 import pixel_lab
 import reference_library
+import compose_scene
 
 
 def requires_pillow(test_method):
@@ -1164,6 +1165,55 @@ class PixelArtBuilderTests(unittest.TestCase):
             report = reference_library.make_board(index, index["entries"], root / "board.png")
             self.assertEqual(report["errors"], 1)
             self.assertIn("changed after indexing", report["samples"][0]["error"])
+
+
+class SceneTests(unittest.TestCase):
+    def test_scene_depth_flip_transparency_and_native_export(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            master = module.compile_spec({'width': 8, 'height': 8, 'pixels': [
+                {'x': 0, 'y': 0, 'color': '#112233'}, {'x': 7, 'y': 0, 'color': '#AABBCC'}]})
+            source = root / 'asset.json'
+            source.write_text(json.dumps(master), encoding='utf-8')
+            spec = {'width': 24, 'height': 16, 'background': '#334455', 'palette_budget': 3,
+                    'assets': {'sprite': 'asset.json'}, 'groups': [{'id': 'people', 'label': 'People'}],
+                    'placements': [{'asset': 'sprite', 'x': 2, 'y': 3, 'depth': 2, 'flip_x': True, 'group': 'people', 'subject': True},
+                                   {'asset': 'sprite', 'x': 2, 'y': 3, 'depth': 1}]}
+            scene = compose_scene.compile_scene(spec, root)
+            grid = compose_scene.scene_grid(scene)
+            self.assertEqual(grid[3][2], '#AABBCC')
+            self.assertEqual(grid[3][9], '#112233')
+            self.assertEqual(grid[3][3], '#334455')
+            self.assertEqual(compose_scene.scene_grid(scene, {'people'})[3][2], '#112233')
+            compose_scene.write_scene(scene, root / 'result')
+            proof = compose_scene.validate_output(root / 'result')
+            self.assertEqual(proof['parity'], 'passed')
+            self.assertEqual(proof['assets'], 1)
+            self.assertEqual(json.loads(source.read_text()), master)
+            with self.assertRaisesRegex(module.ArtifactError, 'new directory'):
+                compose_scene.write_scene(scene, root / 'result')
+            with self.assertRaisesRegex(module.ArtifactError, 'exceeds scene bounds'):
+                spec['placements'][0]['x'] = 20
+                compose_scene.compile_scene(spec, root)
+
+    def test_scene_rejects_embedded_or_pixel_drift(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            master = module.compile_spec({'width': 8, 'height': 8, 'background': '#112233'})
+            (root / 'asset.json').write_text(json.dumps(master), encoding='utf-8')
+            spec = {'width': 8, 'height': 8, 'background': None, 'palette_budget': 1,
+                    'assets': {'a': 'asset.json'}, 'placements': [{'asset': 'a', 'x': 0, 'y': 0, 'depth': 0}]}
+            scene = compose_scene.compile_scene(spec, root)
+            compose_scene.write_scene(scene, root / 'result')
+            page = root / 'result/index.html'
+            original = page.read_text(encoding='utf-8')
+            page.write_text(original.replace('"title":"Pixel scene"', '"title":"Changed scene"'), encoding='utf-8')
+            with self.assertRaisesRegex(module.ArtifactError, 'payload differs'):
+                compose_scene.validate_output(root / 'result')
+            page.write_text(original, encoding='utf-8')
+            module.write_png({'width': 8, 'height': 8, 'grid': [['#FFFFFF'] * 8 for _ in range(8)]}, root / 'result/scene.png', 1)
+            with self.assertRaises(module.ArtifactError):
+                compose_scene.validate_output(root / 'result')
 
 
 if __name__ == "__main__":

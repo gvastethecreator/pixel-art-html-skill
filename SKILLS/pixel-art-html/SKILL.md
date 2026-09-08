@@ -13,6 +13,7 @@ Build a visual idea as deliberate pixel relationships. Work from references to a
 - Rejected output or uncertain direction: keep the baseline, then a three-direction `study` before construction.
 - Local image: classify -> exact draft -> authored repair when recognition or cluster structure fails.
 - Related assets: shared family contract and distinct silhouettes, then `pack`.
+- A composed world or camera: native masters -> shared contacts and depth -> `compose_scene.py`; read [scene-composition.md](references/scene-composition.md).
 - Multiple resolutions: author each master independently, then `collection`.
 - Animation: construct individual frame masters here; hand timing, pivots, and atlas work to `$spritesheet-expert`.
 - Painterly concepts: use an available image-generation tool when requested; return here to author the final exact grid.
