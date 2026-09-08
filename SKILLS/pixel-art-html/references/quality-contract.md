@@ -14,14 +14,14 @@ The artifact must pass all applicable rows. Record `N/A` only with a concrete re
 | Silhouette | subject, orientation, pose read at native 1x without interior detail |
 | Composition | one dominant mass/read, one focal cue, intentional padding or edge contact |
 | Projection | every compatible element follows one view, scale, and overlap convention |
-| Value | dark/mid/light groups separate major planes and focus in grayscale |
+| Value | the chosen value groups separate major planes and focus in grayscale |
 | Palette | each color has a job. Ramps shift hue/value coherently. No unused or redundant colors |
-| Light | one declared source controls plane light, cast shadows, edge hardness, mood |
+| Light | a declared lighting plan controls plane light, cast shadows, edge hardness, and mood; additional sources have clear roles |
 | Clusters | connected deliberate shapes dominate. Single pixels are intentional accents, not noise |
 | Materials | texture grammar matches material and scales down with distance/resolution |
 | Specificity | at least one useful shape or construction decision more specific than a stock pictogram, without weakening recognition |
 | Focus | highest contrast/chroma/detail supports the intended focal point or gameplay read |
-| Edges | hard pixel edges, integer scaling, clean alpha, no automatic anti-aliasing or fringe |
+| Edges | integer scaling and clean alpha; deliberate palette-bound edge treatment, no automatic smoothing or fringe |
 | Context | tiles loop; repeated props avoid obvious landmarks; backgrounds do not compete, as applicable. Tile/texture specs expose the automatic 3x repeat proof |
 | Animation handoff | frame masters preserve identity and native cell scale. State workflow, order, durations, loop, runtime cell, safe margin, and ground/contact pivot before atlas extraction |
 | Output | canonical JSON, PNG, and standalone HTML agree exactly; no network requests. Validation checks PNG dimensions and RGBA cell parity |
@@ -39,7 +39,7 @@ Authoring defaults to `draft` and rejects `representative`, `production-candidat
 ## Resolution ladder
 
 - 8x8: orientation, silhouette, one identity cue. Omission is the aesthetic.
-- 16x16: silhouette, pose, one material/focal break, two or three texture clusters max.
+- 16x16: silhouette, pose, and a material/focal break; start with a few texture clusters and preserve their hierarchy.
 - 24x24: one secondary form or material region.
 - 32x32: balanced default master with deliberate light and cluster hierarchy.
 - 40x40: one added detail tier without changing the established silhouette.
@@ -72,7 +72,7 @@ Resolve every warning through visual inspection or state why it is intentional.
 - A clean deterministic report presented as proof the art is good.
 - A fixture or draft presented as representative or production evidence, or a source spec self-assigns a promoted tier.
 - Three candidate directions differ only by palette, ornament, or detail density.
-- Rectangular scaffolds, default ellipses, or generic outlines remain visible as construction shortcuts.
+- Scaffolds or generic outlines remain unresolved and obscure the intended subject or construction.
 - Pillow shading, contradictory projection, light, scale, or shadow rules flatten the form.
 - Texture is homogeneous noise, a photographic downscale, or scattered orphan pixels.
 - More colors/details added without a new readable job.

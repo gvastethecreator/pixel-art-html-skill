@@ -1,5 +1,9 @@
 # Environments, materials, and tiles
 
+Use unequal crown groups with selective overlap and visible branch continuity. Uniform light bands flatten foliage; completely isolated bright balls can look like a topiary. For rivers, change bend length and width with depth and terrain. Keep enough value separation between overlapping ridges even when the distant scene is quiet.
+
+Retrieve `foliage-bundles`, `stone-facets`, `water-flow`, `masonry-rhythm`, `tiles-and-transitions`, or `landscape-depth` with `reference_library.py techniques`. For a tree, separate crown placement from leaf texture. For a tileset, build a small mixed neighborhood before multiplying variants. For a scene, solve depth bands before local material detail.
+
 ## Direction choices
 
 - Establish depth bands through value, saturation, scale, overlap, and vertical position.
@@ -11,7 +15,7 @@
 
 1. Block foreground, middle, and distance as large value masses.
 2. Shape the governing material structure: strata for rock, crown masses for foliage, connected flow for water, grout rhythm for walls, plane breaks for metal.
-3. Repeat two to six cluster motifs with controlled spacing, hue, and orientation.
+3. Repeat a small cluster vocabulary with controlled spacing, hue, and orientation. Inspect overlap junctions for holes and isolated remnants.
 4. For seamless work, make opposite edges agree and inspect the generated 3x repeat proof.
 5. Add restrained variants that preserve projection, light, palette roles, and edge contract.
 

@@ -2,4 +2,4 @@
 
 One installable skill:
 
-- [`pixel-art-html`](./pixel-art-html/SKILL.md): design, repixelize, critique, package exact-grid pixel art: standalone proofs, resolution collections, navigable project libraries.
+- [`pixel-art-html`](./pixel-art-html/SKILL.md): retrieve construction methods, author and repair exact pixel grids, then package standalone proofs, resolution collections, and project libraries.

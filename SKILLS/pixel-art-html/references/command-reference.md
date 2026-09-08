@@ -3,6 +3,7 @@
 ## Contents
 
 - [Prerequisites](#prerequisites)
+- [Reference and repair lab](#reference-and-repair-lab)
 - [Build and repair commands](#build-and-repair-commands)
 - [Inspect and maintain outputs](#inspect-and-maintain-outputs)
 - [Image options](#image-options)
@@ -12,7 +13,25 @@
 
 - `from-spec`, `study`, `repair`, `collection`, `pack`, `promote`, `validate`, `critique`, `hub`: Python, no extra deps.
 - Local image conversion + small-grid benchmark: Pillow. `uv run --with pillow==12.3.0` keeps it local to the command.
+- Reference indexing, boards, and coordinate loupes: Pillow. Video metadata/samples additionally use local `ffprobe`/`ffmpeg`. Technique search, indexed text search, and pixel inspection, diff, and patch need only Python 3.11+.
 - `--output`: unindexed scratch. `--project-root` plus `--slug`: managed iteration.
+
+## Reference and repair lab
+
+```bash
+python <skill-dir>/scripts/reference_library.py techniques "tree volume"
+python <skill-dir>/scripts/reference_library.py index --root "wiki=<local-directory>" --output <private-work-dir>/library.json
+python <skill-dir>/scripts/reference_library.py search <private-work-dir>/library.json "leaf" --kind image --limit 6
+python <skill-dir>/scripts/reference_library.py board <private-work-dir>/library.json --ids <reference-id> --fractions 0,0.5,0.95 --output <private-work-dir>/study.png
+python <skill-dir>/scripts/pixel_lab.py inspect <baseline>/pixel-art.json --region 8 6 12 10
+python <skill-dir>/scripts/pixel_lab.py loupe <baseline>/pixel-art.json --region 8 6 12 10 --compare <new-repair>/pixel-art.json --output <private-work-dir>/comparison.png
+python <skill-dir>/scripts/pixel_lab.py patch <baseline>/pixel-art.json <patch.json> --output <new-repair> --scale 1
+python <skill-dir>/scripts/pixel_lab.py diff <baseline>/pixel-art.json <new-repair>/pixel-art.json
+```
+
+Reference provenance and sampling limits: [reference-library.md](reference-library.md). Patch fields, coordinates, and construction decisions: [construction-workflow.md](construction-workflow.md). `patch` requires a new output directory and always writes a draft with the compiler's repair provenance; it never changes the baseline. `inspect` accepts a canonical JSON file or a validated single-artifact directory.
+
+`loupe` writes a new diagnostic PNG and JSON receipt with native context, coordinate labels, shared palette aliases, exact ROI rows, and source fingerprints. Limit the ROI to 32 by 32 cells; omit `--region` for a smaller whole grid. `--compare` requires the same dimensions and declared background. Labels and cell gaps belong only to the diagnostic. The command does not alter either artifact or decide whether a repair improves it.
 
 ## Build and repair commands
 

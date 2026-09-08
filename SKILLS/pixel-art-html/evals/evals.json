@@ -12,7 +12,8 @@
       "loss",
       "not-assessed"
     ],
-    "promotion_rule": "A mechanical pass cannot replace the required blind perceptual review."
+    "promotion_rule": "A mechanical pass cannot replace the required blind perceptual review.",
+    "controlled_comparison": "Compare prior and updated skills with the same model, brief, grid, palette budget, references, and effort. Shuffle outputs for a non-builder reviewer. Report win/tie/loss/not-assessed per case, and cost separately."
   },
   "evals": [
     {
@@ -22,6 +23,8 @@
       "expected_output": "A draft 16x16 lighthouse with three anonymous same-grid directions, explicit silhouette/value checkpoints, a warm focal cue, exact standalone artifacts, and an honest blind-read verdict.",
       "files": [],
       "required_evidence": [
+        "reference-decisions.md",
+        "construction-plan.json",
         "brief.md",
         "study/manifest.json",
         "study/blind.html",
@@ -58,6 +61,8 @@
         "evals/fixtures/character-source.ppm"
       ],
       "required_evidence": [
+        "reference-decisions.md",
+        "construction-plan.json",
         "source-brief.md",
         "automatic-draft/pixel-art.json",
         "selected-spec.json",
@@ -93,6 +98,8 @@
         "examples/small-grid-repair/transfer/sources/ship-32.json"
       ],
       "required_evidence": [
+        "reference-decisions.md",
+        "construction-plan.json",
         "source/pixel-art.json",
         "automatic-baseline/pixel-art.json",
         "study/manifest.json",
@@ -118,6 +125,108 @@
         "Is the amber cockpit distinct from the hull at native 1x?",
         "Do two engine cues remain separate without turning into noise?",
         "Is the authored repair visibly better than the automatic baseline, or should the verdict remain loss/not-assessed?"
+      ]
+    },
+    {
+      "id": "reference-foliage-tree-32",
+      "route": "reference-construction",
+      "prompt": "Create an original 32x32 transparent tree for a top-down game with at most eight colors. Use a foliage construction technique and inspect local process references if available. Keep a readable trunk and an asymmetric crown. Show how silhouette, value, and material were built, then repair one observed visual problem.",
+      "expected_output": "An original draft with reference decisions, part and overlap planning, distinct same-grid directions, buildable passes, and one evidence-based pixel repair.",
+      "files": [],
+      "required_evidence": [
+        "reference-decisions.md",
+        "construction-plan.json",
+        "study/blind.html",
+        "study/manifest.json",
+        "checkpoints/silhouette/pixel-art.json",
+        "checkpoints/value/pixel-art.json",
+        "baseline/pixel-art.json",
+        "patch.json",
+        "final/index.html",
+        "final/pixel-art.json",
+        "final/pixel-art.png",
+        "final/delta.json",
+        "browser-proof.json",
+        "blind-review.json"
+      ],
+      "mechanical_assertions": [
+        "All masters remain 32x32 with at most eight colors and exact JSON/PNG/HTML parity.",
+        "Reference decisions distinguish inspected media, derivative text, and inference; unavailable media are not claimed as viewed.",
+        "The patch binds the baseline fingerprint, checks original colors, and preserves every unedited cell.",
+        "The source corpus is not copied into the distributable output."
+      ],
+      "perceptual_questions": [
+        "Does the tree read at 1x without a title?",
+        "Do crown placement and branch overlaps explain the volume before leaf texture?",
+        "Are repeated motifs hidden within a coherent crown rather than visible as identical stamps?",
+        "Does the repair improve the stated visual problem without damaging the silhouette?"
+      ]
+    },
+    {
+      "id": "constructive-mech-32",
+      "route": "multipart-construction",
+      "prompt": "Create an original 32x32 isometric cargo mech with at most ten colors. Its payload, supported body, feet, and a small optical cue must read at native size. Use a measured projection and an explicit overlap order. Compare three functional silhouettes before finishing the selected machine.",
+      "expected_output": "A draft machine built from functional parts and consistent screen-space axes, with a native-size anonymous study and honest browser evidence.",
+      "files": [],
+      "required_evidence": [
+        "reference-decisions.md",
+        "construction-plan.json",
+        "study/blind.html",
+        "study/manifest.json",
+        "selected-spec.json",
+        "checkpoints/silhouette/pixel-art.json",
+        "checkpoints/value/pixel-art.json",
+        "final/index.html",
+        "final/pixel-art.json",
+        "final/pixel-art.png",
+        "browser-proof.json",
+        "blind-review.json"
+      ],
+      "mechanical_assertions": [
+        "The study has three materially different 32x32 draft grids.",
+        "Part bounds, anchors, palette roles, and overlap order agree with the declared grid.",
+        "The final has at most ten colors and validated JSON/PNG/HTML parity."
+      ],
+      "perceptual_questions": [
+        "Is this a cargo-carrying machine rather than a decorated humanoid badge?",
+        "Do its feet and support structure plausibly carry the payload?",
+        "Do visible faces follow the same projection and light?",
+        "Is the optical cue readable without competing with the main form?"
+      ]
+    },
+    {
+      "id": "critique-construction-plateau",
+      "route": "critique-and-repair",
+      "prompt": "These three original 32x32 drafts are recognizable but may still have important construction problems. Critique each current piece on its own before making a comparison. Choose the two defects with the greatest visible impact, then repair them while preserving the original grid and palette budget: ten colors for the portrait and carrier, seven for the tree. Keep the earlier drafts and report any tradeoff or unresolved read. Do not use an existing after-spec as your answer.",
+      "expected_output": "A located critique, two independent authored repairs, exact before/after proof, and an honest verdict that separates relative preference from task success.",
+      "files": [
+        "examples/construction-repair/portrait-before.json",
+        "examples/construction-repair/mech-before.json",
+        "examples/construction-repair/oak-before.json"
+      ],
+      "required_evidence": [
+        "current-only-review.md",
+        "interventions.json",
+        "repairs/first/before/pixel-art.json",
+        "repairs/first/after/pixel-art.json",
+        "repairs/first/comparison.png",
+        "repairs/second/before/pixel-art.json",
+        "repairs/second/after/pixel-art.json",
+        "repairs/second/comparison.png",
+        "browser-proof.json",
+        "independent-review.json"
+      ],
+      "mechanical_assertions": [
+        "Each repair remains 32x32 within its declared palette budget and passes exact artifact validation.",
+        "The current-only critique precedes access to any bundled after-spec or annotated comparison.",
+        "Each intervention names an observed defect, region, causal relationship, operation, and constraint at risk.",
+        "Both earlier grids are preserved and no unperformed review is represented as acceptance."
+      ],
+      "perceptual_questions": [
+        "Does the critique identify a visible construction or hierarchy failure rather than ask for more detail by default?",
+        "Does the repair clarify that failure at native size when compared against the close baseline?",
+        "Has a preferred version retained an incorrect functional read or introduced a new tradeoff?",
+        "Would the result still seem convincing without a weaker version beside it?"
       ]
     }
   ]

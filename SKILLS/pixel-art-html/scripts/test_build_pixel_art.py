@@ -14,6 +14,10 @@ SPEC = importlib.util.spec_from_file_location("build_pixel_art", MODULE_PATH)
 assert SPEC and SPEC.loader
 module = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(module)
+sys.modules["build_pixel_art"] = module
+sys.path.insert(0, str(MODULE_PATH.parent))
+import pixel_lab
+import reference_library
 
 
 def requires_pillow(test_method):
@@ -978,6 +982,188 @@ class PixelArtBuilderTests(unittest.TestCase):
             metadata = module.iteration_metadata(result, output, library)
             self.assertEqual(metadata["thumbnail"], "2026/07/001-set/32x32/pixel-art.png")
             self.assertEqual(metadata["sizes"], ["16x16", "32x32", "64x64"])
+
+
+    def lab_case(self):
+        artifact = module.compile_spec({
+            "title": "Repair case", "width": 8, "height": 8,
+            "palette": {"a": "#123", "b": "#abc"},
+            "rects": [{"x": 2, "y": 2, "width": 3, "height": 3, "color": "a"}],
+            "pixels": [{"x": 3, "y": 3, "color": "b"}],
+            "art_direction": {"use": "prop", "light": "upper left"},
+        })
+        patch = {"base_fingerprint": module.artifact_fingerprint(artifact),
+                 "hypothesis": "Open the upper-left corner and connect its adjacent light to the center.",
+                 "max_colors": 2, "protected_regions": [[3, 3, 1, 1]],
+                 "repair_decisions": {"silhouette": "Open corner", "identity_cue": "Keep center", "subtraction": "Remove one cell"},
+                 "edits": [{"x": 2, "y": 2, "before": "#112233", "after": None},
+                           {"x": 3, "y": 2, "before": "#112233", "after": "#AABBCC"}]}
+        return artifact, patch
+
+    def test_pixel_lab_reports_native_coordinates_and_diagonal_connectivity(self):
+        artifact = module.compile_spec({"width": 8, "height": 8, "pixels": [
+            {"x": 2, "y": 2, "color": "#123"}, {"x": 3, "y": 3, "color": "#123"},
+            {"x": 6, "y": 5, "color": "#abc"}]})
+        report = pixel_lab.inspect_artifact(artifact, [2, 2, 2, 2])
+        self.assertEqual(report["rows"][1], {"y": 3, "x_start": 2, "cells": [".", "p0"]})
+        self.assertEqual(report["total_clusters_in_region"], 1)
+        self.assertEqual(report["small_clusters"][0]["cells"], [[2, 2], [3, 3]])
+        self.assertEqual(len(pixel_lab.cluster_locations(artifact)), artifact["quality"]["clusters"])
+
+    @requires_pillow
+    def test_pixel_lab_loupe_preserves_native_cells_and_comparison_coordinates(self):
+        from PIL import Image
+        artifact, patch = self.lab_case()
+        repaired, _ = pixel_lab.apply_patch(artifact, patch)
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            before, after = root / "before.json", root / "after.json"
+            before.write_text(json.dumps(artifact), encoding="utf-8")
+            after.write_text(json.dumps(repaired), encoding="utf-8")
+            originals = [p.read_bytes() for p in (before, after)]
+            command = [sys.executable, str(MODULE_PATH.with_name("pixel_lab.py")), "loupe", str(before),
+                       "--compare", str(after), "--region", "2", "2", "2", "2", "--output", str(root / "loupe.png")]
+            result = subprocess.run(command, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            receipt = json.loads((root / "loupe.json").read_text())
+            self.assertEqual(receipt["region"], [2, 2, 2, 2])
+            with Image.open(root / "loupe.png") as image:
+                for index, current in enumerate((artifact, repaired)):
+                    panel = receipt["panels"][index]
+                    self.assertEqual(panel["fingerprint"], module.artifact_fingerprint(current))
+                    ox, oy = panel["roi_image_origin_xy"]
+                    for dy, row in enumerate(panel["rows"]):
+                        self.assertEqual((row["y"], row["x_start"]), (2 + dy, 2))
+                        for dx, alias in enumerate(row["cells"]):
+                            color = current["grid"][2 + dy][2 + dx]
+                            self.assertEqual(receipt["legend"][alias], color)
+                            expected = color or receipt["display_background"]
+                            rgb = tuple(int(expected[i:i + 2], 16) for i in (1, 3, 5))
+                            self.assertEqual(image.getpixel((ox + dx * receipt["cell_pitch"] + 8,
+                                                            oy + dy * receipt["cell_pitch"] + 8)), rgb)
+            self.assertEqual([p.read_bytes() for p in (before, after)], originals)
+            retry = subprocess.run(command, capture_output=True, text=True)
+            self.assertNotEqual(retry.returncode, 0)
+            self.assertIn("new diagnostic", retry.stderr)
+
+    def test_pixel_lab_cli_writes_valid_repair_without_changing_baseline(self):
+        artifact, patch = self.lab_case()
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            baseline, output = root / "baseline", root / "repair"
+            module.write_artifact(artifact, baseline, 2)
+            original = (baseline / "pixel-art.json").read_bytes()
+            patch_path = root / "patch.json"
+            patch_path.write_text(json.dumps(patch), encoding="utf-8")
+            command = [sys.executable, str(MODULE_PATH.with_name("pixel_lab.py")), "patch", str(baseline), str(patch_path), "--output", str(output), "--scale", "1"]
+            result = subprocess.run(command, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            repaired = module.validate_output(output)
+            self.assertEqual(repaired["evidence_tier"], "draft")
+            png_header = (output / "pixel-art.png").read_bytes()
+            self.assertEqual((int.from_bytes(png_header[16:20], "big"), int.from_bytes(png_header[20:24], "big")),
+                             (repaired["width"], repaired["height"]))
+            self.assertIsNone(repaired["grid"][2][2])
+            self.assertEqual(repaired["grid"][2][3], "#AABBCC")
+            self.assertEqual(repaired["source"]["art_direction"], artifact["source"]["art_direction"])
+            self.assertEqual(json.loads((output / "delta.json").read_text())["changed_cells"], 2)
+            self.assertEqual((baseline / "pixel-art.json").read_bytes(), original)
+            retry = subprocess.run(command, capture_output=True, text=True)
+            self.assertNotEqual(retry.returncode, 0)
+            self.assertIn("new directory", retry.stderr)
+
+    def test_pixel_lab_rejects_stale_grid_and_wrong_cell(self):
+        for field in ("fingerprint", "before"):
+            artifact, patch = self.lab_case()
+            with self.subTest(field=field):
+                if field == "fingerprint":
+                    patch["base_fingerprint"] = "stale"
+                else:
+                    patch["edits"][0]["before"] = "#000000"
+                original = json.dumps(artifact)
+                with self.assertRaisesRegex(ValueError, "does not match"):
+                    pixel_lab.apply_patch(artifact, patch)
+                self.assertEqual(json.dumps(artifact), original)
+
+    def test_pixel_lab_protects_declared_region(self):
+        artifact, patch = self.lab_case()
+        patch["protected_regions"] = [[2, 2, 1, 1]]
+        with self.assertRaisesRegex(ValueError, "protected region"):
+            pixel_lab.apply_patch(artifact, patch)
+
+    def test_pixel_lab_enforces_palette_budget(self):
+        artifact, patch = self.lab_case()
+        patch["edits"][1]["after"] = "#FF0000"
+        with self.assertRaisesRegex(ValueError, "max_colors"):
+            pixel_lab.apply_patch(artifact, patch)
+
+    def test_pixel_lab_rejects_ambiguous_or_outside_coordinates(self):
+        for x in (2.5, True, -1, 8):
+            artifact, patch = self.lab_case()
+            patch["edits"][0]["x"] = x
+            with self.subTest(x=x), self.assertRaises(ValueError):
+                pixel_lab.apply_patch(artifact, patch)
+        artifact, patch = self.lab_case()
+        patch["edits"].append(patch["edits"][0])
+        with self.assertRaisesRegex(ValueError, "Repeated edit"):
+            pixel_lab.apply_patch(artifact, patch)
+
+    @requires_pillow
+    def test_reference_index_searches_captions_and_full_text_before_deduplication(self):
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "corpus"
+            chapter = root / "44-trees"
+            images = chapter / "images"
+            images.mkdir(parents=True)
+            Image.new("RGB", (8, 8), "green").save(images / "01.png")
+            (root / "copy.png").write_bytes((images / "01.png").read_bytes())
+            (chapter / "article.html").write_text('<figure><img src="images/01.png"><figcaption>https://example.com/Leaf_Bundle.png</figcaption></figure>', encoding="utf-8")
+            (chapter / "notes.md").write_text("ordinary text " * 2000 + "late-stage-construction", encoding="utf-8")
+            index = reference_library.index_library({"wiki": root})
+            self.assertEqual(index["coverage"]["files"], 4)
+            self.assertEqual(index["coverage"]["exact_duplicates"], 1)
+            matches = reference_library.search_entries(index, "leaf", kind="image")
+            self.assertEqual(matches[0]["path"], "44-trees/images/01.png")
+            self.assertEqual(len(reference_library.search_entries(index, "late-stage-construction", kind="text")), 1)
+            self.assertEqual(len(reference_library.search_entries(index, "", kind="image")), 1)
+            self.assertEqual(len(reference_library.search_entries(index, "", kind="image", duplicates=True)), 2)
+
+    @requires_pillow
+    def test_reference_samples_reach_the_second_frame_of_a_two_frame_gif(self):
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            corpus = root / "corpus"
+            corpus.mkdir()
+            path = corpus / "process.gif"
+            Image.new("RGB", (8, 8), "red").save(path, save_all=True, append_images=[Image.new("RGB", (8, 8), "blue")], duration=[100, 100], loop=0)
+            picture, sample = reference_library.sample_image(path, "image", .5)
+            self.assertEqual(sample["frame"], 1)
+            self.assertEqual(picture.getpixel((0, 0)), (0, 0, 255, 255))
+            index = reference_library.index_library({"study": corpus})
+            report = reference_library.make_board(index, index["entries"], root / "board.png", (0, .95), 2)
+            self.assertEqual([r["frame"] for r in report["samples"]], [0, 1])
+            self.assertEqual(report["errors"], 0)
+            with Image.open(root / "board.png") as board:
+                self.assertEqual(board.size, (480, 200))
+
+    @requires_pillow
+    def test_reference_board_rejects_source_drift_and_source_output_paths(self):
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            corpus = root / "corpus"
+            corpus.mkdir()
+            path = corpus / "source.png"
+            Image.new("RGB", (8, 8), "red").save(path)
+            index = reference_library.index_library({"study": corpus})
+            with self.assertRaisesRegex(ValueError, "outside every source root"):
+                reference_library.make_board(index, index["entries"], path)
+            Image.new("RGB", (8, 8), "blue").save(path)
+            report = reference_library.make_board(index, index["entries"], root / "board.png")
+            self.assertEqual(report["errors"], 1)
+            self.assertIn("changed after indexing", report["samples"][0]["error"])
 
 
 if __name__ == "__main__":

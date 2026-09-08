@@ -1,6 +1,6 @@
 # Craft passes
 
-Passes for text-authored grids, same-grid repair, manual cleanup after conversion. Keep checkpoint buildable. Advance only if proof works at native 1x.
+Passes for text-authored grids, same-grid repair, and manual cleanup after conversion. Keep checkpoints buildable. Advance only if the native 1x read supports it. Before these passes, use [construction-workflow.md](construction-workflow.md) to translate references into bounds, anchors, overlaps, and pixel decisions.
 
 ## Direction card
 
@@ -28,13 +28,13 @@ If fields cannot fit in short card, direction is not decided.
 - Connected clusters and controlled stair steps.
 - Judge one flat foreground color against background.
 
-Pass: title-free viewer identifies subject, orientation, pose/action. Generic box, bottle, person, ship: change contour before continuing.
+Pass: title-free viewer identifies subject, orientation, pose/action. If the shape is confused with a generic box, bottle, person, or ship, change the defining contour before continuing. A simple shape can be intentional.
 
 ## LIGHT - projection and value
 
 - One frontal, side, top-down, three-quarter, isometric convention.
 - Overlap and vertical placement for depth. Detail cannot repair contradictory faces.
-- Each color job. Small grids: dark, base, light, one accent.
+- Give each color a job. Try dark, base, light, and one accent, then use only the groups the grid needs.
 - Increase value through each ramp. Shift hue only if it supports light or material.
 - Strongest contrast on focal cue.
 - Light as connected plane-shaped clusters. Avoid bright center with dark edges.
@@ -43,7 +43,7 @@ Pass: grayscale separates main planes and focus. If silhouette or value fails tw
 
 ## FINISH - material and signature
 
-Two to six cluster shapes per important material:
+Start with a few cluster shapes per important material and add another only for a visible job:
 
 - metal or glass: clean planes, narrow hard highlights, selective dark seams
 - cloth, hair, foliage: one main mass, flow direction, few subordinate breaks
@@ -80,7 +80,7 @@ Inspect:
 6. blind title-free read
 7. named/provenance view only after observations recorded
 
-Deterministic critique reports bounds, cluster count, singleton count, value span, low-contrast boundaries. Questions, not grades. clean report can describe bad anatomy, generic design, wrong material.
+Deterministic critique reports bounds, cluster count, singleton count, value span, and low-contrast boundaries. They are questions, not grades. A clean report can describe bad anatomy, generic design, or the wrong material. `pixel_lab.py inspect` locates small clusters on the grid; `patch` and `diff` support a controlled repair in a new draft.
 
 ## Repair map
 

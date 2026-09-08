@@ -1,0 +1,63 @@
+{
+  "title": "Cargo walker",
+  "width": 32,
+  "height": 32,
+  "evidence_tier": "draft",
+  "background": null,
+  "palette": {
+    "i": "#293443",
+    "s": "#47525C",
+    "b": "#76847C",
+    "l": "#B7B991",
+    "g": "#887054",
+    "h": "#CAA365",
+    "r": "#AE654B",
+    "a": "#EFBB75",
+    "c": "#4C9697",
+    "w": "#B0DDD0"
+  },
+  "grid": [
+    "................................",
+    "................................",
+    "................................",
+    "................................",
+    "................................",
+    "..............i.................",
+    "............iihiiisiii..........",
+    "..........ihhhhhhssbhiiiiiiii...",
+    "..........igiiiiisbhhhhhhhhhi...",
+    "..........iggggggsbiiiiihiiri...",
+    "..........iggggggsbgggggirrri...",
+    "..........ighhhhgsagggggirrri...",
+    "......i...iggggghsbhhhggirrri...",
+    "....iilii.iggggggsbgggggirrri...",
+    "..illllllliiiiiiiiiiiiigirii....",
+    "..iwwcciisigggiiiiiiiiiiii...i..",
+    "..iccccsssibbbllliiiiiigig.bbi..",
+    "..iccccsssiiiibbbbbblliggbbiii..",
+    "..ibbbisssiiiiiiiiiibbbbbiiis...",
+    "...iiiisiiilllllliiiiiiiiiissi..",
+    "...iiiiiillllllllllllllliisssi..",
+    "...iiiiibbbsssssssssbbbbbbasi...",
+    ".....iibssbbbbbbbbbbbbbbsssii...",
+    "......iissiiiiiiiiiiiiiissiii...",
+    "......ibbbiiiii.......iibbbii...",
+    ".....ibbbbiiii........ibbbbii...",
+    ".....ibbbiiii.........ibbbii....",
+    ".....bbbii............bbbbi.....",
+    "..illllli............ibbbi......",
+    "..lllllli...........iilllllii...",
+    ".iiliiiiii...........illlllii...",
+    "...i.................iiiiiiii..."
+  ],
+  "art_direction": {
+    "use": "vehicle",
+    "light": "upper left; lantern interiors emit warm light",
+    "construction": "Separate the closed crate, pallet, chassis, joints, and integrated front cab with continuous part boundaries."
+  },
+  "repair_decisions": {
+    "silhouette": "Keep a low walking carrier and make the load faces continuous.",
+    "identity_cue": "Distinguish the closed crate, pallet, metal chassis, joints, and integrated front cab.",
+    "subtraction": "Remove broken load edges and the thin sensor neck that resembled a held object."
+  }
+}

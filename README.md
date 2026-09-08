@@ -15,13 +15,15 @@
 
 > Codex skill for creating exact-grid pixel art and self-contained HTML artifact libraries without calling a model API.
 
-Pixel Art HTML turns text-authored grids, local images, or accepted Codex ImageGen outputs into deterministic JSON, PNG, and standalone HTML. Its craft loop builds silhouette, projection, value, light, palette, and material clusters before detail. Managed builds are stored as chronological project iterations and automatically indexed in a dark, local-first gallery.
+Pixel Art HTML connects reference study to deliberate pixel construction. Retrieve a relevant technique, plan masses and overlaps, build silhouette and value, then repair visible problems at exact coordinates. The local compiler exports editable JSON, PNG, and standalone HTML with review evidence tied to the final grid.
 
 [Project site](https://gvastethecreator.github.io/pixel-art-html-skill/) · [Skill workflow](./SKILLS/pixel-art-html/SKILL.md) · [Contributing](./CONTRIBUTING.md) · [Sponsor](https://github.com/sponsors/gvastethecreator)
 
 ## Shipped examples
 
-These are committed skill fixtures, not newly generated maintenance art.
+These are the existing skill fixtures. They are distinct from the new original construction exercises.
+
+The new [construction-repair examples](SKILLS/pixel-art-html/examples/construction-repair/README.md) contain three original before/after cases with editable grids, independent criticism, and remaining limitations. They teach the repair process without presenting every preferred draft as finished art.
 
 | Cursed potion | Hook key |
 | --- | --- |
@@ -30,6 +32,9 @@ These are committed skill fixtures, not newly generated maintenance art.
 | ![Automatic small-grid potion recovery](docs/assets/examples/automatic-16.png) | ![Authored small-grid potion repair with a clearer silhouette](docs/assets/examples/authored-16.png) |
 
 - Build single images or deliberate multi-resolution sets from 8x8 through 128x128.
+- Retrieve 18 construction techniques with source links across 62 SLYNYRD Pixelblog chapters, without requiring a local corpus.
+- Index local text, images, GIFs, and videos; recover gallery captions, collapse byte duplicates, and create sampled reference boards with provenance.
+- Inspect coordinate regions and cluster locations, render labeled comparison loupes, then apply fingerprinted patches with expected colors, protected regions, and a palette budget.
 - Classify exact-grid, pseudo-pixel, and painterly sources before conversion, then record the detector, confidence, inferred lattice, and applied reconstruction in canonical metadata.
 - Convert locally with Pillow using target-aware structure/color packing while enforcing exact dimensions and palette limits.
 - Repair losing 8x8/16x16 drafts through a declarative authored spec that preserves the exact baseline, required silhouette/identity/subtraction decisions, changed-cell evidence, and blind before/after proof.
@@ -55,6 +60,16 @@ npx skills add gvastethecreator/pixel-art-html-skill --skill pixel-art-html
 Or clone the repository and install `SKILLS/pixel-art-html` through your Codex skill workflow.
 
 ## Quick Start
+
+Retrieve a construction method before authoring:
+
+```powershell
+python .\SKILLS\pixel-art-html\scripts\reference_library.py techniques "tree foliage volume"
+```
+
+Local reference setup: [Reference library](./SKILLS/pixel-art-html/references/reference-library.md). Planning and controlled repairs: [Construction workflow](./SKILLS/pixel-art-html/references/construction-workflow.md). The package contains original synthesis and source attribution; the user's reference media stay local. Demonstrations and mechanical checks do not establish artistic superiority across models.
+
+For recognizable but flat or generic art, use [Artistic construction](./SKILLS/pixel-art-html/references/artistic-construction.md): give clusters a surface, solve shared axes, distinguish cargo from a body, and compare a specific construction change at the same grid and palette budget.
 
 Create a managed artifact from a compact scene spec:
 
@@ -94,7 +109,7 @@ The repair spec is a normal exact-grid spec plus `repair_decisions.silhouette`, 
 
 Both commands regenerate `pixel-art/index.html`, which navigates every managed iteration in the project. Use `--output <directory>` when an unindexed standalone destination is preferable.
 
-After each build, run the structural validator and craft-risk report:
+At artifact closeout, run the structural validator and craft-risk report:
 
 ```powershell
 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py validate .\output

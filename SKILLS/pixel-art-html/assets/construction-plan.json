@@ -1,0 +1,24 @@
+{
+  "purpose": "Working plan; replace the example values for the current asset. This is not compiler input.",
+  "native_grid": [32, 32],
+  "intended_read": "Top-down scout with a narrow nose and two rear engines",
+  "visual_thesis": "A tapered forward hull and separated rear engines make travel direction clear without relying on color",
+  "likely_wrong_read": "A symmetric badge with wings instead of a forward-moving craft",
+  "projection": "Top-down; nose points up",
+  "light": "Upper left",
+  "palette_budget": 6,
+  "references": [],
+  "parts": [
+    {"id": "hull", "bounds_xywh": [10, 7, 12, 17], "anchor_xy": [16, 15], "job": "Direction and main mass"},
+    {"id": "cockpit", "bounds_xywh": [14, 10, 4, 4], "anchor_xy": [16, 12], "job": "Focal cue"},
+    {"id": "left-engine", "bounds_xywh": [6, 17, 5, 10], "anchor_xy": [10, 20], "job": "Rear propulsion"},
+    {"id": "right-engine", "bounds_xywh": [21, 17, 5, 10], "anchor_xy": [21, 20], "job": "Rear propulsion"}
+  ],
+  "overlap_order": ["left-engine", "right-engine", "hull", "cockpit"],
+  "palette_roles": ["ink", "shadow", "hull", "lit-hull", "cockpit", "exhaust"],
+  "negative_space": "Keep gaps beside the engine tips",
+  "cluster_vocabulary": "Tapered hull planes, short beveled edges, compact exhaust bars",
+  "intentional_omissions": ["Panel grids", "Small insignia"],
+  "checkpoints": ["silhouette", "value", "material", "final"],
+  "review_status": "not-assessed"
+}

@@ -1,5 +1,9 @@
 # Vehicles and architecture
 
+Check what each module is read as before polishing it. A crate on two legs can read as a head on a torso. A low load platform, visible fastening, distinct front sensor, and payload proportions can clarify the relationship; thicker legs alone cannot. For roofs, establish ridge, eaves, gable, and shared corners before tile marks. Mark directions must belong to that plane.
+
+Retrieve `projection-scaffold`, `functional-machines`, or `constructive-architecture` with `reference_library.py techniques`. Map shared corners, axle or joint centers, and attachments in the construction plan. Build hidden scaffold edges when they resolve alignment, then remove them from the final visible grid. Mirror geometry before lighting, not a finished shaded module.
+
 ## Direction choices
 
 - Express one function in the silhouette: speed, defense, cargo, power, worship, housing, industry, or landmark.

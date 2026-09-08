@@ -1,0 +1,60 @@
+{
+  "title": "Spreading tree",
+  "width": 32,
+  "height": 32,
+  "evidence_tier": "draft",
+  "background": null,
+  "palette": {
+    "i": "#283F42",
+    "s": "#395C48",
+    "b": "#648453",
+    "l": "#9FAF69",
+    "h": "#D6CC88",
+    "t": "#896650",
+    "w": "#C69768"
+  },
+  "grid": [
+    "................................",
+    "................................",
+    "............isssssi.............",
+    "..........bbsbblbbbsi...........",
+    ".......bbssbhhhhlllbssi.........",
+    "......isbllhhhhhllllbbsi........",
+    ".....isblhhhlllllllllbsi........",
+    "...issblhhhhllllllllbbbsssi.....",
+    "...isslhhllllllllllbbbbssssi....",
+    "..issllllllllllbbbbbbbbbbbssi...",
+    "....sbbbblbbbblbbbsbbbbllbsssi..",
+    "..isbbblbbbbbbbbbssssbbbbbbbi...",
+    "...illlllllbbbbssssbbbbbbbbi....",
+    "....blllllbbbbbbsssssbbbbbbi....",
+    "...iblbbbbbbbbbbsssssssbs.......",
+    "....bbbbbbbbsssssssssstssi......",
+    ".......ibsbsssssssstttsi........",
+    ".........isssssssssssi..........",
+    "..........isssittwttt...........",
+    "............iiwtwttt............",
+    ".............iwttttt............",
+    ".............itwttt.............",
+    ".............itwtti.............",
+    ".............itwtii.............",
+    "............iiwtii..............",
+    "............itwtii..............",
+    "...........iiwttii..............",
+    "...........itwittii.............",
+    "..........iiwiiittiii...........",
+    "........iiiiii...itiii..........",
+    ".......iiiii......i.............",
+    "................................"
+  ],
+  "art_direction": {
+    "use": "prop",
+    "light": "upper left; lantern interiors emit warm light",
+    "construction": "One dominant irregular crown, a quiet branch extension, and selective undercuts replace repeated round highlight islands."
+  },
+  "repair_decisions": {
+    "silhouette": "Replace three rounded crown groups with one irregular dominant canopy and a quieter extension.",
+    "identity_cue": "Retain a bent warm trunk beneath the broad foliage.",
+    "subtraction": "Remove repeated bright circular centers and their concentric borders."
+  }
+}

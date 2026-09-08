@@ -1,104 +1,115 @@
 ---
 name: pixel-art-html
-description: "Pixel art HTML: create, repixelize, repair, review, package JSON, PNG, HTML. Icons, sprites, tiles, props, scenes, image-to-grid recovery, visual-quality repair. Not animation atlases or painterly generation."
+description: "Author and repair exact-grid pixel art through reference study, shape construction, material clusters, and coordinate-level visual iteration. Export editable JSON, PNG, and standalone HTML. For sprites, icons, tiles, props, scenes, and image-to-grid recovery; animation atlases belong to spritesheet-expert."
 ---
 
 # Pixel Art HTML
 
-Art must read on its exact native grid. A valid file, metric report, or title-assisted preview is not evidence.
+Build a visual idea as deliberate pixel relationships. Work from references to a construction plan, then from visible errors to small, testable edits. A valid file or a favorable metric does not prove good art.
 
-## Route
+## Choose the route
 
-- Text or grid edit: brief -> direction study if needed -> authored spec.
-- Local image: classify -> exact draft -> same-grid authored repair if recognition collapses.
-- Existing bad output: keep as losing baseline -> study three new directions -> rebuild.
-- Resolution set: author or repair every size independently, then `collection`.
-- Related assets: one family contract, distinct silhouettes, then `pack`.
-- Animation or atlas: individual frame masters here, then `$spritesheet-expert`.
-- Painterly or concept image generation: `$imagegen`. Return here only to author the final exact grid.
+- New asset: brief -> retrieve -> construct -> inspect -> repair -> prove.
+- Rejected output or uncertain direction: keep the baseline, then a three-direction `study` before construction.
+- Local image: classify -> exact draft -> authored repair when recognition or cluster structure fails.
+- Related assets: shared family contract and distinct silhouettes, then `pack`.
+- Multiple resolutions: author each master independently, then `collection`.
+- Animation: construct individual frame masters here; hand timing, pivots, and atlas work to `$spritesheet-expert`.
+- Painterly concepts: use an available image-generation tool when requested; return here to author the final exact grid.
 
-Runner is local and deterministic. Do not add an API key or call a hosted converter.
+The compiler and study tools run locally. They need no model API, hosted converter, or external service. Command details: [command-reference.md](references/command-reference.md).
 
-## Native-read ladder
+## 1. Fix the visual contract
 
-### 1. BRIEF
+Record use, exact dimensions, background, palette budget, projection, light, subject/action, material, and one identifying cue. Honor the runtime grid; otherwise start at 32x32. Increase dimensions only when a same-brief trial shows what cannot fit.
 
-Fix use, exact grid, background, palette limit, display context, projection, light, subject/action, material, focal cue, one intended signature. Honor a runtime grid if present; else 32x32. Enlarge only if a same-brief prototype proves the information cannot fit.
+Describe the intended native read in one sentence. Decide what can be omitted. At 8x8, relationships such as head/body, handle/blade, or cockpit/engines are usually worth more than surface detail.
 
-`fixture` for mechanics-only; `draft` for art under review. Source specs and image conversion author only those two tiers.
+Author `draft` for art and `fixture` for mechanics. Neither label is acceptance.
 
-Load the matching reference:
+## 2. Retrieve a construction method
 
-- characters/creatures: [characters-creatures.md](references/subjects/characters-creatures.md)
-- icons, props, UI: [props-ui.md](references/subjects/props-ui.md)
-- vehicles/architecture: [vehicles-architecture.md](references/subjects/vehicles-architecture.md)
-- environments, materials, tiles: [environments-tiles.md](references/subjects/environments-tiles.md)
-- uncertain image lattice, 8x8-32x32 recovery: [source-recovery.md](references/source-recovery.md)
-- spec syntax: [artifact-schema.md](references/artifact-schema.md)
+Search the bundled technique library for the actual problem:
 
-Done: grid contract and intended blind read fit in one short direction card.
+```bash
+python <skill-dir>/scripts/reference_library.py techniques "tree foliage volume"
+```
 
-### 2. STUDY
+Read only the returned techniques and the matching subject guide:
 
-If rejected, quality claim, or direction uncertain: author exactly three `draft` specs. Same brief and exact grid. Change silhouette thesis, shape language, orientation, or material construction. Palette swaps and ornament variants are duplicates.
+- [Characters and creatures](references/subjects/characters-creatures.md)
+- [Props, icons, and UI](references/subjects/props-ui.md)
+- [Vehicles and architecture](references/subjects/vehicles-architecture.md)
+- [Environments and tiles](references/subjects/environments-tiles.md)
 
-Run `study`. Open `blind.html` before named `index.html`. Pick one sample from native read. Record why the other two lose. Keep one useful signature. Name one element to remove. Do not default to a hybrid.
+When local references exist, use [reference-library.md](references/reference-library.md) to retrieve a few relevant images or process frames. Open the selected originals. A filename match or contact sheet locates evidence; it does not explain pixel construction.
 
-Routine mechanical fixtures can skip study; record skip reason. Never use that output as art-quality evidence.
+For each useful reference, record **observed construction -> transferable decision -> application on this grid**. Prefer evidence for form, material, or projection over a gallery of similar colors. Keep source IDs and frame positions. Separate an artist's example, a wiki interpretation, and your own inference.
 
-Done: one direction wins without title or provenance.
+For original work, design your own silhouette, composition, motifs, and palette. State what will differ from the reference. Do not trace, recolor, rearrange, or downscale source art and present it as a new design.
 
-### 3. BLOCK
+No suitable local corpus is required: the bundled techniques are portable. If visual references were unavailable, state that limitation; do not claim reference inspection.
 
-Build selected silhouette as a full local grid or coherent motifs. Rectangles and runs are scaffolds, not a finished style. At native 1x the flat shape must communicate subject, orientation, action.
+## 3. Plan the forms and choose a direction
 
-For image input, keep automatic conversion as a draft. If an 8x8 or 16x16 result loses the read, preserve it. Then `repair` with explicit `silhouette`, `identity_cue`, and `subtraction`.
+For multipart assets, name the masses, their bounds, attachment points, overlap order, negative gaps, and palette roles. Use [construction-plan.json](assets/construction-plan.json) when a written plan helps. It is working evidence, not compiler input.
 
-Done: removing every interior color still leaves the intended read.
+Map geometry before details: a body dummy for anatomy, shared corners for architecture, functional modules for machines, crown bundles for trees, depth bands for scenes. See [construction-workflow.md](references/construction-workflow.md).
 
-### 4. LIGHT
+For quality work, read [artistic-construction.md](references/artistic-construction.md). Give the design a visual thesis, then solve main masses, form clusters, and edge pixels at their appropriate scales. Recognition alone does not establish finish.
 
-Add only dark, mid, light, accent jobs. Establish projection and one light before texture. Separate major planes in grayscale. Make material readable via plane shape, edge behavior, highlight shape, cluster rhythm — not hue alone.
+For rejected art, a quality comparison, or unresolved direction, author exactly three same-grid drafts. Change mass allocation, gesture, contour, orientation, or material construction. Palette swaps are not new directions. Run `study`; inspect `blind.html` before `index.html`. Choose one direction, explain the losses, and retain one useful signature. Do not merge all three by default.
 
-Checkpoint after silhouette and value. If either fails, revise structure rather than adding detail. Pass checks: [craft-workflow.md](references/craft-workflow.md).
+Name the construction question each candidate tests. A few width changes or shifted marks can pass the topology validator while exploring too little. Review the structural differences visually; record weak exploration instead of claiming three strong directions.
 
-Done: volume, material, focal hierarchy work without decorative pixels.
+A clear approved direction or a diagnosed repair can proceed directly. This includes rebuilding a structural relationship whose failure is already understood. Record the construction hypothesis and the reason a new direction study is unnecessary.
 
-### 5. FINISH, THEN CUT
+## 4. Construct in visible passes
 
-Add selected signature and a small reusable cluster vocabulary. Protect one focal cue. Remove every cell that helps only zoomed, creates an orphan, weakens negative space, or competes with focus.
+**Block:** build the dominant mass, secondary masses, and negative space. Flat silhouette must carry the subject and orientation. Rectangles, circles, and runs are valid scaffolds; refine their junctions into the intended form.
 
-For tiles, inspect the automatic 3x repeat proof. For packs, compare silhouettes, baseline, padding, palette roles, projection, light as a family.
+**Planes:** map light onto surfaces and overlaps. Use the few value groups that explain the volume; three is a useful trial, not a universal minimum. Inspect grayscale before adding texture.
 
-Done: another subtraction pass no longer improves the native read.
+**Material:** select a small cluster vocabulary. Give each cluster a purpose, direction, scale, and quiet region. Reuse `motifs` and `stamps` where they preserve structure. Repair their overlap artifacts. Do not fill a surface just because space remains.
 
-### 6. PROVE
+Check whether value regions actually turn the surface. Horizontal bands can flatten a bottle or canopy. Small roof marks can contradict a roof plane. A load above legs can read as a head. Correct the responsible construction before adding texture.
 
-Run `validate` and `critique`. Inspect generated HTML in a real browser at native 1x, 2x, 4x, silhouette, value. Treat bounds, singleton, value-span, contrast as risk prompts, never a score. Blind-review before title, source, evidence tier, metrics, or direction card. Record actual subject, orientation/action, material, focal cue, remembered signature, mismatch. Inspect the final grid in its real background or repeated/set context.
+**Edges and subtraction:** inspect staircase rhythm, doubled elbows, tangencies, banding, and competing highlights. Remove details that weaken the native read. Manual antialiasing or dithering can be deliberate palette-bound choices; automatic smoothing must not change the exact grid or create fringes.
 
-Use `$browser-ui-verification`. CLI success and a non-empty canvas do not prove visual quality. Read [quality-contract.md](references/quality-contract.md) and [visual-review.md](references/visual-review.md).
+Keep silhouette and value checkpoints buildable. Use [craft-workflow.md](references/craft-workflow.md) for pass criteria and [artifact-schema.md](references/artifact-schema.md) for grids, motifs, and paint order.
 
-Done: structural parity and the title-free perceptual record both pass.
+## 5. Repair an observed problem
 
-### 7. PROMOTE OR KEEP DRAFT
+State one hypothesis: **visible symptom -> responsible region -> pixel operation -> expected native change**. Inspect the region:
 
-Copy [visual-review-input.json](assets/visual-review-input.json). Fill from the blind review. `representative` requires a real non-builder reviewer; `production-candidate` requires the project owner. Stay `draft` if that reviewer did not inspect the raw proof.
+```bash
+python <skill-dir>/scripts/pixel_lab.py inspect <output>/pixel-art.json --region 8 6 12 10
+```
 
-Run `promote`: writes `visual-review.json`, fingerprints the exact canonical grid, changes the tier, later grid drift fails validation. Pack or collection: one non-empty blind observation per manifest item, then `set_context`.
+Use the returned rows, palette legend, cluster locations, and fingerprint. For a small repair, fill [pixel-patch.json](assets/pixel-patch.json) and run `pixel_lab.py patch`. It checks the original grid, expected cell colors, protected regions, and palette budget before writing a new draft. For a structural rebuild, edit the source spec and use `build_pixel_art.py repair`.
 
-Hand back source spec/image, checkpoints or study, final `index.html`, `pixel-art.json`, `pixel-art.png`, review record, browser evidence, remaining limitations. Commands/layouts: [command-reference.md](references/command-reference.md).
+For ambiguous local relationships, `pixel_lab.py loupe` renders a labeled ROI with native context and an optional before/after comparison. Its receipt binds coordinates and palette aliases to both grids. The loupe supports inspection; it does not replace the final browser view.
 
-Done: another agent can rebuild, inspect, challenge, and validate the same pixels without hidden state.
+Compare before/after at 1x and use `pixel_lab.py diff` to locate the changes. Keep an edit only if the visible hypothesis holds. If silhouette or value still fails after two focused attempts, reconsider the construction or direction. Do not keep adding detail.
 
-## Stop conditions
+For image input, retain the automatic draft and its provenance. Small-grid recovery has additional requirements in [source-recovery.md](references/source-recovery.md).
 
-If any apply, do not ship:
+## 6. Prove the final pixels
 
-- native read needs the title or source image
-- three directions share one silhouette thesis
-- generic rectangle, ellipse, or automatic thumbnail survives as the main construction
-- material inferred only from color
-- texture or extra colors compensate for weak structure
-- browser proof missing, clipped, blurry, empty, or not the final output
-- source spec claims `representative` or `production-candidate`
-- self-review presented as independent acceptance
+At closeout, run `validate` and `critique`. Inspect the generated HTML in a real browser at native 1x, 2x, 4x, silhouette, and value. Use the available browser tooling; `$browser-ui-verification` gives the verification procedure when installed.
+
+Review without title, provenance, metrics, or the direction card first. Record actual subject, orientation/action, material, focus, signature, and mismatch. A builder who knows the brief can inspect an anonymous page, but cannot claim an independent blind test.
+
+Judge the current piece alone before showing its weaker baseline. Critique meaning, construction, material/light, then finish; locate the most important failures on the grid. Only then compare revisions. A relative preference does not satisfy a requirement the preferred piece still fails.
+
+Inspect the actual background. For tiles, inspect both the 3x repeat and required mixed transitions. For packs, compare distinctive silhouettes plus shared baseline, padding, projection, light, and palette roles.
+
+Bounds, singleton counts, contrast, and changed-cell totals locate risks. They never rank art quality. Read [quality-contract.md](references/quality-contract.md) and [visual-review.md](references/visual-review.md).
+
+## 7. Deliver with the correct evidence tier
+
+Keep the result `draft` without the required reviewer. `representative` requires a real non-builder review; `production-candidate` requires the owner. Copy [visual-review-input.json](assets/visual-review-input.json) only when that review occurs. `promote` binds it to the exact canonical grid. Later drift invalidates the review.
+
+Return the source spec, relevant reference decisions, selected study/checkpoints, final HTML/JSON/PNG, material repair evidence, browser proof, and remaining limitations. Reuse the project's iteration record. Do not copy a private reference corpus into the output package.
+
+Stop a quality claim when the native read needs its label, the main construction is unresolved, the final browser proof is missing, or self-review is being presented as independent acceptance. Return the useful draft and the specific remaining problem.

@@ -1,0 +1,12 @@
+{
+  "base_fingerprint": "",
+  "hypothesis": "",
+  "max_colors": 8,
+  "protected_regions": [],
+  "repair_decisions": {
+    "silhouette": "",
+    "identity_cue": "",
+    "subtraction": ""
+  },
+  "edits": []
+}

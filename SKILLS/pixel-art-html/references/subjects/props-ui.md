@@ -1,5 +1,7 @@
 # Props, icons, and UI
 
+Retrieve `icon-affordance`, `metal-glass`, or `tiny-information-budget` with `reference_library.py techniques`. Compare the item against the most likely wrong read. Reserve the handle, mouth, blade, cutout, or other defining relationship before adding surface marks.
+
 ## Direction choices
 
 - Define the affordance first: health, key, currency, hazard, quest item, weapon, food, or state.
@@ -15,9 +17,11 @@
 4. Keep cast shadows short and consistent. Separate them if the object must work on several backgrounds.
 5. In a pack, shuffle labels and confirm every item plus the family read.
 
+For glass, separate container and contents. A narrow rim reflection may describe curvature, but the liquid still needs a readable level and a turning side. An irregular bright island can read as an object floating inside the flask. Compare at native size before adding bubbles or symbols.
+
 ## Reject
 
-- a plain rectangle, circle, or bottle outline with detail pasted inside
+- a generic outline whose interior decoration fails to establish the intended item
 - four items distinguishable only by hue
 - shine clusters that imply the wrong material
 - equal contrast on every object feature

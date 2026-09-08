@@ -1,0 +1,59 @@
+[
+  {
+    "case": "portrait",
+    "grid": [
+      32,
+      32
+    ],
+    "budget": 10,
+    "before": "portrait-before.json",
+    "after": "portrait-after.json",
+    "delta": {
+      "before_fingerprint": "85fd12cbed3eeb549162d6a5995580cc3b043629bf91b0d4583b0b29bda6829e",
+      "after_fingerprint": "49377a9dc630d70c4c52505dca4f99f9f1da5f2a43808f0aaed7d834f9902019",
+      "changed_cells": 7,
+      "silhouette_changes": 0,
+      "verdict": "not-assessed; a delta does not prove improvement"
+    },
+    "evidence_tier": "draft",
+    "review": "independent model comparison; not owner acceptance"
+  },
+  {
+    "case": "mech",
+    "grid": [
+      32,
+      32
+    ],
+    "budget": 10,
+    "before": "mech-before.json",
+    "after": "mech-after.json",
+    "delta": {
+      "before_fingerprint": "0f8dbc6da0e550e4f49fd1921ac1acebd751d0e7a9d522c95518afde164e75fb",
+      "after_fingerprint": "79b6c34497ef6b97308567e2ddfce2d1bf239a4a6888d785cfab003e6971ed98",
+      "changed_cells": 374,
+      "silhouette_changes": 117,
+      "verdict": "not-assessed; a delta does not prove improvement"
+    },
+    "evidence_tier": "draft",
+    "review": "independent model comparison; not owner acceptance"
+  },
+  {
+    "case": "oak",
+    "grid": [
+      32,
+      32
+    ],
+    "budget": 7,
+    "before": "oak-before.json",
+    "after": "oak-after.json",
+    "delta": {
+      "before_fingerprint": "33e095c6a625ae8889cac7bd579b44ec590efe10c7b1a1c537748d4e2044727e",
+      "after_fingerprint": "51dc57beb64b695662913cc6573f1eee11247cd55d4a3c9cdabcd678be6f6e90",
+      "changed_cells": 336,
+      "silhouette_changes": 125,
+      "verdict": "not-assessed; a delta does not prove improvement"
+    },
+    "evidence_tier": "draft",
+    "review": "independent model comparison; not owner acceptance"
+  }
+]

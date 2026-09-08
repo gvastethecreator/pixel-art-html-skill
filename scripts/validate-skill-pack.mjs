@@ -18,6 +18,17 @@ const required = [
   "SKILLS/pixel-art-html/assets/pixel-art-project-hub-template.html",
   "SKILLS/pixel-art-html/assets/visual-review-template.md",
   "SKILLS/pixel-art-html/assets/visual-review-input.json",
+  "SKILLS/pixel-art-html/assets/construction-plan.json",
+  "SKILLS/pixel-art-html/assets/pixel-patch.json",
+  "SKILLS/pixel-art-html/examples/construction-repair/README.md",
+  "SKILLS/pixel-art-html/examples/construction-repair/comparison.json",
+  "SKILLS/pixel-art-html/examples/construction-repair/blind-comparison.png",
+  "SKILLS/pixel-art-html/examples/construction-repair/portrait-before.json",
+  "SKILLS/pixel-art-html/examples/construction-repair/portrait-after.json",
+  "SKILLS/pixel-art-html/examples/construction-repair/mech-before.json",
+  "SKILLS/pixel-art-html/examples/construction-repair/mech-after.json",
+  "SKILLS/pixel-art-html/examples/construction-repair/oak-before.json",
+  "SKILLS/pixel-art-html/examples/construction-repair/oak-after.json",
   "SKILLS/pixel-art-html/examples/cursed-salvage/README.md",
   "SKILLS/pixel-art-html/examples/cursed-salvage/visual-review.md",
   "SKILLS/pixel-art-html/examples/cursed-salvage/specs/potion.json",
@@ -59,6 +70,10 @@ const required = [
   "SKILLS/pixel-art-html/references/artifact-schema.md",
   "SKILLS/pixel-art-html/references/command-reference.md",
   "SKILLS/pixel-art-html/references/craft-workflow.md",
+  "SKILLS/pixel-art-html/references/construction-workflow.md",
+  "SKILLS/pixel-art-html/references/artistic-construction.md",
+  "SKILLS/pixel-art-html/references/reference-library.md",
+  "SKILLS/pixel-art-html/references/techniques.json",
   "SKILLS/pixel-art-html/references/image-source-brief.md",
   "SKILLS/pixel-art-html/references/project-library.md",
   "SKILLS/pixel-art-html/references/quality-contract.md",
@@ -72,6 +87,8 @@ const required = [
   "SKILLS/pixel-art-html/evals/evals.json",
   "SKILLS/pixel-art-html/evals/trigger_queries.json",
   "SKILLS/pixel-art-html/scripts/build_pixel_art.py",
+  "SKILLS/pixel-art-html/scripts/reference_library.py",
+  "SKILLS/pixel-art-html/scripts/pixel_lab.py",
   "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
   "SKILLS/pixel-art-html/scripts/test_build_pixel_art.py",
   "scripts/run-pixel-art-tests.py"
@@ -111,8 +128,8 @@ JSON.parse(await fs.readFile(path.join(root, "skills.sh.json"), "utf8"));
 
 const evals = JSON.parse(await fs.readFile(path.join(skill, "evals", "evals.json"), "utf8"));
 if (evals.schema_version !== 2 || evals.skill_name !== "pixel-art-html") errors.push("evals.json must use the pixel-art-html v2 contract");
-if (!Array.isArray(evals.evals) || evals.evals.length !== 3) {
-  errors.push("evals.json must contain exactly three controlled workflow cases");
+if (!Array.isArray(evals.evals) || evals.evals.length < 3) {
+  errors.push("evals.json must contain at least three controlled workflow cases");
 } else {
   const ids = new Set();
   for (const item of evals.evals) {
@@ -125,6 +142,41 @@ if (!Array.isArray(evals.evals) || evals.evals.length !== 3) {
       const stat = await fs.stat(path.join(skill, file)).catch(() => null);
       if (!stat?.isFile()) errors.push(`eval ${item?.id ?? "<missing>"} references a missing file: ${file}`);
     }
+  }
+}
+
+const techniques = JSON.parse(await fs.readFile(path.join(skill, "references", "techniques.json"), "utf8"));
+if (techniques.schema_version !== 1 || !Array.isArray(techniques.sources) || !Array.isArray(techniques.techniques)) {
+  errors.push("techniques.json needs a versioned source and technique catalog");
+} else {
+  const sourceIds = new Set();
+  for (const source of techniques.sources) {
+    if (!Number.isInteger(source.chapter) || sourceIds.has(source.chapter) || !source.title || !source.wiki_chapter || !/^https:\/\/www\.slynyrd\.com\/blog\//.test(source.url ?? "")) {
+      errors.push(`invalid technique source: ${source.chapter}`);
+    }
+    sourceIds.add(source.chapter);
+  }
+  const ids = new Set();
+  for (const item of techniques.techniques) {
+    if (!/^[a-z][a-z0-9-]+$/.test(item.id ?? "") || ids.has(item.id)) errors.push(`invalid technique id: ${item.id}`);
+    ids.add(item.id);
+    for (const field of ["title", "when", "check", "failure", "exercise"]) {
+      if (typeof item[field] !== "string" || !item[field].trim()) errors.push(`technique ${item.id} needs ${field}`);
+    }
+    for (const field of ["tags", "decisions", "pixel_actions", "chapters"]) {
+      if (!Array.isArray(item[field]) || !item[field].length) errors.push(`technique ${item.id} needs ${field}`);
+    }
+    if (item.chapters?.some(id => !sourceIds.has(id))) errors.push(`technique ${item.id} has an unknown source chapter`);
+  }
+}
+
+for (const file of (await walk(skill)).filter(file => file.endsWith(".md"))) {
+  const text = await fs.readFile(file, "utf8");
+  for (const match of text.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
+    const target = match[1].split("#")[0];
+    if (!target || /^[a-z][a-z0-9+.-]*:/i.test(target) || target.includes("<")) continue;
+    const resolved = path.resolve(path.dirname(file), decodeURIComponent(target));
+    if (!(await fs.stat(resolved).catch(() => null))) errors.push(`broken reference in ${relative(file)}: ${target}`);
   }
 }
 
