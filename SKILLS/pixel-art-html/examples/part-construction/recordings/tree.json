@@ -1,0 +1,530 @@
+{
+  "source": {
+    "kind": "construction",
+    "schema_version": 1,
+    "stage": "material",
+    "title": "El árbol del viento",
+    "width": 32,
+    "height": 32,
+    "intent": "One wind-shaped crown leans right over a bent trunk; unequal overlapping lobes remain one canopy",
+    "light": "Upper left; warm beacon only in the lighthouse",
+    "background": "#17232C",
+    "palette_budget": 9,
+    "palette": {
+      "i": "#101923",
+      "s": "#234837",
+      "d": "#3E5260",
+      "m": "#73935A",
+      "l": "#A9B875",
+      "h": "#E6EDCC",
+      "g": "#E4B568",
+      "b": "#DDD5AA",
+      "t": "#3C7154",
+      "c": "#719FA9",
+      "r": "#9E4051",
+      "R": "#5E3346",
+      "w": "#805A48",
+      "f": "#C8846E",
+      "q": "#34454C"
+    },
+    "parts": [
+      {
+        "id": "trunk",
+        "origin": [
+          11,
+          11
+        ],
+        "grid": [
+          "...........w..",
+          ".........wwR..",
+          ".wwww....wRR..",
+          "..wwww..wRR...",
+          "...www..wRR...",
+          "....wwwwRRR...",
+          ".....wwRRRR...",
+          ".....wwRRR....",
+          ".....wwRRR....",
+          ".....ffRR.....",
+          ".....ffRR.....",
+          "....wffR......",
+          "....fwfR......",
+          "....fwwR......",
+          "....fwRR......",
+          "...ffwRRR.....",
+          "..ffffRRR.....",
+          ".fffwwwww.....",
+          "ffwww.RwwwR...",
+          "...w...RRRRRRR"
+        ],
+        "anchors": {}
+      },
+      {
+        "id": "rear-crown",
+        "origin": [
+          2,
+          10
+        ],
+        "grid": [
+          ".....ssssss....",
+          "....ssssssss...",
+          "..ssssssssssss.",
+          "..sssssssssssss",
+          ".ssssssssssssss",
+          ".ssssssssssssss",
+          "sssssssssssssss",
+          "sssssssssssssss",
+          ".ssssssssssssss",
+          ".sssssssssssss.",
+          ".ssssssssssss..",
+          "..sssssssssss..",
+          "....ssssssss...",
+          ".....s........."
+        ],
+        "anchors": {}
+      },
+      {
+        "id": "main-crown",
+        "origin": [
+          7,
+          2
+        ],
+        "grid": [
+          "..........t.............",
+          "........tttttttttt......",
+          ".......tttttmtttttt.....",
+          ".....tttttmlmmmmmmtt....",
+          ".....ttmmmlllllmmmmtt...",
+          "....ttmmllllmlllmmmttt..",
+          "....tmmmlllmmmlllllmst..",
+          "..tttmmlllltttttmlmmmst.",
+          "..ttmmmllmmttttttmtssst.",
+          ".ttmmmlllmmttttttttsssst",
+          ".tttmmmmmmmtttmttttsssss",
+          "ttttmmmmmmttmmmmttmsssss",
+          "tttttmtttttttttttmmmsss.",
+          ".tttttttttttmttttssssss.",
+          ".tttttttttmmmttttsssss..",
+          "..tttsttttttttttssssss..",
+          "..ttttsstttssssssssss...",
+          ".....ttst...sssssss.....",
+          "........t...ssssss......",
+          "........................"
+        ],
+        "anchors": {}
+      },
+      {
+        "id": "front-crown",
+        "origin": [
+          2,
+          15
+        ],
+        "grid": [
+          ".......t.....",
+          "..ttmttttt...",
+          ".ttmlmmmmttt.",
+          ".mllllmtmmtt.",
+          "ttmmmmmmtmmtt",
+          "ttmmmmmtttttt",
+          ".ttssstttttt.",
+          ".tttttsttttt.",
+          "....ttttttt..",
+          "......t......"
+        ],
+        "anchors": {}
+      }
+    ],
+    "constraints": [
+      {
+        "id": "trunk remains visible",
+        "kind": "visible",
+        "part": "trunk",
+        "min_cells": 35
+      },
+      {
+        "id": "rear-crown remains visible",
+        "kind": "visible",
+        "part": "rear-crown",
+        "min_cells": 20
+      },
+      {
+        "id": "trunk opening",
+        "kind": "clear",
+        "region": [
+          16,
+          21,
+          2,
+          3
+        ],
+        "parts": [
+          "main-crown",
+          "front-crown"
+        ]
+      }
+    ]
+  },
+  "lineage": [
+    {
+      "source": {
+        "kind": "construction",
+        "schema_version": 1,
+        "stage": "block",
+        "title": "El árbol del viento",
+        "width": 32,
+        "height": 32,
+        "intent": "One wind-shaped crown leans right over a bent trunk; unequal overlapping lobes remain one canopy",
+        "light": "Upper left; warm beacon only in the lighthouse",
+        "background": "#17232C",
+        "palette_budget": 9,
+        "palette": {
+          "i": "#101923",
+          "s": "#263946",
+          "d": "#3E5260",
+          "m": "#65776E",
+          "l": "#9BAB9E",
+          "h": "#E6EDCC",
+          "g": "#E4B568",
+          "b": "#DDD5AA",
+          "t": "#327573",
+          "c": "#719FA9",
+          "r": "#9E4051",
+          "R": "#5E3346",
+          "w": "#805A48",
+          "f": "#C8846E",
+          "q": "#34454C"
+        },
+        "parts": [
+          {
+            "id": "trunk",
+            "origin": [
+              11,
+              11
+            ],
+            "grid": [
+              "...........w..",
+              ".........www..",
+              ".wwww....www..",
+              "..wwww..www...",
+              "...www..www...",
+              "....wwwwwww...",
+              ".....wwwwww...",
+              ".....wwwww....",
+              ".....wwwww....",
+              ".....wwww.....",
+              ".....wwww.....",
+              "....wwww......",
+              "....wwww......",
+              "....wwww......",
+              "....wwww......",
+              "...wwwwww.....",
+              "..wwwwwww.....",
+              ".wwwwwwww.....",
+              "wwwww.wwwww...",
+              "...w...wwwwwww"
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "rear-crown",
+            "origin": [
+              2,
+              10
+            ],
+            "grid": [
+              ".....ssssss....",
+              "....ssssssss...",
+              "..ssssssssssss.",
+              "..sssssssssssss",
+              ".ssssssssssssss",
+              ".ssssssssssssss",
+              "sssssssssssssss",
+              "sssssssssssssss",
+              ".ssssssssssssss",
+              ".sssssssssssss.",
+              ".ssssssssssss..",
+              "..sssssssssss..",
+              "....ssssssss...",
+              ".....s........."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "main-crown",
+            "origin": [
+              7,
+              2
+            ],
+            "grid": [
+              "..........t.............",
+              "........tttttttttt......",
+              ".......tttttttttttt.....",
+              ".....ttttttttttttttt....",
+              ".....tttttttttttttttt...",
+              "....tttttttttttttttttt..",
+              "....tttttttttttttttttt..",
+              "..ttttttttttttttttttttt.",
+              "..ttttttttttttttttttttt.",
+              ".ttttttttttttttttttttttt",
+              ".ttttttttttttttttttttttt",
+              "tttttttttttttttttttttttt",
+              "ttttttttttttttttttttttt.",
+              ".tttttttttttttttttttttt.",
+              ".ttttttttttttttttttttt..",
+              "..tttttttttttttttttttt..",
+              "..ttttttttttttttttttt...",
+              ".....tttt...ttttttt.....",
+              "........t...tttttt......",
+              "........................"
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "front-crown",
+            "origin": [
+              2,
+              15
+            ],
+            "grid": [
+              ".......t.....",
+              "..tttttttt...",
+              ".ttttttttttt.",
+              ".ttttttttttt.",
+              "ttttttttttttt",
+              "ttttttttttttt",
+              ".ttttttttttt.",
+              ".ttttttttttt.",
+              "....ttttttt..",
+              "......t......"
+            ],
+            "anchors": {}
+          }
+        ],
+        "constraints": [
+          {
+            "id": "trunk remains visible",
+            "kind": "visible",
+            "part": "trunk",
+            "min_cells": 35
+          },
+          {
+            "id": "rear-crown remains visible",
+            "kind": "visible",
+            "part": "rear-crown",
+            "min_cells": 20
+          },
+          {
+            "id": "trunk opening",
+            "kind": "clear",
+            "region": [
+              16,
+              21,
+              2,
+              3
+            ],
+            "parts": [
+              "main-crown",
+              "front-crown"
+            ]
+          }
+        ]
+      },
+      "review": {
+        "source_fingerprint": "e385c70cb7a977e3238690c4478bbd2a20a8d3af53f84b7dfaf3d121e452e80b",
+        "artifact_fingerprint": "da2e8da0ff51e86dbf98478d2d2c6a3e95a20cc9e02f77d4ad4b3d94523e8c59",
+        "stage": "block",
+        "decision": "advance",
+        "reviewer_kind": "self",
+        "reviewer": "Parent author",
+        "views": {
+          "native": true,
+          "silhouette": true
+        },
+        "observed_read": "A leaning joined crown with a lower left lobe and an exposed bent trunk",
+        "remaining_limit": "The large flat crown needs coherent volume; no leaf texture yet",
+        "evidence": "block-c-color.png and block-c-silhouette.png inspected before painting planes",
+        "issues": []
+      }
+    },
+    {
+      "source": {
+        "kind": "construction",
+        "schema_version": 1,
+        "stage": "planes",
+        "title": "El árbol del viento",
+        "width": 32,
+        "height": 32,
+        "intent": "One wind-shaped crown leans right over a bent trunk; unequal overlapping lobes remain one canopy",
+        "light": "Upper left; warm beacon only in the lighthouse",
+        "background": "#17232C",
+        "palette_budget": 9,
+        "palette": {
+          "i": "#101923",
+          "s": "#234837",
+          "d": "#3E5260",
+          "m": "#73935A",
+          "l": "#A9B875",
+          "h": "#E6EDCC",
+          "g": "#E4B568",
+          "b": "#DDD5AA",
+          "t": "#3C7154",
+          "c": "#719FA9",
+          "r": "#9E4051",
+          "R": "#5E3346",
+          "w": "#805A48",
+          "f": "#C8846E",
+          "q": "#34454C"
+        },
+        "parts": [
+          {
+            "id": "trunk",
+            "origin": [
+              11,
+              11
+            ],
+            "grid": [
+              "...........w..",
+              ".........wwR..",
+              ".wwww....wRR..",
+              "..wwww..wRR...",
+              "...www..wRR...",
+              "....wwwwRRR...",
+              ".....wwRRRR...",
+              ".....wwRRR....",
+              ".....wwRRR....",
+              ".....ffRR.....",
+              ".....ffRR.....",
+              "....wffR......",
+              "....fffR......",
+              "....ffRR......",
+              "....ffRR......",
+              "...fffRRR.....",
+              "..ffffRRR.....",
+              ".fffwwRRR.....",
+              "ffwww.RRRRR...",
+              "...w...RRRRRRR"
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "rear-crown",
+            "origin": [
+              2,
+              10
+            ],
+            "grid": [
+              ".....ssssss....",
+              "....ssssssss...",
+              "..ssssssssssss.",
+              "..sssssssssssss",
+              ".ssssssssssssss",
+              ".ssssssssssssss",
+              "sssssssssssssss",
+              "sssssssssssssss",
+              ".ssssssssssssss",
+              ".sssssssssssss.",
+              ".ssssssssssss..",
+              "..sssssssssss..",
+              "....ssssssss...",
+              ".....s........."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "main-crown",
+            "origin": [
+              7,
+              2
+            ],
+            "grid": [
+              "..........t.............",
+              "........tttttttttt......",
+              ".......tttttmtttttt.....",
+              ".....tttttmlmmmmmmtt....",
+              ".....ttmmmlllllllmmtt...",
+              "....ttmmlllllllllmmttt..",
+              "....tmmmlllmmllllmmmst..",
+              "..tttmmlllltttttmmmmmst.",
+              "..ttmmmlmmmttttttmtssst.",
+              ".ttmmmmmmmtttttttttsssst",
+              ".tttmmmmmmtttttttttsssss",
+              "ttttmmmmmmttttttttssssss",
+              "tttttmttttttttttttsssss.",
+              ".ttttttttttttttttssssss.",
+              ".ttttttttttttttttsssss..",
+              "..ttttttttttttttssssss..",
+              "..tttttttttssssssssss...",
+              ".....tttt...sssssss.....",
+              "........t...ssssss......",
+              "........................"
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "front-crown",
+            "origin": [
+              2,
+              15
+            ],
+            "grid": [
+              ".......t.....",
+              "..ttmttttt...",
+              ".ttmmmmmmttt.",
+              ".mmmmmmmmmtt.",
+              "ttmmmmmmmmmtt",
+              "ttmmmmmtttttt",
+              ".ttttttttttt.",
+              ".ttttttttttt.",
+              "....ttttttt..",
+              "......t......"
+            ],
+            "anchors": {}
+          }
+        ],
+        "constraints": [
+          {
+            "id": "trunk remains visible",
+            "kind": "visible",
+            "part": "trunk",
+            "min_cells": 35
+          },
+          {
+            "id": "rear-crown remains visible",
+            "kind": "visible",
+            "part": "rear-crown",
+            "min_cells": 20
+          },
+          {
+            "id": "trunk opening",
+            "kind": "clear",
+            "region": [
+              16,
+              21,
+              2,
+              3
+            ],
+            "parts": [
+              "main-crown",
+              "front-crown"
+            ]
+          }
+        ]
+      },
+      "review": {
+        "source_fingerprint": "de5e0069cf95064d459d16ed796d8ad14797f0809ac01889b0f6de6ad25f6baf",
+        "artifact_fingerprint": "8082796f6c4acb7173277f4194ccd4e5e780bdfb1d600080f8133627ab497131",
+        "stage": "planes",
+        "decision": "advance",
+        "reviewer_kind": "self",
+        "reviewer": "Parent author",
+        "views": {
+          "native": true,
+          "silhouette": true,
+          "value": true
+        },
+        "observed_read": "The forward crown is now a continuous middle-value surface turning into a lower-right shadow, with the lighter upper-left plane connected",
+        "remaining_limit": "The canopy is still broad and smooth; leaf texture should not split it into balls",
+        "evidence": "planes-c color/value boards inspected; unchanged masks retain the inspected block-c silhouette",
+        "issues": []
+      }
+    }
+  ]
+}

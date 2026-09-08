@@ -1,0 +1,509 @@
+{
+  "source": {
+    "kind": "construction",
+    "schema_version": 1,
+    "stage": "material",
+    "title": "El faro del espolón",
+    "width": 16,
+    "height": 16,
+    "intent": "A slender sea lighthouse rises from a broken rock shelf; the small lantern is its brightest cue",
+    "light": "Upper left; warm beacon only in the lighthouse",
+    "background": "#17232C",
+    "palette_budget": 8,
+    "palette": {
+      "i": "#101923",
+      "s": "#263946",
+      "d": "#3E5260",
+      "m": "#65776E",
+      "l": "#9BAB9E",
+      "h": "#E6EDCC",
+      "g": "#E4B568",
+      "b": "#DDD5AA",
+      "t": "#327573",
+      "c": "#719FA9",
+      "r": "#9E4051",
+      "R": "#5E3346",
+      "w": "#805A48",
+      "f": "#C8846E",
+      "q": "#34454C"
+    },
+    "parts": [
+      {
+        "id": "sea",
+        "origin": [
+          0,
+          12
+        ],
+        "grid": [
+          "ssssssssssssssss",
+          "dddsssssssssddds",
+          "ssssssssssssssss",
+          "smmmsssssssssmmm"
+        ],
+        "anchors": {},
+        "role": "environment"
+      },
+      {
+        "id": "rock",
+        "origin": [
+          2,
+          12
+        ],
+        "grid": [
+          "....dddmmm...",
+          ".mmmdddmddd..",
+          ".ddddmdddddd.",
+          "ddddddddddddd"
+        ],
+        "anchors": {},
+        "role": "environment"
+      },
+      {
+        "id": "tower",
+        "origin": [
+          6,
+          4
+        ],
+        "grid": [
+          ".mmm.",
+          ".llm.",
+          ".lld.",
+          ".lld.",
+          ".lld.",
+          "mlldm",
+          "llidd",
+          "llidd",
+          "lllss",
+          "lmmdd"
+        ],
+        "anchors": {
+          "lantern-seat": [
+            2,
+            0
+          ]
+        }
+      },
+      {
+        "id": "lantern",
+        "origin": [
+          1,
+          -1
+        ],
+        "grid": [
+          "ggg",
+          "dgd"
+        ],
+        "anchors": {
+          "base": [
+            1,
+            1
+          ]
+        },
+        "parent": "tower"
+      },
+      {
+        "id": "cap",
+        "origin": [
+          1,
+          -3
+        ],
+        "grid": [
+          ".m.",
+          "mdd"
+        ],
+        "anchors": {},
+        "parent": "tower"
+      },
+      {
+        "id": "gallery",
+        "origin": [
+          0,
+          1
+        ],
+        "grid": [
+          "ddddd"
+        ],
+        "anchors": {},
+        "parent": "tower"
+      }
+    ],
+    "constraints": [
+      {
+        "id": "lantern seats on tower",
+        "kind": "anchor",
+        "a": [
+          "tower",
+          "lantern-seat"
+        ],
+        "b": [
+          "lantern",
+          "base"
+        ],
+        "max_distance": 0
+      },
+      {
+        "id": "tower remains visible",
+        "kind": "visible",
+        "part": "tower",
+        "min_cells": 16
+      },
+      {
+        "id": "lantern remains visible",
+        "kind": "visible",
+        "part": "lantern",
+        "min_cells": 5
+      }
+    ]
+  },
+  "lineage": [
+    {
+      "source": {
+        "kind": "construction",
+        "schema_version": 1,
+        "stage": "block",
+        "title": "El faro del espolón",
+        "width": 16,
+        "height": 16,
+        "intent": "A slender sea lighthouse rises from a broken rock shelf; the small lantern is its brightest cue",
+        "light": "Upper left; warm beacon only in the lighthouse",
+        "background": "#17232C",
+        "palette_budget": 8,
+        "palette": {
+          "i": "#101923",
+          "s": "#263946",
+          "d": "#3E5260",
+          "m": "#65776E",
+          "l": "#9BAB9E",
+          "h": "#E6EDCC",
+          "g": "#E4B568",
+          "b": "#DDD5AA",
+          "t": "#327573",
+          "c": "#719FA9",
+          "r": "#9E4051",
+          "R": "#5E3346",
+          "w": "#805A48",
+          "f": "#C8846E",
+          "q": "#34454C"
+        },
+        "parts": [
+          {
+            "id": "sea",
+            "origin": [
+              0,
+              12
+            ],
+            "grid": [
+              "ssssssssssssssss",
+              "ssssssssssssssss",
+              "ssssssssssssssss",
+              "ssssssssssssssss"
+            ],
+            "anchors": {},
+            "role": "environment"
+          },
+          {
+            "id": "rock",
+            "origin": [
+              2,
+              12
+            ],
+            "grid": [
+              "....dddddd...",
+              ".dddddddddd..",
+              ".ddddddddddd.",
+              "ddddddddddddd"
+            ],
+            "anchors": {},
+            "role": "environment"
+          },
+          {
+            "id": "tower",
+            "origin": [
+              6,
+              4
+            ],
+            "grid": [
+              ".mmm.",
+              ".mmm.",
+              ".mmm.",
+              ".mmm.",
+              ".mmm.",
+              "mmmmm",
+              "mmmmm",
+              "mmmmm",
+              "mmmmm",
+              "mmmmm"
+            ],
+            "anchors": {
+              "lantern-seat": [
+                2,
+                0
+              ]
+            }
+          },
+          {
+            "id": "lantern",
+            "origin": [
+              1,
+              -1
+            ],
+            "grid": [
+              "ggg",
+              "ggg"
+            ],
+            "anchors": {
+              "base": [
+                1,
+                1
+              ]
+            },
+            "parent": "tower"
+          },
+          {
+            "id": "cap",
+            "origin": [
+              1,
+              -3
+            ],
+            "grid": [
+              ".d.",
+              "ddd"
+            ],
+            "anchors": {},
+            "parent": "tower"
+          },
+          {
+            "id": "gallery",
+            "origin": [
+              0,
+              1
+            ],
+            "grid": [
+              "ddddd"
+            ],
+            "anchors": {},
+            "parent": "tower"
+          }
+        ],
+        "constraints": [
+          {
+            "id": "lantern seats on tower",
+            "kind": "anchor",
+            "a": [
+              "tower",
+              "lantern-seat"
+            ],
+            "b": [
+              "lantern",
+              "base"
+            ],
+            "max_distance": 0
+          },
+          {
+            "id": "tower remains visible",
+            "kind": "visible",
+            "part": "tower",
+            "min_cells": 16
+          },
+          {
+            "id": "lantern remains visible",
+            "kind": "visible",
+            "part": "lantern",
+            "min_cells": 5
+          }
+        ]
+      },
+      "review": {
+        "source_fingerprint": "eb3218917e1dbe29cd3ecfbf304d55326a76732f6a95428eb7df79027f2c33f8",
+        "artifact_fingerprint": "0802a22f34f7ee64bd6efdf766e1b0f735aedd0f8e9fdeb1acef8d583032cae9",
+        "stage": "block",
+        "decision": "advance",
+        "reviewer_kind": "self",
+        "reviewer": "Parent author",
+        "views": {
+          "native": true,
+          "silhouette": true
+        },
+        "observed_read": "A continuous tapered sea tower with a small lantern; the gallery no longer cuts it into a pedestal",
+        "remaining_limit": "The bare tower still needs surface turning and a window",
+        "evidence": "block-c-color.png and block-c-silhouette.png inspected before painting planes",
+        "issues": []
+      }
+    },
+    {
+      "source": {
+        "kind": "construction",
+        "schema_version": 1,
+        "stage": "planes",
+        "title": "El faro del espolón",
+        "width": 16,
+        "height": 16,
+        "intent": "A slender sea lighthouse rises from a broken rock shelf; the small lantern is its brightest cue",
+        "light": "Upper left; warm beacon only in the lighthouse",
+        "background": "#17232C",
+        "palette_budget": 8,
+        "palette": {
+          "i": "#101923",
+          "s": "#263946",
+          "d": "#3E5260",
+          "m": "#65776E",
+          "l": "#9BAB9E",
+          "h": "#E6EDCC",
+          "g": "#E4B568",
+          "b": "#DDD5AA",
+          "t": "#327573",
+          "c": "#719FA9",
+          "r": "#9E4051",
+          "R": "#5E3346",
+          "w": "#805A48",
+          "f": "#C8846E",
+          "q": "#34454C"
+        },
+        "parts": [
+          {
+            "id": "sea",
+            "origin": [
+              0,
+              12
+            ],
+            "grid": [
+              "ssssssssssssssss",
+              "ssssssssssssssss",
+              "ssssssssssssssss",
+              "ssssssssssssssss"
+            ],
+            "anchors": {},
+            "role": "environment"
+          },
+          {
+            "id": "rock",
+            "origin": [
+              2,
+              12
+            ],
+            "grid": [
+              "....dddmmm...",
+              ".mmmmmmmddd..",
+              ".ddddmdddddd.",
+              "ddddddddddddd"
+            ],
+            "anchors": {},
+            "role": "environment"
+          },
+          {
+            "id": "tower",
+            "origin": [
+              6,
+              4
+            ],
+            "grid": [
+              ".mmm.",
+              ".llm.",
+              ".lld.",
+              ".lld.",
+              ".lld.",
+              "mlldm",
+              "llidd",
+              "llidd",
+              "llldd",
+              "lmmdd"
+            ],
+            "anchors": {
+              "lantern-seat": [
+                2,
+                0
+              ]
+            }
+          },
+          {
+            "id": "lantern",
+            "origin": [
+              1,
+              -1
+            ],
+            "grid": [
+              "ggg",
+              "ggg"
+            ],
+            "anchors": {
+              "base": [
+                1,
+                1
+              ]
+            },
+            "parent": "tower"
+          },
+          {
+            "id": "cap",
+            "origin": [
+              1,
+              -3
+            ],
+            "grid": [
+              ".m.",
+              "mdd"
+            ],
+            "anchors": {},
+            "parent": "tower"
+          },
+          {
+            "id": "gallery",
+            "origin": [
+              0,
+              1
+            ],
+            "grid": [
+              "ddddd"
+            ],
+            "anchors": {},
+            "parent": "tower"
+          }
+        ],
+        "constraints": [
+          {
+            "id": "lantern seats on tower",
+            "kind": "anchor",
+            "a": [
+              "tower",
+              "lantern-seat"
+            ],
+            "b": [
+              "lantern",
+              "base"
+            ],
+            "max_distance": 0
+          },
+          {
+            "id": "tower remains visible",
+            "kind": "visible",
+            "part": "tower",
+            "min_cells": 16
+          },
+          {
+            "id": "lantern remains visible",
+            "kind": "visible",
+            "part": "lantern",
+            "min_cells": 5
+          }
+        ]
+      },
+      "review": {
+        "source_fingerprint": "c753d11c9e4bbe389252bb607496d7c55c1504a47885f96f54d73af8e6911eb9",
+        "artifact_fingerprint": "7c80ea86e31bb682ae2d30314d4d3c8889935479d8eb8199f068959726b7a4ca",
+        "stage": "planes",
+        "decision": "advance",
+        "reviewer_kind": "self",
+        "reviewer": "Parent author",
+        "views": {
+          "native": true,
+          "silhouette": true,
+          "value": true
+        },
+        "observed_read": "The tower has a light face, darker side and a small window; the amber lantern remains the focus",
+        "remaining_limit": "A tiny stylized lighthouse; no dramatic storm read",
+        "evidence": "planes-c color/value boards inspected; unchanged masks retain the inspected block-c silhouette",
+        "issues": []
+      }
+    }
+  ]
+}

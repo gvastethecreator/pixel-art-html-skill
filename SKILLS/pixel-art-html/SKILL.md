@@ -53,7 +53,7 @@ No suitable local corpus is required: the bundled techniques are portable. If vi
 
 ## 3. Plan the forms and choose a direction
 
-For multipart assets, name the masses, their bounds, attachment points, overlap order, negative gaps, and palette roles. Use [construction-plan.json](assets/construction-plan.json) when a written plan helps. It is working evidence, not compiler input.
+For multipart assets, use [executable construction](references/executable-construction.md) when a pose, attachment, or overlap needs controlled revision. `construct.py` compiles named part masks and anchors, exposes ownership, and binds stage transitions to observed reviews. For a simple flat asset, [construction-plan.json](assets/construction-plan.json) remains a brief working note.
 
 Map geometry before details: a body dummy for anatomy, shared corners for architecture, functional modules for machines, crown bundles for trees, depth bands for scenes. See [construction-workflow.md](references/construction-workflow.md).
 
@@ -77,7 +77,7 @@ Check whether value regions actually turn the surface. Horizontal bands can flat
 
 **Edges and subtraction:** inspect staircase rhythm, doubled elbows, tangencies, banding, and competing highlights. Remove details that weaken the native read. Manual antialiasing or dithering can be deliberate palette-bound choices; automatic smoothing must not change the exact grid or create fringes.
 
-Keep silhouette and value checkpoints buildable. Use [craft-workflow.md](references/craft-workflow.md) for pass criteria and [artifact-schema.md](references/artifact-schema.md) for grids, motifs, and paint order.
+Inspect each construction pass before authoring the next. A set of checkpoints exported after finishing the image does not show decisions between passes. In the executable route, a reviewed block permits planes, then reviewed planes permit material. A changed mask, anchor, or placement returns to block; an old review cannot authorize new structure. These records do not authenticate the reviewer or grant artistic acceptance. Use [craft-workflow.md](references/craft-workflow.md) for pass criteria and [artifact-schema.md](references/artifact-schema.md) for flat grids, motifs, and paint order.
 
 ## 5. Repair an observed problem
 
@@ -87,9 +87,11 @@ State one hypothesis: **visible symptom -> responsible region -> pixel operation
 python <skill-dir>/scripts/pixel_lab.py inspect <output>/pixel-art.json --region 8 6 12 10
 ```
 
-Use the returned rows, palette legend, cluster locations, and fingerprint. For a small repair, fill [pixel-patch.json](assets/pixel-patch.json) and run `pixel_lab.py patch`. It checks the original grid, expected cell colors, protected regions, and palette budget before writing a new draft. For a structural rebuild, edit the source spec and use `build_pixel_art.py repair`.
+Use the returned rows, palette legend, cluster locations, and fingerprint. For a constructed asset, edit its named source parts with `construct.py edit`; rebuild a color-only revision from its reviewed predecessor, or return to block when structure changes. Flat repairs reject constructed artifacts because they would discard editable parts. For a small flat-grid repair, fill [pixel-patch.json](assets/pixel-patch.json) and run `pixel_lab.py patch`. It checks the original grid, expected cell colors, protected regions, and palette budget before writing a new draft. For a flat-grid structural rebuild, edit the source spec and use `build_pixel_art.py repair`.
 
 For ambiguous local relationships, `pixel_lab.py loupe` renders a labeled ROI with native context and an optional before/after comparison. Its receipt binds coordinates and palette aliases to both grids. The loupe supports inspection; it does not replace the final browser view.
+
+For a diagnosed construction failure, select one matching [original visual lesson](examples/part-construction/README.md). Transfer its decision and test it on the new form; do not copy its geometry.
 
 Compare before/after at 1x and use `pixel_lab.py diff` to locate the changes. Keep an edit only if the visible hypothesis holds. If silhouette or value still fails after two focused attempts, reconsider the construction or direction. Do not keep adding detail.
 

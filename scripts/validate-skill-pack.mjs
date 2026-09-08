@@ -92,6 +92,16 @@ const required = [
   "SKILLS/pixel-art-html/scripts/reference_library.py",
   "SKILLS/pixel-art-html/scripts/pixel_lab.py",
   "SKILLS/pixel-art-html/scripts/compose_scene.py",
+  "SKILLS/pixel-art-html/scripts/construct.py",
+  "SKILLS/pixel-art-html/assets/pixel-art-construction-template.html",
+  "SKILLS/pixel-art-html/references/executable-construction.md",
+  "SKILLS/pixel-art-html/examples/part-construction/README.md",
+  "SKILLS/pixel-art-html/examples/part-construction/build_demo.py",
+  "SKILLS/pixel-art-html/examples/part-construction/create_sources.py",
+  "SKILLS/pixel-art-html/examples/part-construction/lessons.json",
+  "SKILLS/pixel-art-html/examples/part-construction/recordings/lighthouse.json",
+  "SKILLS/pixel-art-html/examples/part-construction/recordings/tree.json",
+  "SKILLS/pixel-art-html/examples/part-construction/recordings/encounter.json",
   "SKILLS/pixel-art-html/examples/city-clash/build_city.py",
   "SKILLS/pixel-art-html/examples/city-clash/README.md",
   "SKILLS/pixel-art-html/examples/city-clash/preview.png",
@@ -125,7 +135,7 @@ for (const file of (await walk(root)).filter(file => /\.(md|json|ya?ml|mjs|js|cs
   if (localPath.test(text) || matrixName.test(text)) errors.push(`possible local path leak: ${relative(file)}`);
 }
 
-for (const template of ["pixel-art-template.html", "pixel-art-collection-template.html", "pixel-art-study-template.html", "pixel-art-project-hub-template.html"]) {
+for (const template of ["pixel-art-template.html", "pixel-art-collection-template.html", "pixel-art-study-template.html", "pixel-art-project-hub-template.html", "pixel-art-construction-template.html", "pixel-art-scene-template.html"]) {
   const text = await fs.readFile(path.join(skill, "assets", template), "utf8").catch(() => "");
   if (/https?:\/\//i.test(text)) errors.push(`remote URL in standalone template: ${template}`);
 }

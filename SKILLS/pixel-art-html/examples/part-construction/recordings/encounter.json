@@ -1,0 +1,2531 @@
+{
+  "source": {
+    "kind": "construction",
+    "schema_version": 1,
+    "stage": "material",
+    "title": "La emboscada del puente",
+    "width": 96,
+    "height": 80,
+    "intent": "A low ninja attacks a braced knight while a skeleton thrusts from the other side; three opposing gestures share a narrow street",
+    "light": "Upper left; warm beacon only in the lighthouse",
+    "background": "#17232C",
+    "palette_budget": 16,
+    "palette": {
+      "i": "#101923",
+      "s": "#263946",
+      "d": "#3E5260",
+      "m": "#65776E",
+      "l": "#9BAB9E",
+      "h": "#E6EDCC",
+      "g": "#E4B568",
+      "b": "#DDD5AA",
+      "t": "#327573",
+      "c": "#719FA9",
+      "r": "#9E4051",
+      "R": "#5E3346",
+      "w": "#805A48",
+      "f": "#C8846E",
+      "q": "#24343B"
+    },
+    "parts": [
+      {
+        "id": "street",
+        "origin": [
+          0,
+          4
+        ],
+        "grid": [
+          "...............................................................................................q",
+          ".........................................................................................qqqqqqq",
+          "...................................................................................qqqqqqqqqqqqq",
+          ".............................................................................qqqqqqqqqqqqqqqqqqq",
+          ".......................................................................qqqqqqqqqqqqqqqqqqqqqqqqq",
+          ".................................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "...........................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          ".....................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "..........................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "....................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "..............................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "........................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "..................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "............qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqsssssssqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "......qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqsssssssqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqsssssssssqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqssssssssqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqsssssssssqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqssssssqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq......",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq...........",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq.................",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq......................",
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq............................"
+        ],
+        "anchors": {},
+        "role": "environment"
+      },
+      {
+        "id": "back-ledge",
+        "origin": [
+          0,
+          0
+        ],
+        "grid": [
+          "...............................................................................................d",
+          ".........................................................................................ddddddd",
+          "....................................................................................dddddddddddd",
+          "..............................................................................ddddddddddddssssss",
+          ".........................................................................ddddddddddddsssssssssss",
+          "...................................................................dddddddiddddsssssssssssssssss",
+          ".............................................................dddddddddddddisssssssssssssssssssss",
+          "........................................................ddddddddddddssssssssssssssssssssssssssss",
+          "..................................................ddddddddddddsssssssssssssisssssssssssssss.....",
+          ".............................................ddddddddddddssssssssssssssssssisssssssss...........",
+          ".......................................dddddddddiddsssssssssssssssssssssssssssss................",
+          "..................................ddddddddddddssissssssssssssssssssssssssss.....................",
+          "............................ddddddddddddssssssssssssssssssssssssssssss..........................",
+          "......................dddddddidddddssssssssssssssissssssssssssss................................",
+          ".................ddddddddddddisssssssssssssssssssisssssssss.....................................",
+          "...........ddddddddddddsssssssssssssssssssssssssssssss..........................................",
+          "......ddddddddddddssssssssssssisssssssssssssssss................................................",
+          "ddddddddddidssssssssssssssssssissssssssssss.....................................................",
+          "dddddddsssisssssssssssssssssssssssssss..........................................................",
+          "dssssssssssssssssssssssssssssssss...............................................................",
+          "sssssssssssisssssssssssssss.....................................................................",
+          "sssssssssssissssssssss..........................................................................",
+          "sssssssssssssssss...............................................................................",
+          "ssssssssssss....................................................................................",
+          "ssssss..........................................................................................",
+          "s..............................................................................................."
+        ],
+        "anchors": {},
+        "role": "environment"
+      },
+      {
+        "id": "front-ledge",
+        "origin": [
+          29,
+          67
+        ],
+        "grid": [
+          "..................................................................d",
+          ".............................................................dddddd",
+          ".......................................................dddddddddddd",
+          "..................................................ddddiddddddssssss",
+          "............................................ddddddddddidsssssssssss",
+          ".......................................dddddddddddsssssssssssssssss",
+          ".................................ddddidddddddssssssssssisssssssssss",
+          "............................dddddddddidssssssssssssssssisssssssssss",
+          "......................ddddddddddddssssssssssssssssssssssssssss.....",
+          ".................dddidddddddssssssssssisssssssssssssssss...........",
+          "...........dddddddddiddsssssssssssssssissssssssssss................",
+          "......dddddddddddssssssssssssssssssssssssssss......................",
+          "ddddddddddddsssssssssissssssssssssssssss..........................."
+        ],
+        "anchors": {},
+        "role": "environment"
+      },
+      {
+        "id": "ninja-rear-leg",
+        "origin": [
+          6,
+          43
+        ],
+        "grid": [
+          ".........RRRRRR",
+          ".........rrrrrR",
+          "........rrrrrRR",
+          "........rrrrRRR",
+          ".......rrrrrRRR",
+          ".......rrrrRRR.",
+          "......rrrrRRR..",
+          "...rrrrrRRR....",
+          "rrrrrRRRRR.....",
+          ".iiiiRRRR......",
+          ".RRRRRRR......."
+        ],
+        "anchors": {}
+      },
+      {
+        "id": "ninja-front-leg",
+        "origin": [
+          20,
+          42
+        ],
+        "grid": [
+          "....R...........",
+          "...rRR..........",
+          ".RRrrRRR........",
+          "RRRrrrrRR.......",
+          "..RRrrrRR.......",
+          "...RrrrrRR......",
+          "....rrrrRR......",
+          "....RrrrrR......",
+          ".....RrrrR......",
+          ".....RrrrrR.....",
+          "......RrrrR.....",
+          "......RRriiiR...",
+          ".......RRRRRRRRR",
+          ".......RRRRRRii.",
+          "..............R."
+        ],
+        "anchors": {}
+      },
+      {
+        "id": "ninja-body",
+        "origin": [
+          16,
+          31
+        ],
+        "grid": [
+          ".........R....",
+          "........RrR...",
+          "......RrrrrRR.",
+          ".....RrrfffRRR",
+          "...RrrrrffrrRR",
+          "...RrrrrfrrRR.",
+          "..RrrrrrrrrRR.",
+          "..RrrrrrirRR..",
+          "..RriiiiirRR..",
+          ".RriiiirrRR...",
+          ".RriirrRRRR...",
+          "RrirRRRRRRR...",
+          "RrRRRRRRRR....",
+          "...RRRRRRR....",
+          ".....RRRR.....",
+          "........R....."
+        ],
+        "anchors": {}
+      },
+      {
+        "id": "ninja-scarf",
+        "origin": [
+          -12,
+          -3
+        ],
+        "grid": [
+          ".........r..........",
+          "rfffffffffrr........",
+          ".rrrrrrfffffrrr.....",
+          "..rrrrrrrffffrrrr...",
+          "...r......fffffrrr..",
+          "............frrrrrrr",
+          "..............r....."
+        ],
+        "anchors": {},
+        "parent": "ninja-body"
+      },
+      {
+        "id": "ninja-head",
+        "origin": [
+          7,
+          -6
+        ],
+        "grid": [
+          "...i......",
+          "..iiRi....",
+          "iRRRRRiii.",
+          "iRRRRRRRi.",
+          "iRRRRffhfi",
+          ".RRRiiiiii",
+          ".rrrrrrrr.",
+          ".iiiiiii..",
+          ".iiiiiii..",
+          "......i..."
+        ],
+        "anchors": {},
+        "parent": "ninja-body"
+      },
+      {
+        "id": "ninja-arm",
+        "origin": [
+          10,
+          0
+        ],
+        "grid": [
+          ".......R...",
+          "......RRrfR",
+          ".....RRfff.",
+          "....RrrrrR.",
+          "RrrrrrrrR..",
+          ".RrrrrrRR..",
+          ".RrrrrRR...",
+          "..RRR......",
+          "..R........"
+        ],
+        "anchors": {
+          "grip": [
+            9,
+            1
+          ]
+        },
+        "parent": "ninja-body"
+      },
+      {
+        "id": "ninja-blade",
+        "origin": [
+          9,
+          -5
+        ],
+        "grid": [
+          "...........h",
+          ".........hc.",
+          "......chhc..",
+          "....cchcc...",
+          "...chccc....",
+          ".cchcc......",
+          "chhc........",
+          ".c.........."
+        ],
+        "anchors": {
+          "grip": [
+            0,
+            6
+          ]
+        },
+        "parent": "ninja-arm"
+      },
+      {
+        "id": "knight-far-leg",
+        "origin": [
+          52,
+          42
+        ],
+        "grid": [
+          "...d...........",
+          "..ddd..........",
+          "..ddddd........",
+          ".ddddddd.......",
+          "ddddddmddd.....",
+          ".dddddmmmd.....",
+          "..ddddmmmd.....",
+          "...dddmmmd.....",
+          "...dddmmmd.....",
+          "....ddmmmd.....",
+          "....ddmmmd.....",
+          "....ddmmmd.....",
+          "....ddmddd.....",
+          ".....ddddddd...",
+          ".....ddddllld..",
+          ".....dddddllldd",
+          ".........ddddd.",
+          "............d.."
+        ],
+        "anchors": {}
+      },
+      {
+        "id": "knight-near-leg",
+        "origin": [
+          40,
+          43
+        ],
+        "grid": [
+          "..........d.....",
+          ".........dddd...",
+          ".........ddddddd",
+          "........dcddddd.",
+          ".......ddccccdd.",
+          ".......dchhcdd..",
+          "......ddhhccdd..",
+          "......ddcccdd...",
+          "......ddcccdd...",
+          "......dcccdd....",
+          ".....ddcccd.....",
+          ".....cccdd......",
+          "...ccccddd......",
+          "dcllllddd.......",
+          ".ddddddd........",
+          ".d.............."
+        ],
+        "anchors": {}
+      },
+      {
+        "id": "knight-body",
+        "origin": [
+          46,
+          31
+        ],
+        "grid": [
+          "........t.....",
+          "......tttt....",
+          "...tttttctt...",
+          "..tchhccccttt.",
+          ".tthhccccctttt",
+          "tttccccccccttt",
+          "tttccccccccttt",
+          "tttccccccctttt",
+          "tttccccccctttt",
+          ".ttcccccctttst",
+          ".tttttttctssst",
+          ".tttttttssssst",
+          ".tssttssssssst",
+          "...tsstsssssst",
+          "....tssttsssst",
+          "......tssssss.",
+          ".......tstt...",
+          ".........t...."
+        ],
+        "anchors": {}
+      },
+      {
+        "id": "knight-head",
+        "origin": [
+          2,
+          -9
+        ],
+        "grid": [
+          ".......d....",
+          ".....ddhd...",
+          "..dhhhhhhdd.",
+          ".dchccccccdd",
+          ".dcccccccddd",
+          "dccccccccidd",
+          "dciiiiciiidd",
+          ".dciiiciiidd",
+          ".dciddcdddd.",
+          "..dddddddd..",
+          "..dddddddd..",
+          ".....dddd...",
+          ".......d...."
+        ],
+        "anchors": {},
+        "parent": "knight-body"
+      },
+      {
+        "id": "knight-shield-arm",
+        "origin": [
+          -5,
+          2
+        ],
+        "grid": [
+          "....d....",
+          "ddddddd..",
+          "ddddddddd",
+          "ddddddddd",
+          ".dddddddd",
+          ".ddddddd.",
+          ".ddddddd.",
+          ".......d."
+        ],
+        "anchors": {},
+        "parent": "knight-body"
+      },
+      {
+        "id": "knight-shield",
+        "origin": [
+          -4,
+          -5
+        ],
+        "grid": [
+          ".......t.....",
+          "......tct....",
+          ".....hccct...",
+          "...hhcctcctt.",
+          "..tccctttcttt",
+          "..tcttgtttttt",
+          "..ccttgttttt.",
+          ".tctgggggttt.",
+          ".tctttgttttt.",
+          ".tttttgttttt.",
+          ".cttttgtttt..",
+          "tcctttttttt..",
+          "ttctttctttt..",
+          ".ttctctttt...",
+          "...tcttt.....",
+          "....ttt......",
+          ".....t......."
+        ],
+        "anchors": {
+          "impact": [
+            9,
+            0
+          ]
+        },
+        "parent": "knight-shield-arm"
+      },
+      {
+        "id": "knight-sword-arm",
+        "origin": [
+          11,
+          6
+        ],
+        "grid": [
+          ".dddddd...",
+          ".dccccdd..",
+          "dddccccd..",
+          "ddddcccdd.",
+          "....dcccdd",
+          ".....dcccd",
+          ".......dd.",
+          "........d."
+        ],
+        "anchors": {
+          "grip": [
+            8,
+            5
+          ]
+        },
+        "parent": "knight-body"
+      },
+      {
+        "id": "knight-sword",
+        "origin": [
+          8,
+          5
+        ],
+        "grid": [
+          "c..............",
+          "ccccccchhhh....",
+          "....ccccccchh..",
+          "........ccccccc"
+        ],
+        "anchors": {
+          "grip": [
+            0,
+            0
+          ]
+        },
+        "parent": "knight-sword-arm"
+      },
+      {
+        "id": "skeleton-far-leg",
+        "origin": [
+          78,
+          54
+        ],
+        "grid": [
+          "..m............",
+          "..mmm..........",
+          ".mmmmmm........",
+          ".mmmmmmmm......",
+          "mmmmmmmmm......",
+          ".....mmmmm.....",
+          ".....mmmmm.....",
+          "......mmmm.....",
+          "......mmmmm....",
+          ".......mmmm....",
+          ".......mmmmmmmm",
+          "........mmmmmmm",
+          "........mmmmmmm"
+        ],
+        "anchors": {
+          "sole": [
+            13,
+            12
+          ]
+        }
+      },
+      {
+        "id": "skeleton-near-leg",
+        "origin": [
+          71,
+          54
+        ],
+        "grid": [
+          ".......b.",
+          "......bb.",
+          "....bbbbb",
+          "...bbbbbb",
+          "...bbbbb.",
+          "..bbbbbb.",
+          "..bbbbb..",
+          ".bbbbb...",
+          ".bbmbb...",
+          ".bbbm....",
+          "bbbbb....",
+          "bbbbb....",
+          "bbbbbb...",
+          ".bbbbb...",
+          ".bbbbb...",
+          "..b......"
+        ],
+        "anchors": {
+          "sole": [
+            2,
+            15
+          ]
+        }
+      },
+      {
+        "id": "skeleton-spine",
+        "origin": [
+          76,
+          44
+        ],
+        "grid": [
+          "..b...",
+          "..bmm.",
+          "..bmm.",
+          "..bmm.",
+          "..bmm.",
+          "..bmm.",
+          "..bmmm",
+          "..bmmm",
+          "..bmmm",
+          "..bmmm",
+          ".bbbm.",
+          ".bbbm.",
+          "bbbb..",
+          "...b.."
+        ],
+        "anchors": {}
+      },
+      {
+        "id": "skeleton-ribs",
+        "origin": [
+          -1,
+          -1
+        ],
+        "grid": [
+          "..b.......",
+          "..bbb.....",
+          ".bhhhbb...",
+          ".bbhhhbbb.",
+          "bb....mmm.",
+          "bb....bmm.",
+          "bmbbbbbmmb",
+          "bbmbbbmmmb",
+          "bbb..mmmbb",
+          "..bbmmbbb.",
+          "...bmbb...",
+          ".....b...."
+        ],
+        "anchors": {},
+        "parent": "skeleton-spine"
+      },
+      {
+        "id": "skeleton-head",
+        "origin": [
+          -2,
+          -9
+        ],
+        "grid": [
+          "....b....",
+          "..bbhb...",
+          "hhhhhhbb.",
+          "hhhhhhhbb",
+          "biihhhmbb",
+          "biihimmmb",
+          "bbbbbmmb.",
+          "bmbbmmbb.",
+          ".bibimbb.",
+          "...bmb...",
+          "....b...."
+        ],
+        "anchors": {},
+        "parent": "skeleton-spine"
+      },
+      {
+        "id": "skeleton-arm",
+        "origin": [
+          -6,
+          -5
+        ],
+        "grid": [
+          "..b.....",
+          "bbb.....",
+          "bbb.....",
+          "bhbb....",
+          "bbhb....",
+          "bbbbbb..",
+          ".bbhbbbb",
+          "...bhb..",
+          "....b..."
+        ],
+        "anchors": {
+          "grip": [
+            1,
+            1
+          ]
+        },
+        "parent": "skeleton-spine"
+      },
+      {
+        "id": "skeleton-spear",
+        "origin": [
+          -9,
+          -10
+        ],
+        "grid": [
+          ".c......................",
+          "ccc.....................",
+          ".ccc....................",
+          "..ccw...................",
+          "...ccw..................",
+          "....ccw.................",
+          ".....ww.................",
+          "......ww................",
+          ".......wg...............",
+          "........ww..............",
+          ".........gw.............",
+          "..........ww............",
+          "...........ww...........",
+          "............ww..........",
+          ".............ww.........",
+          "..............ww........",
+          "...............ww.......",
+          "................ww......",
+          "................www.....",
+          ".................www....",
+          "..................www...",
+          "...................www..",
+          "....................www.",
+          ".....................www",
+          "......................w."
+        ],
+        "anchors": {
+          "grip": [
+            10,
+            11
+          ]
+        },
+        "parent": "skeleton-arm"
+      }
+    ],
+    "constraints": [
+      {
+        "id": "ninja-blade stays in grip",
+        "kind": "anchor",
+        "a": [
+          "ninja-arm",
+          "grip"
+        ],
+        "b": [
+          "ninja-blade",
+          "grip"
+        ],
+        "max_distance": 0
+      },
+      {
+        "id": "knight-sword stays in grip",
+        "kind": "anchor",
+        "a": [
+          "knight-sword-arm",
+          "grip"
+        ],
+        "b": [
+          "knight-sword",
+          "grip"
+        ],
+        "max_distance": 0
+      },
+      {
+        "id": "skeleton-spear stays in grip",
+        "kind": "anchor",
+        "a": [
+          "skeleton-arm",
+          "grip"
+        ],
+        "b": [
+          "skeleton-spear",
+          "grip"
+        ],
+        "max_distance": 0
+      },
+      {
+        "id": "ninja-head remains visible",
+        "kind": "visible",
+        "part": "ninja-head",
+        "min_cells": 12
+      },
+      {
+        "id": "knight-head remains visible",
+        "kind": "visible",
+        "part": "knight-head",
+        "min_cells": 12
+      },
+      {
+        "id": "knight-shield remains visible",
+        "kind": "visible",
+        "part": "knight-shield",
+        "min_cells": 12
+      },
+      {
+        "id": "skeleton-head remains visible",
+        "kind": "visible",
+        "part": "skeleton-head",
+        "min_cells": 12
+      },
+      {
+        "id": "skeleton-ribs remains visible",
+        "kind": "visible",
+        "part": "skeleton-ribs",
+        "min_cells": 12
+      },
+      {
+        "id": "skeleton-far-leg stands on bridge",
+        "kind": "inside",
+        "at": [
+          "skeleton-far-leg",
+          "sole"
+        ],
+        "container": "street",
+        "exclude": [
+          "front-ledge"
+        ]
+      },
+      {
+        "id": "skeleton-near-leg stands on bridge",
+        "kind": "inside",
+        "at": [
+          "skeleton-near-leg",
+          "sole"
+        ],
+        "container": "street",
+        "exclude": [
+          "front-ledge"
+        ]
+      }
+    ]
+  },
+  "lineage": [
+    {
+      "source": {
+        "kind": "construction",
+        "schema_version": 1,
+        "stage": "block",
+        "title": "La emboscada del puente",
+        "width": 96,
+        "height": 80,
+        "intent": "A low ninja attacks a braced knight while a skeleton thrusts from the other side; three opposing gestures share a narrow street",
+        "light": "Upper left; warm beacon only in the lighthouse",
+        "background": "#17232C",
+        "palette_budget": 16,
+        "palette": {
+          "i": "#101923",
+          "s": "#263946",
+          "d": "#3E5260",
+          "m": "#65776E",
+          "l": "#9BAB9E",
+          "h": "#E6EDCC",
+          "g": "#E4B568",
+          "b": "#DDD5AA",
+          "t": "#327573",
+          "c": "#719FA9",
+          "r": "#9E4051",
+          "R": "#5E3346",
+          "w": "#805A48",
+          "f": "#C8846E",
+          "q": "#34454C"
+        },
+        "parts": [
+          {
+            "id": "street",
+            "origin": [
+              0,
+              4
+            ],
+            "grid": [
+              "...............................................................................................q",
+              ".........................................................................................qqqqqqq",
+              "...................................................................................qqqqqqqqqqqqq",
+              ".............................................................................qqqqqqqqqqqqqqqqqqq",
+              ".......................................................................qqqqqqqqqqqqqqqqqqqqqqqqq",
+              ".................................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "...........................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              ".....................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "..........................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "....................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "..............................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "........................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "..................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "............qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "......qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq......",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq...........",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq.................",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq......................",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq............................"
+            ],
+            "anchors": {},
+            "role": "environment"
+          },
+          {
+            "id": "back-ledge",
+            "origin": [
+              0,
+              0
+            ],
+            "grid": [
+              "...............................................................................................s",
+              ".........................................................................................sssssss",
+              "....................................................................................ssssssssssss",
+              "..............................................................................ssssssssssssssssss",
+              ".........................................................................sssssssssssssssssssssss",
+              "...................................................................sssssssssssssssssssssssssssss",
+              ".............................................................sssssssssssssssssssssssssssssssssss",
+              "........................................................ssssssssssssssssssssssssssssssssssssssss",
+              "..................................................sssssssssssssssssssssssssssssssssssssssss.....",
+              ".............................................ssssssssssssssssssssssssssssssssssssssss...........",
+              ".......................................sssssssssssssssssssssssssssssssssssssssss................",
+              "..................................sssssssssssssssssssssssssssssssssssssssss.....................",
+              "............................ssssssssssssssssssssssssssssssssssssssssss..........................",
+              "......................ssssssssssssssssssssssssssssssssssssssssss................................",
+              ".................ssssssssssssssssssssssssssssssssssssssssss.....................................",
+              "...........sssssssssssssssssssssssssssssssssssssssssss..........................................",
+              "......ssssssssssssssssssssssssssssssssssssssssss................................................",
+              "sssssssssssssssssssssssssssssssssssssssssss.....................................................",
+              "ssssssssssssssssssssssssssssssssssssss..........................................................",
+              "sssssssssssssssssssssssssssssssss...............................................................",
+              "sssssssssssssssssssssssssss.....................................................................",
+              "ssssssssssssssssssssss..........................................................................",
+              "sssssssssssssssss...............................................................................",
+              "ssssssssssss....................................................................................",
+              "ssssss..........................................................................................",
+              "s..............................................................................................."
+            ],
+            "anchors": {},
+            "role": "environment"
+          },
+          {
+            "id": "front-ledge",
+            "origin": [
+              29,
+              67
+            ],
+            "grid": [
+              "..................................................................s",
+              ".............................................................ssssss",
+              ".......................................................ssssssssssss",
+              "..................................................sssssssssssssssss",
+              "............................................sssssssssssssssssssssss",
+              ".......................................ssssssssssssssssssssssssssss",
+              ".................................ssssssssssssssssssssssssssssssssss",
+              "............................sssssssssssssssssssssssssssssssssssssss",
+              "......................ssssssssssssssssssssssssssssssssssssssss.....",
+              ".................sssssssssssssssssssssssssssssssssssssss...........",
+              "...........ssssssssssssssssssssssssssssssssssssssss................",
+              "......sssssssssssssssssssssssssssssssssssssss......................",
+              "ssssssssssssssssssssssssssssssssssssssss..........................."
+            ],
+            "anchors": {},
+            "role": "environment"
+          },
+          {
+            "id": "ninja-rear-leg",
+            "origin": [
+              6,
+              43
+            ],
+            "grid": [
+              ".........RRRRRR",
+              ".........RRRRRR",
+              "........RRRRRRR",
+              "........RRRRRRR",
+              ".......RRRRRRRR",
+              ".......RRRRRRR.",
+              "......RRRRRRR..",
+              "...RRRRRRRR....",
+              "RRRRRRRRRR.....",
+              ".RRRRRRRR......",
+              ".RRRRRRR......."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "ninja-front-leg",
+            "origin": [
+              20,
+              42
+            ],
+            "grid": [
+              "....R...........",
+              "...RRR..........",
+              ".RRRRRRR........",
+              "RRRRRRRRR.......",
+              "..RRRRRRR.......",
+              "...RRRRRRR......",
+              "....RRRRRR......",
+              "....RRRRRR......",
+              ".....RRRRR......",
+              ".....RRRRRR.....",
+              "......RRRRR.....",
+              "......RRRRRRR...",
+              ".......RRRRRRRRR",
+              ".......RRRRRRRR.",
+              "..............R."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "ninja-body",
+            "origin": [
+              16,
+              31
+            ],
+            "grid": [
+              ".........R....",
+              "........RRR...",
+              "......RRRRRRR.",
+              ".....RRRRRRRRR",
+              "...RRRRRRRRRRR",
+              "...RRRRRRRRRR.",
+              "..RRRRRRRRRRR.",
+              "..RRRRRRRRRR..",
+              "..RRRRRRRRRR..",
+              ".RRRRRRRRRR...",
+              ".RRRRRRRRRR...",
+              "RRRRRRRRRRR...",
+              "RRRRRRRRRR....",
+              "...RRRRRRR....",
+              ".....RRRR.....",
+              "........R....."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "ninja-scarf",
+            "origin": [
+              -12,
+              -3
+            ],
+            "grid": [
+              ".........r..........",
+              "rrrrrrrrrrrr........",
+              ".rrrrrrrrrrrrrr.....",
+              "..rrrrrrrrrrrrrrr...",
+              "...r......rrrrrrrr..",
+              "............rrrrrrrr",
+              "..............r....."
+            ],
+            "anchors": {},
+            "parent": "ninja-body"
+          },
+          {
+            "id": "ninja-head",
+            "origin": [
+              7,
+              -6
+            ],
+            "grid": [
+              "...R......",
+              "..RRRR....",
+              "RRRRRRRRR.",
+              "RRRRRRRRR.",
+              "RRRRRRRRRR",
+              ".RRRRRRRRR",
+              ".RRRRRRRR.",
+              ".RRRRRRR..",
+              ".RRRRRRR..",
+              "......R..."
+            ],
+            "anchors": {},
+            "parent": "ninja-body"
+          },
+          {
+            "id": "ninja-arm",
+            "origin": [
+              10,
+              0
+            ],
+            "grid": [
+              ".......R...",
+              "......RRRRR",
+              ".....RRRRR.",
+              "....RRRRRR.",
+              "RRRRRRRRR..",
+              ".RRRRRRRR..",
+              ".RRRRRRR...",
+              "..RRR......",
+              "..R........"
+            ],
+            "anchors": {
+              "grip": [
+                9,
+                1
+              ]
+            },
+            "parent": "ninja-body"
+          },
+          {
+            "id": "ninja-blade",
+            "origin": [
+              9,
+              -5
+            ],
+            "grid": [
+              "...........c",
+              ".........cc.",
+              "......cccc..",
+              "....ccccc...",
+              "...ccccc....",
+              ".ccccc......",
+              "cccc........",
+              ".c.........."
+            ],
+            "anchors": {
+              "grip": [
+                0,
+                6
+              ]
+            },
+            "parent": "ninja-arm"
+          },
+          {
+            "id": "knight-far-leg",
+            "origin": [
+              52,
+              42
+            ],
+            "grid": [
+              "...d...........",
+              "..ddd..........",
+              "..ddddd........",
+              ".ddddddd.......",
+              "dddddddddd.....",
+              ".ddddddddd.....",
+              "..dddddddd.....",
+              "...ddddddd.....",
+              "...ddddddd.....",
+              "....dddddd.....",
+              "....dddddd.....",
+              "....dddddd.....",
+              "....dddddd.....",
+              ".....ddddddd...",
+              ".....dddddddd..",
+              ".....dddddddddd",
+              ".........ddddd.",
+              "............d.."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "knight-near-leg",
+            "origin": [
+              40,
+              43
+            ],
+            "grid": [
+              "..........d.....",
+              ".........dddd...",
+              ".........ddddddd",
+              "........ddddddd.",
+              ".......dddddddd.",
+              ".......ddddddd..",
+              "......dddddddd..",
+              "......ddddddd...",
+              "......ddddddd...",
+              "......dddddd....",
+              ".....dddddd.....",
+              ".....ddddd......",
+              "...ddddddd......",
+              "ddddddddd.......",
+              ".ddddddd........",
+              ".d.............."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "knight-body",
+            "origin": [
+              46,
+              31
+            ],
+            "grid": [
+              "........t.....",
+              "......tttt....",
+              "...tttttttt...",
+              "..ttttttttttt.",
+              ".ttttttttttttt",
+              "tttttttttttttt",
+              "tttttttttttttt",
+              "tttttttttttttt",
+              "tttttttttttttt",
+              ".ttttttttttttt",
+              ".ttttttttttttt",
+              ".ttttttttttttt",
+              ".ttttttttttttt",
+              "...ttttttttttt",
+              "....tttttttttt",
+              "......ttttttt.",
+              ".......tttt...",
+              ".........t...."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "knight-head",
+            "origin": [
+              2,
+              -9
+            ],
+            "grid": [
+              ".......d....",
+              ".....dddd...",
+              "..ddddddddd.",
+              ".ddddddddddd",
+              ".ddddddddddd",
+              "dddddddddddd",
+              "dddddddddddd",
+              ".ddddddddddd",
+              ".dddddddddd.",
+              "..dddddddd..",
+              "..dddddddd..",
+              ".....dddd...",
+              ".......d...."
+            ],
+            "anchors": {},
+            "parent": "knight-body"
+          },
+          {
+            "id": "knight-shield-arm",
+            "origin": [
+              -5,
+              2
+            ],
+            "grid": [
+              "....d....",
+              "ddddddd..",
+              "ddddddddd",
+              "ddddddddd",
+              ".dddddddd",
+              ".ddddddd.",
+              ".ddddddd.",
+              ".......d."
+            ],
+            "anchors": {},
+            "parent": "knight-body"
+          },
+          {
+            "id": "knight-shield",
+            "origin": [
+              -4,
+              -5
+            ],
+            "grid": [
+              ".......t.....",
+              "......ttt....",
+              ".....ttttt...",
+              "...ttttttttt.",
+              "..ttttttttttt",
+              "..ttttttttttt",
+              "..tttttttttt.",
+              ".ttttttttttt.",
+              ".ttttttttttt.",
+              ".ttttttttttt.",
+              ".tttttttttt..",
+              "ttttttttttt..",
+              "ttttttttttt..",
+              ".ttttttttt...",
+              "...ttttt.....",
+              "....ttt......",
+              ".....t......."
+            ],
+            "anchors": {
+              "impact": [
+                9,
+                0
+              ]
+            },
+            "parent": "knight-shield-arm"
+          },
+          {
+            "id": "knight-sword-arm",
+            "origin": [
+              11,
+              6
+            ],
+            "grid": [
+              ".dddddd...",
+              ".ddddddd..",
+              "dddddddd..",
+              "ddddddddd.",
+              "....dddddd",
+              ".....ddddd",
+              ".......dd.",
+              "........d."
+            ],
+            "anchors": {
+              "grip": [
+                8,
+                5
+              ]
+            },
+            "parent": "knight-body"
+          },
+          {
+            "id": "knight-sword",
+            "origin": [
+              8,
+              5
+            ],
+            "grid": [
+              "c..............",
+              "ccccccccccc....",
+              "....ccccccccc..",
+              "........ccccccc"
+            ],
+            "anchors": {
+              "grip": [
+                0,
+                0
+              ]
+            },
+            "parent": "knight-sword-arm"
+          },
+          {
+            "id": "skeleton-far-leg",
+            "origin": [
+              78,
+              54
+            ],
+            "grid": [
+              "..m............",
+              "..mmm..........",
+              ".mmmmmm........",
+              ".mmmmmmmm......",
+              "mmmmmmmmm......",
+              ".....mmmmm.....",
+              ".....mmmmm.....",
+              "......mmmm.....",
+              "......mmmmm....",
+              ".......mmmm....",
+              ".......mmmmmmmm",
+              "........mmmmmmm",
+              "........mmmmmmm"
+            ],
+            "anchors": {
+              "sole": [
+                13,
+                12
+              ]
+            }
+          },
+          {
+            "id": "skeleton-near-leg",
+            "origin": [
+              71,
+              54
+            ],
+            "grid": [
+              ".......b.",
+              "......bb.",
+              "....bbbbb",
+              "...bbbbbb",
+              "...bbbbb.",
+              "..bbbbbb.",
+              "..bbbbb..",
+              ".bbbbb...",
+              ".bbbbb...",
+              ".bbbb....",
+              "bbbbb....",
+              "bbbbb....",
+              "bbbbbb...",
+              ".bbbbb...",
+              ".bbbbb...",
+              "..b......"
+            ],
+            "anchors": {
+              "sole": [
+                2,
+                15
+              ]
+            }
+          },
+          {
+            "id": "skeleton-spine",
+            "origin": [
+              76,
+              44
+            ],
+            "grid": [
+              "..b...",
+              "..bbb.",
+              "..bbb.",
+              "..bbb.",
+              "..bbb.",
+              "..bbb.",
+              "..bbbb",
+              "..bbbb",
+              "..bbbb",
+              "..bbbb",
+              ".bbbb.",
+              ".bbbb.",
+              "bbbb..",
+              "...b.."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "skeleton-ribs",
+            "origin": [
+              -1,
+              -1
+            ],
+            "grid": [
+              "..b.......",
+              "..bbb.....",
+              ".bbbbbb...",
+              ".bbbbbbbb.",
+              "bb....bbb.",
+              "bb....bbb.",
+              "bbbbbbbbbb",
+              "bbbbbbbbbb",
+              "bbb..bbbbb",
+              "..bbbbbbb.",
+              "...bbbb...",
+              ".....b...."
+            ],
+            "anchors": {},
+            "parent": "skeleton-spine"
+          },
+          {
+            "id": "skeleton-head",
+            "origin": [
+              -2,
+              -9
+            ],
+            "grid": [
+              "....b....",
+              "..bbbb...",
+              "bbbbbbbb.",
+              "bbbbbbbbb",
+              "bbbbbbbbb",
+              "bbbbbbbbb",
+              "bbbbbbbb.",
+              "bbbbbbbb.",
+              ".bbbbbbb.",
+              "...bbb...",
+              "....b...."
+            ],
+            "anchors": {},
+            "parent": "skeleton-spine"
+          },
+          {
+            "id": "skeleton-arm",
+            "origin": [
+              -6,
+              -5
+            ],
+            "grid": [
+              "..b.....",
+              "bbb.....",
+              "bbb.....",
+              "bbbb....",
+              "bbbb....",
+              "bbbbbb..",
+              ".bbbbbbb",
+              "...bbb..",
+              "....b..."
+            ],
+            "anchors": {
+              "grip": [
+                1,
+                1
+              ]
+            },
+            "parent": "skeleton-spine"
+          },
+          {
+            "id": "skeleton-spear",
+            "origin": [
+              -9,
+              -10
+            ],
+            "grid": [
+              ".w......................",
+              "www.....................",
+              ".www....................",
+              "..www...................",
+              "...www..................",
+              "....www.................",
+              ".....ww.................",
+              "......ww................",
+              ".......ww...............",
+              "........ww..............",
+              ".........ww.............",
+              "..........ww............",
+              "...........ww...........",
+              "............ww..........",
+              ".............ww.........",
+              "..............ww........",
+              "...............ww.......",
+              "................ww......",
+              "................www.....",
+              ".................www....",
+              "..................www...",
+              "...................www..",
+              "....................www.",
+              ".....................www",
+              "......................w."
+            ],
+            "anchors": {
+              "grip": [
+                10,
+                11
+              ]
+            },
+            "parent": "skeleton-arm"
+          }
+        ],
+        "constraints": [
+          {
+            "id": "ninja-blade stays in grip",
+            "kind": "anchor",
+            "a": [
+              "ninja-arm",
+              "grip"
+            ],
+            "b": [
+              "ninja-blade",
+              "grip"
+            ],
+            "max_distance": 0
+          },
+          {
+            "id": "knight-sword stays in grip",
+            "kind": "anchor",
+            "a": [
+              "knight-sword-arm",
+              "grip"
+            ],
+            "b": [
+              "knight-sword",
+              "grip"
+            ],
+            "max_distance": 0
+          },
+          {
+            "id": "skeleton-spear stays in grip",
+            "kind": "anchor",
+            "a": [
+              "skeleton-arm",
+              "grip"
+            ],
+            "b": [
+              "skeleton-spear",
+              "grip"
+            ],
+            "max_distance": 0
+          },
+          {
+            "id": "ninja-head remains visible",
+            "kind": "visible",
+            "part": "ninja-head",
+            "min_cells": 12
+          },
+          {
+            "id": "knight-head remains visible",
+            "kind": "visible",
+            "part": "knight-head",
+            "min_cells": 12
+          },
+          {
+            "id": "knight-shield remains visible",
+            "kind": "visible",
+            "part": "knight-shield",
+            "min_cells": 12
+          },
+          {
+            "id": "skeleton-head remains visible",
+            "kind": "visible",
+            "part": "skeleton-head",
+            "min_cells": 12
+          },
+          {
+            "id": "skeleton-ribs remains visible",
+            "kind": "visible",
+            "part": "skeleton-ribs",
+            "min_cells": 12
+          },
+          {
+            "id": "skeleton-far-leg stands on bridge",
+            "kind": "inside",
+            "at": [
+              "skeleton-far-leg",
+              "sole"
+            ],
+            "container": "street",
+            "exclude": [
+              "front-ledge"
+            ]
+          },
+          {
+            "id": "skeleton-near-leg stands on bridge",
+            "kind": "inside",
+            "at": [
+              "skeleton-near-leg",
+              "sole"
+            ],
+            "container": "street",
+            "exclude": [
+              "front-ledge"
+            ]
+          }
+        ]
+      },
+      "review": {
+        "source_fingerprint": "42966764e5abe7ab507d3ff37154f76d582f4e9376ab4ba862130047f03c205f",
+        "artifact_fingerprint": "98af3be825ff57b959d85d4426a98a8f207ab8228d3c70e0467678ebd415f56a",
+        "stage": "block",
+        "decision": "advance",
+        "reviewer_kind": "self",
+        "reviewer": "Parent author",
+        "views": {
+          "native": true,
+          "silhouette": true
+        },
+        "observed_read": "All three stances lie within the widened bridge deck; the knight blade has a distinct short horizontal path",
+        "remaining_limit": "The close blade/spear crossing needs clear material separation",
+        "evidence": "Native block-d PNG and browser parts.html silhouette inspected before this review",
+        "issues": []
+      }
+    },
+    {
+      "source": {
+        "kind": "construction",
+        "schema_version": 1,
+        "stage": "planes",
+        "title": "La emboscada del puente",
+        "width": 96,
+        "height": 80,
+        "intent": "A low ninja attacks a braced knight while a skeleton thrusts from the other side; three opposing gestures share a narrow street",
+        "light": "Upper left; warm beacon only in the lighthouse",
+        "background": "#17232C",
+        "palette_budget": 16,
+        "palette": {
+          "i": "#101923",
+          "s": "#263946",
+          "d": "#3E5260",
+          "m": "#65776E",
+          "l": "#9BAB9E",
+          "h": "#E6EDCC",
+          "g": "#E4B568",
+          "b": "#DDD5AA",
+          "t": "#327573",
+          "c": "#719FA9",
+          "r": "#9E4051",
+          "R": "#5E3346",
+          "w": "#805A48",
+          "f": "#C8846E",
+          "q": "#24343B"
+        },
+        "parts": [
+          {
+            "id": "street",
+            "origin": [
+              0,
+              4
+            ],
+            "grid": [
+              "...............................................................................................q",
+              ".........................................................................................qqqqqqq",
+              "...................................................................................qqqqqqqqqqqqq",
+              ".............................................................................qqqqqqqqqqqqqqqqqqq",
+              ".......................................................................qqqqqqqqqqqqqqqqqqqqqqqqq",
+              ".................................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "...........................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              ".....................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "................................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "..........................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "....................................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "..............................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "........................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "..................qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "............qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "......qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq......",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq...........",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq.................",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq......................",
+              "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq............................"
+            ],
+            "anchors": {},
+            "role": "environment"
+          },
+          {
+            "id": "back-ledge",
+            "origin": [
+              0,
+              0
+            ],
+            "grid": [
+              "...............................................................................................d",
+              ".........................................................................................ddddddd",
+              "....................................................................................dddddddddddd",
+              "..............................................................................ddddddddddddssssss",
+              ".........................................................................ddddddddddddsssssssssss",
+              "...................................................................ddddddddddddsssssssssssssssss",
+              ".............................................................dddddddddddddssssssssssssssssssssss",
+              "........................................................ddddddddddddssssssssssssssssssssssssssss",
+              "..................................................ddddddddddddsssssssssssssssssssssssssssss.....",
+              ".............................................ddddddddddddssssssssssssssssssssssssssss...........",
+              ".......................................ddddddddddddsssssssssssssssssssssssssssss................",
+              "..................................ddddddddddddsssssssssssssssssssssssssssss.....................",
+              "............................ddddddddddddssssssssssssssssssssssssssssss..........................",
+              "......................dddddddddddddsssssssssssssssssssssssssssss................................",
+              ".................ddddddddddddssssssssssssssssssssssssssssss.....................................",
+              "...........ddddddddddddsssssssssssssssssssssssssssssss..........................................",
+              "......ddddddddddddssssssssssssssssssssssssssssss................................................",
+              "ddddddddddddsssssssssssssssssssssssssssssss.....................................................",
+              "dddddddsssssssssssssssssssssssssssssss..........................................................",
+              "dssssssssssssssssssssssssssssssss...............................................................",
+              "sssssssssssssssssssssssssss.....................................................................",
+              "ssssssssssssssssssssss..........................................................................",
+              "sssssssssssssssss...............................................................................",
+              "ssssssssssss....................................................................................",
+              "ssssss..........................................................................................",
+              "s..............................................................................................."
+            ],
+            "anchors": {},
+            "role": "environment"
+          },
+          {
+            "id": "front-ledge",
+            "origin": [
+              29,
+              67
+            ],
+            "grid": [
+              "..................................................................d",
+              ".............................................................dddddd",
+              ".......................................................dddddddddddd",
+              "..................................................dddddddddddssssss",
+              "............................................ddddddddddddsssssssssss",
+              ".......................................dddddddddddsssssssssssssssss",
+              ".................................ddddddddddddssssssssssssssssssssss",
+              "............................dddddddddddssssssssssssssssssssssssssss",
+              "......................ddddddddddddssssssssssssssssssssssssssss.....",
+              ".................dddddddddddssssssssssssssssssssssssssss...........",
+              "...........ddddddddddddssssssssssssssssssssssssssss................",
+              "......dddddddddddssssssssssssssssssssssssssss......................",
+              "ddddddddddddssssssssssssssssssssssssssss..........................."
+            ],
+            "anchors": {},
+            "role": "environment"
+          },
+          {
+            "id": "ninja-rear-leg",
+            "origin": [
+              6,
+              43
+            ],
+            "grid": [
+              ".........RRRRRR",
+              ".........rrrrrR",
+              "........rrrrrRR",
+              "........rrrrRRR",
+              ".......rrrrrRRR",
+              ".......rrrrRRR.",
+              "......rrrrRRR..",
+              "...rrrrrRRR....",
+              "rrrrrRRRRR.....",
+              ".RrRRRRRR......",
+              ".RRRRRRR......."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "ninja-front-leg",
+            "origin": [
+              20,
+              42
+            ],
+            "grid": [
+              "....R...........",
+              "...rRR..........",
+              ".RRrrRRR........",
+              "RRRrrrrRR.......",
+              "..RRrrrRR.......",
+              "...RrrrrRR......",
+              "....rrrrRR......",
+              "....RrrrrR......",
+              ".....RrrrR......",
+              ".....RrrrrR.....",
+              "......RrrrR.....",
+              "......RRrRRRR...",
+              ".......RRRRRRRRR",
+              ".......RRRRRRRR.",
+              "..............R."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "ninja-body",
+            "origin": [
+              16,
+              31
+            ],
+            "grid": [
+              ".........R....",
+              "........RrR...",
+              "......RrrrrRR.",
+              ".....RrrrrrRRR",
+              "...RrrrrrrrrRR",
+              "...RrrrrrrrRR.",
+              "..RrrrrrrrrRR.",
+              "..RrrrrrrrRR..",
+              "..RrrrrrrrRR..",
+              ".RrrrrrrrRR...",
+              ".RrrrrrRRRR...",
+              "RrrrRRRRRRR...",
+              "RrRRRRRRRR....",
+              "...RRRRRRR....",
+              ".....RRRR.....",
+              "........R....."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "ninja-scarf",
+            "origin": [
+              -12,
+              -3
+            ],
+            "grid": [
+              ".........r..........",
+              "rfffffffffrr........",
+              ".rrrrrrfffffrrr.....",
+              "..rrrrrrrffffrrrr...",
+              "...r......fffffrrr..",
+              "............frrrrrrr",
+              "..............r....."
+            ],
+            "anchors": {},
+            "parent": "ninja-body"
+          },
+          {
+            "id": "ninja-head",
+            "origin": [
+              7,
+              -6
+            ],
+            "grid": [
+              "...i......",
+              "..iiRi....",
+              "iRRRRRiii.",
+              "iRRRRRRRi.",
+              "iRRRRffffi",
+              ".RRRiiiiii",
+              ".rrrrrrrr.",
+              ".iiiiiii..",
+              ".iiiiiii..",
+              "......i..."
+            ],
+            "anchors": {},
+            "parent": "ninja-body"
+          },
+          {
+            "id": "ninja-arm",
+            "origin": [
+              10,
+              0
+            ],
+            "grid": [
+              ".......R...",
+              "......RRrRR",
+              ".....RRrrr.",
+              "....RrrrrR.",
+              "RrrrrrrrR..",
+              ".RrrrrrRR..",
+              ".RrrrrRR...",
+              "..RRR......",
+              "..R........"
+            ],
+            "anchors": {
+              "grip": [
+                9,
+                1
+              ]
+            },
+            "parent": "ninja-body"
+          },
+          {
+            "id": "ninja-blade",
+            "origin": [
+              9,
+              -5
+            ],
+            "grid": [
+              "...........h",
+              ".........hc.",
+              "......chhc..",
+              "....cchcc...",
+              "...chccc....",
+              ".cchcc......",
+              "chhc........",
+              ".c.........."
+            ],
+            "anchors": {
+              "grip": [
+                0,
+                6
+              ]
+            },
+            "parent": "ninja-arm"
+          },
+          {
+            "id": "knight-far-leg",
+            "origin": [
+              52,
+              42
+            ],
+            "grid": [
+              "...d...........",
+              "..ddd..........",
+              "..ddddd........",
+              ".ddddddd.......",
+              "ddddddmddd.....",
+              ".dddddmmmd.....",
+              "..ddddmmmd.....",
+              "...dddmmmd.....",
+              "...dddmmmd.....",
+              "....ddmmmd.....",
+              "....ddmmmd.....",
+              "....ddmmmd.....",
+              "....ddmddd.....",
+              ".....ddddddd...",
+              ".....dddddddd..",
+              ".....dddddddddd",
+              ".........ddddd.",
+              "............d.."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "knight-near-leg",
+            "origin": [
+              40,
+              43
+            ],
+            "grid": [
+              "..........d.....",
+              ".........dddd...",
+              ".........ddddddd",
+              "........dcddddd.",
+              ".......ddccccdd.",
+              ".......dccccdd..",
+              "......ddccccdd..",
+              "......ddcccdd...",
+              "......ddcccdd...",
+              "......dcccdd....",
+              ".....ddcccd.....",
+              ".....cccdd......",
+              "...ccccddd......",
+              "dccccdddd.......",
+              ".ddddddd........",
+              ".d.............."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "knight-body",
+            "origin": [
+              46,
+              31
+            ],
+            "grid": [
+              "........t.....",
+              "......tttt....",
+              "...tttttctt...",
+              "..tcccccccttt.",
+              ".ttccccccctttt",
+              "tttccccccccttt",
+              "tttccccccccttt",
+              "tttccccccctttt",
+              "tttccccccctttt",
+              ".ttcccccctttst",
+              ".tttttttctssst",
+              ".tttttttssssst",
+              ".tssssssssssst",
+              "...tssssssssst",
+              "....tsssssssst",
+              "......tssssss.",
+              ".......tstt...",
+              ".........t...."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "knight-head",
+            "origin": [
+              2,
+              -9
+            ],
+            "grid": [
+              ".......d....",
+              ".....ddhd...",
+              "..dhhhhhhdd.",
+              ".dchccccccdd",
+              ".dcccccccddd",
+              "dccccccccidd",
+              "dciiiiiiiidd",
+              ".dciiiiiiidd",
+              ".dciddddddd.",
+              "..dddddddd..",
+              "..dddddddd..",
+              ".....dddd...",
+              ".......d...."
+            ],
+            "anchors": {},
+            "parent": "knight-body"
+          },
+          {
+            "id": "knight-shield-arm",
+            "origin": [
+              -5,
+              2
+            ],
+            "grid": [
+              "....d....",
+              "ddddddd..",
+              "ddddddddd",
+              "ddddddddd",
+              ".dddddddd",
+              ".ddddddd.",
+              ".ddddddd.",
+              ".......d."
+            ],
+            "anchors": {},
+            "parent": "knight-body"
+          },
+          {
+            "id": "knight-shield",
+            "origin": [
+              -4,
+              -5
+            ],
+            "grid": [
+              ".......t.....",
+              "......tct....",
+              ".....tccct...",
+              "...tccctcctt.",
+              "..tccctttcttt",
+              "..tcttttttttt",
+              "..cctttttttt.",
+              ".tcttttttttt.",
+              ".tcttttttttt.",
+              ".ttttttttttt.",
+              ".cttttttttt..",
+              "tcctttttttt..",
+              "ttctttctttt..",
+              ".ttctctttt...",
+              "...tcttt.....",
+              "....ttt......",
+              ".....t......."
+            ],
+            "anchors": {
+              "impact": [
+                9,
+                0
+              ]
+            },
+            "parent": "knight-shield-arm"
+          },
+          {
+            "id": "knight-sword-arm",
+            "origin": [
+              11,
+              6
+            ],
+            "grid": [
+              ".dddddd...",
+              ".dccccdd..",
+              "dddccccd..",
+              "ddddcccdd.",
+              "....dcccdd",
+              ".....dcccd",
+              ".......dd.",
+              "........d."
+            ],
+            "anchors": {
+              "grip": [
+                8,
+                5
+              ]
+            },
+            "parent": "knight-body"
+          },
+          {
+            "id": "knight-sword",
+            "origin": [
+              8,
+              5
+            ],
+            "grid": [
+              "c..............",
+              "ccccccchhhh....",
+              "....ccccccchh..",
+              "........ccccccc"
+            ],
+            "anchors": {
+              "grip": [
+                0,
+                0
+              ]
+            },
+            "parent": "knight-sword-arm"
+          },
+          {
+            "id": "skeleton-far-leg",
+            "origin": [
+              78,
+              54
+            ],
+            "grid": [
+              "..m............",
+              "..mmm..........",
+              ".mmmmmm........",
+              ".mmmmmmmm......",
+              "mmmmmmmmm......",
+              ".....mmmmm.....",
+              ".....mmmmm.....",
+              "......mmmm.....",
+              "......mmmmm....",
+              ".......mmmm....",
+              ".......mmmmmmmm",
+              "........mmmmmmm",
+              "........mmmmmmm"
+            ],
+            "anchors": {
+              "sole": [
+                13,
+                12
+              ]
+            }
+          },
+          {
+            "id": "skeleton-near-leg",
+            "origin": [
+              71,
+              54
+            ],
+            "grid": [
+              ".......b.",
+              "......bb.",
+              "....bbbbb",
+              "...bbbbbb",
+              "...bbbbb.",
+              "..bbbbbb.",
+              "..bbbbb..",
+              ".bbbbb...",
+              ".bbbbb...",
+              ".bbbb....",
+              "bbbbb....",
+              "bbbbb....",
+              "bbbbbb...",
+              ".bbbbb...",
+              ".bbbbb...",
+              "..b......"
+            ],
+            "anchors": {
+              "sole": [
+                2,
+                15
+              ]
+            }
+          },
+          {
+            "id": "skeleton-spine",
+            "origin": [
+              76,
+              44
+            ],
+            "grid": [
+              "..b...",
+              "..bmm.",
+              "..bmm.",
+              "..bmm.",
+              "..bmm.",
+              "..bmm.",
+              "..bmmm",
+              "..bmmm",
+              "..bmmm",
+              "..bmmm",
+              ".bbbm.",
+              ".bbbm.",
+              "bbbb..",
+              "...b.."
+            ],
+            "anchors": {}
+          },
+          {
+            "id": "skeleton-ribs",
+            "origin": [
+              -1,
+              -1
+            ],
+            "grid": [
+              "..b.......",
+              "..bbb.....",
+              ".bbbbbb...",
+              ".bbbbbbbb.",
+              "bb....mmm.",
+              "bb....bmm.",
+              "bbbbbbbmmb",
+              "bbbbbbmmmb",
+              "bbb..mmmbb",
+              "..bbmmbbb.",
+              "...bmbb...",
+              ".....b...."
+            ],
+            "anchors": {},
+            "parent": "skeleton-spine"
+          },
+          {
+            "id": "skeleton-head",
+            "origin": [
+              -2,
+              -9
+            ],
+            "grid": [
+              "....b....",
+              "..bbhb...",
+              "hhhhhhbb.",
+              "hhhhhhhbb",
+              "biihhhmbb",
+              "biihimmmb",
+              "bbbbbmmb.",
+              "bbbbmmbb.",
+              ".biiimbb.",
+              "...bmb...",
+              "....b...."
+            ],
+            "anchors": {},
+            "parent": "skeleton-spine"
+          },
+          {
+            "id": "skeleton-arm",
+            "origin": [
+              -6,
+              -5
+            ],
+            "grid": [
+              "..b.....",
+              "bbb.....",
+              "bbb.....",
+              "bhbb....",
+              "bbhb....",
+              "bbbbbb..",
+              ".bbhbbbb",
+              "...bhb..",
+              "....b..."
+            ],
+            "anchors": {
+              "grip": [
+                1,
+                1
+              ]
+            },
+            "parent": "skeleton-spine"
+          },
+          {
+            "id": "skeleton-spear",
+            "origin": [
+              -9,
+              -10
+            ],
+            "grid": [
+              ".c......................",
+              "ccc.....................",
+              ".ccc....................",
+              "..ccw...................",
+              "...ccw..................",
+              "....ccw.................",
+              ".....ww.................",
+              "......ww................",
+              ".......ww...............",
+              "........ww..............",
+              ".........ww.............",
+              "..........ww............",
+              "...........ww...........",
+              "............ww..........",
+              ".............ww.........",
+              "..............ww........",
+              "...............ww.......",
+              "................ww......",
+              "................www.....",
+              ".................www....",
+              "..................www...",
+              "...................www..",
+              "....................www.",
+              ".....................www",
+              "......................w."
+            ],
+            "anchors": {
+              "grip": [
+                10,
+                11
+              ]
+            },
+            "parent": "skeleton-arm"
+          }
+        ],
+        "constraints": [
+          {
+            "id": "ninja-blade stays in grip",
+            "kind": "anchor",
+            "a": [
+              "ninja-arm",
+              "grip"
+            ],
+            "b": [
+              "ninja-blade",
+              "grip"
+            ],
+            "max_distance": 0
+          },
+          {
+            "id": "knight-sword stays in grip",
+            "kind": "anchor",
+            "a": [
+              "knight-sword-arm",
+              "grip"
+            ],
+            "b": [
+              "knight-sword",
+              "grip"
+            ],
+            "max_distance": 0
+          },
+          {
+            "id": "skeleton-spear stays in grip",
+            "kind": "anchor",
+            "a": [
+              "skeleton-arm",
+              "grip"
+            ],
+            "b": [
+              "skeleton-spear",
+              "grip"
+            ],
+            "max_distance": 0
+          },
+          {
+            "id": "ninja-head remains visible",
+            "kind": "visible",
+            "part": "ninja-head",
+            "min_cells": 12
+          },
+          {
+            "id": "knight-head remains visible",
+            "kind": "visible",
+            "part": "knight-head",
+            "min_cells": 12
+          },
+          {
+            "id": "knight-shield remains visible",
+            "kind": "visible",
+            "part": "knight-shield",
+            "min_cells": 12
+          },
+          {
+            "id": "skeleton-head remains visible",
+            "kind": "visible",
+            "part": "skeleton-head",
+            "min_cells": 12
+          },
+          {
+            "id": "skeleton-ribs remains visible",
+            "kind": "visible",
+            "part": "skeleton-ribs",
+            "min_cells": 12
+          },
+          {
+            "id": "skeleton-far-leg stands on bridge",
+            "kind": "inside",
+            "at": [
+              "skeleton-far-leg",
+              "sole"
+            ],
+            "container": "street",
+            "exclude": [
+              "front-ledge"
+            ]
+          },
+          {
+            "id": "skeleton-near-leg stands on bridge",
+            "kind": "inside",
+            "at": [
+              "skeleton-near-leg",
+              "sole"
+            ],
+            "container": "street",
+            "exclude": [
+              "front-ledge"
+            ]
+          }
+        ]
+      },
+      "review": {
+        "source_fingerprint": "38392c903e865a4fe9105da02d282abc48658d018f4863c5f00295dfb5de1c99",
+        "artifact_fingerprint": "aaf8b8bba2dd4c6125ce01ac5ac3970d359cb62daf82d651dc15cc4c812060fb",
+        "stage": "planes",
+        "decision": "advance",
+        "reviewer_kind": "self",
+        "reviewer": "Parent author",
+        "views": {
+          "native": true,
+          "silhouette": true,
+          "value": true
+        },
+        "observed_read": "The short knight blade separates from the long diagonal spear, and both skeleton feet sit above the front rim",
+        "remaining_limit": "Weapon crossing stays close; the skeleton remains the brightest figure",
+        "evidence": "Browser planes-d at native and 4x color/value; unchanged block-d silhouette",
+        "issues": []
+      }
+    }
+  ]
+}

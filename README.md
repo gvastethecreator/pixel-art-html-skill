@@ -19,6 +19,8 @@ Pixel Art HTML connects reference study to deliberate pixel construction. Retrie
 
 [Project site](https://gvastethecreator.github.io/pixel-art-html-skill/) · [Skill workflow](./SKILLS/pixel-art-html/SKILL.md) · [Contributing](./CONTRIBUTING.md) · [Sponsor](https://github.com/sponsors/gvastethecreator)
 
+The [executable construction studies](SKILLS/pixel-art-html/examples/part-construction/README.md) add named editable parts, masks and anchors, observed stage reviews, seven original failure/repair lessons, and a reproducible encounter canvas with pan and zoom. These controls preserve construction evidence; they do not automatically judge artistic quality.
+
 ## Shipped examples
 
 These are the existing skill fixtures. They are distinct from the new original construction exercises.

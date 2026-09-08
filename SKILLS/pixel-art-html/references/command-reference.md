@@ -186,3 +186,15 @@ manifest.json
 Promoted collection/pack: root `visual-review.json` plus one bound `visual-review.json` per child.
 
 Managed mode writes `iteration.json` and regenerates `pixel-art/catalog.json` plus `pixel-art/index.html`. Contract: [project-library.md](project-library.md). Proof HTML is standalone, network-free. `pixel-art.json` is the canonical editable grid; `pixel-art.png` is nearest-neighbor preview/export. Validation checks dimensions and every RGBA cell still match the canonical grid. Repair artifacts embed the exact baseline grid, authored decisions, and recomputed delta evidence. Promoted output proves review fingerprints still match the final grid.
+
+## Named construction parts
+
+```bash
+python <skill-dir>/scripts/construct.py build block-source.json --output work/block
+python <skill-dir>/scripts/construct.py review work/block review-input.json --output work/block-review.json
+python <skill-dir>/scripts/construct.py build planes-source.json --previous work/block --review work/block-review.json --output work/planes
+python <skill-dir>/scripts/construct.py edit source.json part-edit.json --output revised-source.json
+python <skill-dir>/scripts/construct.py validate work/planes
+```
+
+Read [executable-construction.md](executable-construction.md) for the source schema, stage contract, real review requirements, and part-preserving repair route. Outputs add `construction.json`, `construction-report.json`, and `parts.html` to the standard exact-grid bundle. Replay the [recorded original studies](../examples/part-construction/README.md) to inspect parts, failure lessons, and the pan/zoom scene; replay does not grant a fresh review.
