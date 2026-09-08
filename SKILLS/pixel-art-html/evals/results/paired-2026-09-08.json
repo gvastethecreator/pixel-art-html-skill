@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-08",
+  "baseline_revision": "00abf56",
+  "updated_revision": "092f0d3",
+  "protocol": "One paired run, six common requests, same inherited model settings and raw fixtures, 24-minute allowance per arm, at most one repair per case. The assigned skill resources are the treatment. Actual elapsed time differs and is reported.",
+  "cost": {
+    "prior_seconds_to_validation": 1093.364996,
+    "updated_seconds_to_validation": 1204.340127,
+    "updated_metadata_closeout_seconds": 119.302428,
+    "token_cost": "not available"
+  },
+  "reviewer": "parent model; did not build either evaluation arm; did author the skill and supplied repair fixtures",
+  "blinding_limit": "one paired run; labels reviewed before opening the mapping; builder progress messages exposed some self-reported failures and timing, so reviewer blinding is partial",
+  "summary": {
+    "updated_case_wins": 4,
+    "prior_case_wins": 2,
+    "case_ties": 0,
+    "note": "Case six has a preferred carrier repair and a tied tree repair. All remain drafts; neither carrier fully resolves the load mounting."
+  },
+  "pairs": [
+    {
+      "label": "A",
+      "preferred": "A1",
+      "read": "Both show a lit sea tower. A1 reads as a lighthouse more immediately; A2 can resemble a large lamp on a short pedestal.",
+      "cause": "A1 reserves a continuous tapered tower with a small gallery. A2 allocates too much height and width to the lantern housing.",
+      "limit": "Both storms are sparse and generic; neither establishes a distinctive coast.",
+      "case": "text-storm-lighthouse-16",
+      "output": 1,
+      "left_revision": "00abf56",
+      "right_revision": "092f0d3",
+      "updated_verdict": "loss",
+      "source_sha256": [
+        "a61a04e9ce5f9304cfc78a5defd2cbf07f67d2ad97e8faf4ae05f67d298a037c",
+        "8109ba594381578391f147d3c287ead2d3d7753badc41b053d9663deb5601262"
+      ]
+    },
+    {
+      "label": "B",
+      "preferred": "B1",
+      "read": "Both show a full-body figure moving left with a red scarf trailing right.",
+      "cause": "Compared with the common 16x16 source, B1 better preserves the low forward arm and large, connected scarf. B2 raises the forward arm and makes a more energetic but less faithful pose.",
+      "limit": "B1 has a stiff trailing arm and flat scarf edge. B2's cleaner diagonal is a valid new pose, but source fidelity is part of this request.",
+      "case": "image-red-scarf-character-32",
+      "output": 1,
+      "left_revision": "092f0d3",
+      "right_revision": "00abf56",
+      "updated_verdict": "win",
+      "source_sha256": [
+        "d18b98bd4da01c2c5e06a358e634d5bd3361d0b3032c57843be151ee9c0fea39",
+        "cd6a11d4896cdd9416c0095ac52ead5234903e453d3ba94fc740ea81576d5e48"
+      ]
+    },
+    {
+      "label": "C",
+      "preferred": "C1",
+      "read": "C1 reads as a top-down craft with an amber cockpit and two separate cyan engines. C2 can read as an arch or badge with bright lower posts.",
+      "cause": "C1 separates cockpit, pointed nose, swept side masses, and engine gaps. C2's light perimeter and broad central fill weaken the hull hierarchy.",
+      "limit": "At 8x8 both require deliberate visual abstraction. More colors or smoother contours do not settle recognition.",
+      "case": "severe-grid-scout-ship-8",
+      "output": 1,
+      "left_revision": "092f0d3",
+      "right_revision": "00abf56",
+      "updated_verdict": "win",
+      "source_sha256": [
+        "9d378ffdbd91b169a30dacb2dfa1b9263151493c01d6f7b59fad9e45c6686ba7",
+        "a6cc86bae9f0496ebad5ba660d0bfa80ebc1434f966fb0b83edc9da528e88388"
+      ]
+    },
+    {
+      "label": "D",
+      "preferred": "D2",
+      "read": "Both are trees with visible trunks. D2 has a dominant crown and a more coherent light-to-shadow volume.",
+      "cause": "D1 splits the crown into three bright lobes that can read as separate balls. D2 subordinates the side mass and joins the crown silhouette.",
+      "limit": "D2 is still generic and its lower crown forms a heavy band. D1 has more visible branching and stronger lateral asymmetry.",
+      "case": "reference-foliage-tree-32",
+      "output": 1,
+      "left_revision": "092f0d3",
+      "right_revision": "00abf56",
+      "updated_verdict": "loss",
+      "source_sha256": [
+        "aca0b64ddabd5250a5ee06b798a1af6b3f50c72f0ff54ed47ae487ad61ed5bde",
+        "37bd799fb69a9206fa75c7f796026a2ca277c8ff1d1552b653c58ea1fe8960a7"
+      ]
+    },
+    {
+      "label": "E",
+      "preferred": "E2",
+      "read": "Both are small carriers with cargo. E2's payload reads more consistently as a box on a mechanical platform.",
+      "cause": "E2 maintains shared crate corners and clear near/far faces. E1's top and front accents conflict and the small supports look loosely assembled.",
+      "limit": "E2 compresses the leg joints and optical cue. Neither support system is finished enough for close scrutiny.",
+      "case": "constructive-mech-32",
+      "output": 1,
+      "left_revision": "00abf56",
+      "right_revision": "092f0d3",
+      "updated_verdict": "win",
+      "source_sha256": [
+        "3025b9c7e434ea9375b06d77ea19e7014a12888de6999ed1e7b1e2406a663484",
+        "1a6cf5b30f1f9c9bdd163d13f99ab6e311f42252d77c1f9d86dec27e41187a2c"
+      ]
+    },
+    {
+      "label": "F",
+      "preferred": "F2",
+      "read": "Both retain a cargo platform with a sensor and two legs.",
+      "cause": "F2 has a simpler continuous platform and more traceable leg paths. F1 repeats bands across a curved bowl-like carrier and keeps a cramped far leg.",
+      "limit": "F2 leaves an ambiguous dark slot under the load. Preference does not mean the load mounting requirement is fully resolved.",
+      "case": "critique-construction-plateau",
+      "output": 1,
+      "left_revision": "00abf56",
+      "right_revision": "092f0d3",
+      "updated_verdict": "win",
+      "source_sha256": [
+        "fa13cf6cfe482e4dba96640a57775d206f80e669f056cae3d8c88c16bd06d8d6",
+        "a9ca9d157152470c19166bf5681916844d292d2cbe9bbdd5196414e1c60e3763"
+      ]
+    },
+    {
+      "label": "G",
+      "preferred": "tie",
+      "read": "Both preserve the same branching tree and broad crown.",
+      "cause": "G1 adds small light interruptions; G2 uses quieter connected regions. Neither produces a decisive native-size gain in branch/crown volume.",
+      "limit": "Both retain a skirt-like horizontal lower crown. Choosing smoother marks alone would be a style preference.",
+      "case": "critique-construction-plateau",
+      "output": 2,
+      "left_revision": "00abf56",
+      "right_revision": "092f0d3",
+      "updated_verdict": "tie",
+      "source_sha256": [
+        "63b6bb5c101425531654a9c9e2b456e961a7637859a0c4d17b615cf8a7d9388f",
+        "0863bb26c2bda8bc6530fdc246890010b5eea0d7faa95b52e7a2efcabb5e3348"
+      ]
+    }
+  ],
+  "browser": {
+    "surface": "Codex in-app browser",
+    "viewport": [
+      1280,
+      720
+    ],
+    "device_pixel_ratio": 1.5,
+    "final_canvases": 14,
+    "mismatched_native_cells": 0,
+    "css_native_scale": 1,
+    "smoothing": false,
+    "external_requests": 0,
+    "views": "all finals in color at native, 2x, 4x and enlarged; value/silhouette controls exercised",
+    "screenshots": "inline only; full-page capture contained a duplicated last-row stitch; DOM had exactly seven pairs"
+  },
+  "limits": [
+    "One run without replication; no statistical or cross-model conclusion.",
+    "Parent did not author the evaluation outputs but did author the skill and repair fixtures. Some builder progress messages disclosed self-reported failure descriptions before review.",
+    "All final grids and comparisons were inspected; not every direction-study candidate received a separate parent perceptual review.",
+    "These preferences are not human recognition testing or production approval."
+  ]
+}

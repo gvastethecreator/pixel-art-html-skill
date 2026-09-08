@@ -65,7 +65,7 @@ The skill now connects brief, reference decision, part construction, silhouette,
 
 `pixel_lab.py` reports exact region rows and cluster coordinates, compares canonical grids, and applies patches with a baseline fingerprint, expected colors, protected regions, and a palette budget. It writes a new standard repair draft and leaves the baseline intact. Its coordinate loupe preserves native context, shared color aliases, and an exact before/after receipt. The patch command accepts `--scale 1` for a native PNG. A changed-cell count is evidence of an intervention, not its artistic value.
 
-The evaluation catalog now contains six controlled requests, including criticism and repair of a construction plateau. Prior and updated workflows must use the same model, brief, grid, palette, references, and effort. Shared skill instructions do not select a provider or model. The complete six-case controlled A/B evaluation has not been run. Independent model reviews and the forward test below supply narrower evidence.
+The evaluation catalog contains six controlled requests, including criticism and repair of a construction plateau. Prior and updated workflows use the same model settings, brief, grid, palette budget, supplied sources, and effort allowance. Shared skill instructions do not select a provider or model. The first closeout had only independent reviews and a forward test; the user then authorized the paired six-case run recorded below.
 
 ## What criticism changed
 
@@ -113,4 +113,43 @@ The original demonstration, source specs, checkpoints, patch, delta, and self-re
 
 ## Remaining evidence limits
 
-The evidence includes independent model criticism, anonymous paired preferences, and one independent forward test. It does not include a completed six-case fixed-effort A/B evaluation, a human recognition study, or proof of general artistic improvement across models. Full video playback, Linux behavior, responsive layouts, and remote CI were not assessed. The 24 battery pieces and forward-test sprite remain drafts, with named artistic limits and no promotion to owner-reviewed status. No commit, push, or publication was performed.
+The evidence includes independent model criticism, one paired six-case run, and an independent forward test. It does not include replication, a human recognition study, or proof of general artistic improvement across models. Full video playback, Linux behavior, responsive layouts, and remote CI were not assessed. The 24 battery pieces, evaluation outputs, city scene, and forward-test sprite remain drafts, with named artistic limits and no promotion to owner-reviewed status. Commits were authorized in the follow-up; no push or publication was requested or performed.
+
+## Follow-up: controlled comparison and city scene
+
+The user authorized commits and completion of the comparison, then requested an original city scene with ninjas, knights, and skeletons on a canvas with zoom and pan.
+
+- [x] Commit reference retrieval as `2222feb` and construction/critique as `092f0d3`.
+- [x] Finish the six-case paired run from frozen revisions `00abf56` and `092f0d3`. Both builders received the same requests, source fixtures, model settings, 24-minute authoring allowance, and one repair pass per case. The parent reviewed anonymous outputs and recorded outcomes and evidence limits.
+- [x] Construct the city from exact native masters with shared projection, palette roles, foot contacts, and deliberate faction silhouettes. Keep original editable sources and a reproducible scene manifest.
+- [x] Deliver a standalone canvas viewer with pointer pan, anchored zoom, fit, native scale, and keyboard controls. Check the rendered city and actual controls.
+- [x] Add reusable skill changes supported by this scene and validate the changed behavior. Commit the original scene, compositor, viewer, and scene guidance as `45abf9a`; preserve the comparison and closeout evidence in a separate documentation commit.
+
+The scene uses a 480x320 world assembled from masters no larger than 128x128, preserving the existing single-asset compiler contract. A night plaza connects rooftop ambushes, a guarded gate, and a crypt entrance. Faction identity comes from pose, equipment, and silhouette as well as color. This is a still scene; animation and game simulation are outside this request.
+
+### Completed comparison
+
+Both builders completed all six requests, including two repairs in the last request, with seven final masters per arm. The parent recorded preferences before opening the shuffled arm mapping. The parent did not build either arm but did author the skill and repair fixtures. Builder progress messages disclosed some self-reported failure descriptions, so blinding was partial.
+
+| Request | Preferred workflow | Visible reason and remaining limit |
+|---|---|---|
+| 16x16 storm lighthouse | Prior | Its continuous tower and small gallery read more clearly; the updated output gives too much mass to the lantern. Both storms are generic. |
+| Red-scarf source recovery | Updated | The low forward arm and large connected scarf preserve the common source pose more closely. The scarf still looks stiff. |
+| 8x8 scout ship recovery | Updated | Nose, cockpit, hull, and two engines remain separate; the other result can read as an arch or badge. |
+| 32x32 tree | Prior | A dominant crown reads more coherently; the updated tree splits into bright balls. The preferred lower crown still forms a heavy band. |
+| 32x32 isometric carrier | Updated | Crate faces share their corners more clearly. Legs and optical cue remain compressed. |
+| Critique and two repairs | Updated, with a tied tree repair | The carrier's platform and leg paths are simpler. Its load slot remains ambiguous, and neither tree repair gives a decisive native gain. |
+
+This is four case preferences for the updated skill and two for the prior workflow. It is not a statistical result or proof that every new instruction helped. Both arms passed their artifact validations; the parent compared all 14 native browser canvases with their embedded grids and found zero mismatched cells, CSS scale 1, and smoothing disabled. All final outputs were seen at native, 2x, 4x, and enlarged color; value/silhouette controls were exercised. Not every study candidate received a separate parent perceptual review.
+
+The prior arm took 1,093.36 seconds through validation. The updated arm took 1,204.34 seconds, then 119.30 seconds for inventory and checkpoint review without art changes. Both had the same 1,440-second allowance. Active per-case intervals overlapped, and token cost was not available. The public [paired result receipt](../SKILLS/pixel-art-html/evals/results/paired-2026-09-08.json) preserves observations, mappings, source hashes, costs, and limits. Raw grids, specs, builder records, and the anonymous browser gallery remain under the private task directory.
+
+### City scene and pipeline changes
+
+The [city example](../SKILLS/pixel-art-html/examples/city-clash/README.md) contains a portable original builder. Its 38 native masters, 56 placements, and 27 colors form a 480x320 world with 12 actors. The script emits editable sources and block/plane checkpoints. The new compositor embeds the native masters, recomposes stable depth order, validates exact PNG/JSON/HTML agreement, and exports a standalone interactive canvas.
+
+The first composition exposed a shield bearer facing away from its attacker, a rooftop actor with feet below the eave, and a skeleton drawn over the crypt roof. Repairs changed world contact positions and depth instead of adding costume detail. Actor shadows now remain separate from subject silhouettes. The new scene reference teaches actor/action/target relationships, contact height, occlusion, shared palette roles, and the limits of mirroring lit sprites.
+
+The live viewport was 1280x720 at DPR 1.5. A real border/content-box mismatch exposed a one-physical-pixel stretch; the viewer now measures the fractional content box and keeps the camera in integer physical pixels. Browser proof found zero mismatches between all 153,600 world cells and the native PNG, and zero mismatches in their full 2x physical-pixel display. Actual drag moved by the expected DPR-adjusted delta and released capture; wheel zoom moved the anchored world point by at most 0.051 source cells from snapping. Native/max zoom, disabled bounds, Home, arrow pan, Tab/Shift+Tab, group visibility, focus points, and value/subject views were exercised. No warning/error logs or external requests were reported.
+
+`pnpm run check:full` passed 54 tests, including the two new scene composition/parity regressions, with all 13 Pillow tests included. Later template-only content-box changes received the affected browser proof above; the unchanged Python suite was not repeated. Scene validation passed with fingerprint `2b489c55ba9844afe7c9dd1bd5775d56b5617799dcbbd59420e23923b7687836`. Screenshots remain inline; the tool supplied no local screenshot path. The city remains a draft with simplified projection, crowded small contacts, repeated human proportions, and stylized mirrored lighting.
