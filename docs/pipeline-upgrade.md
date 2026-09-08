@@ -153,3 +153,43 @@ The first composition exposed a shield bearer facing away from its attacker, a r
 The live viewport was 1280x720 at DPR 1.5. A real border/content-box mismatch exposed a one-physical-pixel stretch; the viewer now measures the fractional content box and keeps the camera in integer physical pixels. Browser proof found zero mismatches between all 153,600 world cells and the native PNG, and zero mismatches in their full 2x physical-pixel display. Actual drag moved by the expected DPR-adjusted delta and released capture; wheel zoom moved the anchored world point by at most 0.051 source cells from snapping. Native/max zoom, disabled bounds, Home, arrow pan, Tab/Shift+Tab, group visibility, focus points, and value/subject views were exercised. No warning/error logs or external requests were reported.
 
 `pnpm run check:full` passed 54 tests, including the two new scene composition/parity regressions, with all 13 Pillow tests included. Later template-only content-box changes received the affected browser proof above; the unchanged Python suite was not repeated. Scene validation passed with fingerprint `2b489c55ba9844afe7c9dd1bd5775d56b5617799dcbbd59420e23923b7687836`. Screenshots remain inline; the tool supplied no local screenshot path. The city remains a draft with simplified projection, crowded small contacts, repeated human proportions, and stylized mirrored lighting.
+
+
+## Follow-up: executable construction and staged review
+
+The user approved the proposed improvements on 2026-09-08. Keep the committed city and paired evaluation as baselines. The first implementation connects named parts to exact grids, requires observed stage reviews before refinement, and tests those mechanics on original art.
+
+- [x] Add an editable part source, explicit anchor and visibility constraints, and a native ownership view.
+- [x] Bind stage transitions to the reviewed source and grid. Reject stale reviews and structural drift after block review. Preserve rework decisions.
+- [x] Use the route on a lighthouse, tree, and three-faction encounter; inspect block before authoring later passes.
+- [x] Add original visual lessons with conditional repairs and a separate transfer evaluation. Keep reference pixels private and do not copy them.
+- [x] Run the existing suite with focused regressions, inspect the browser output, record actual preferences and limits, and review the diff.
+
+These tools can enforce declared geometry and review order. They cannot authenticate a reviewer or infer artistic acceptance from numeric diagnostics. A stage review is authoring feedback, not promotion.
+
+
+### Completed executable construction work
+
+`construct.py` now compiles named part masks, parent-relative origins, anchors, paint order and explicit constraints. The report distinguishes attachment distance, visible ownership, protected gaps and support points inside a chosen surface. Hidden paint remains available and counts toward the palette budget. These checks do not recognize anatomy or infer good art.
+
+The new part viewer shows native color, values, actor silhouettes and visible ownership. Selecting a part exposes its world anchors while keeping actual occlusion. Block, planes and material outputs retain the source and bound ancestor reviews. A changed mask, placement, anchor, role, constraint, intent or light returns to block; stale reviews and skipped stages fail validation. Review declarations are not authenticated perception and do not grant promotion.
+
+Original development work used a 16x16 lighthouse, 32x32 wind tree and 96x80 three-faction encounter. Actual inspection rejected the initial lighthouse cap and trunk gap, then two canopy shadow attempts. An independent current-only critique found unsupported skeleton feet and competing diagonal weapons. The encounter returned to block, with a redrawn deck and shorter counterthrust. Its remaining short blade is still difficult to distinguish; the lighthouse shaft remains irregular and some foliage marks remain stepped. All remain drafts.
+
+The [portable examples](../SKILLS/pixel-art-html/examples/part-construction/README.md) reproduce the winning historical lineages, an exact scene export with pan and zoom, and seven original visual lessons. The lessons preserve losing grids, causes, conditional interventions, what to retain and remaining limits. This first set contains seven observed lessons from three studies, not the roughly twenty initially proposed, and does not count them as independent tests. It includes a failed repair, a diagnostic-view change and an explicitly partial repair.
+
+### Separate forward comparison
+
+Two builders received frozen prior/current skill snapshots and the same four fresh briefs: a marsh bird with a tied parcel, a broken stone arch, an owl kitchen timer and a spear encounter on a bridge. Both inherited the active client's model/settings, had a 24-minute allowance, and could make at most one finished repair per case. Reference images, development studies and the other arm were unavailable. The current snapshot tested parts and stage reviews; the later support check, flat-repair guard and lessons were added after this run.
+
+The parent recorded preferences on shuffled labels before opening the mapping. The parent wrote the skill and knew the briefs and agent progress, so blinding was partial. The update was preferred for bird volume/package, owl identity (weak preference), and encounter action. The prior skill was preferred for the clearer broken arch. The update took 1,025.30 seconds; the prior skill took 620.71 seconds. Equal maximum allowance did not produce equal elapsed cost. Token cost was unavailable. One run per arm cannot establish a general effect or reliable win rate.
+
+The updated owl final exposed a real workflow hole: the generic flat patch discarded the editable construction bundle. The skill now routes color repairs through named parts, and the common flat repair compiler rejects constructed exports. Rebuilding the saved five-part owl source preserved exactly the frozen final grid; neither trial arm was changed. The [paired receipt](../SKILLS/pixel-art-html/evals/results/construction-paired-2026-09-08.json) preserves preferences, hashes, costs, snapshot inventory and limitations.
+
+### Verification and retained evidence
+
+`pnpm run check:full` passed 60 tests, including six new construction regressions and all 13 existing Pillow cases. The portable replay built nine stage bundles and checked exact scene-to-construction grid agreement. All eight forward outputs also passed their canonical validators. A later template correction made the background part of the grayscale view and opens large studies at 4x; the affected browser checks passed without repeating unchanged Python tests.
+
+At 1280x720 in the Codex browser, all three final study canvases, all eight trial grids at CSS 1x/2x/4x, and all fourteen lesson grids at CSS 1x/4x matched their embedded cells. The 96x80 encounter export had zero native mismatches and zero display mismatches across the full 5x view at DPR 1. Zoom, fit and faction visibility were exercised. The unchanged scene camera's earlier drag/wheel/keyboard proof remains the pan evidence; an attempted new keyboard check was not captured because the browser adapter did not expose the suggested key-input API. No new pan result is claimed. The corrected values view had zero non-gray cells, including the background. Screenshots were inspected inline; no local screenshot file was returned.
+
+The final local hub is `.local/pipeline-upgrade/demo/construction-lab/index.html`; `release/` is the portable replay, `transfer/` is the anonymous comparison and `owl-provenance-repair/` preserves the same owl pixels with editable parts. Original stages and rejected reviews remain alongside them. The prior city and committed comparison are unchanged. The loopback server on port 8769 was restored in a hidden process after the previous server stopped. Temporary interpreter caches and one incomplete early build remain ignored private scratch; no source cleanup was needed.

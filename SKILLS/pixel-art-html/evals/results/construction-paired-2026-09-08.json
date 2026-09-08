@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-08",
+  "baseline_revision": "42d2b10",
+  "updated_revision": "uncommitted frozen snapshot of executable parts and stage reviews",
+  "protocol": "One paired run, four common original briefs, same inherited client/model settings, 24-minute allowance per arm, at most one finished initial output and one finished repair per case. Construction studies permitted. No reference images, network, image generation, other arm or development examples were available to builders.",
+  "cost": {
+    "prior_seconds": 620.707716,
+    "updated_seconds": 1025.295649,
+    "token_cost": "not available"
+  },
+  "reviewer": "parent author; method labels hidden, briefs and agent progress known; partial blinding",
+  "reviewed_before_mapping_utc": "2026-09-08T15:48:00.555034+00:00",
+  "summary": {
+    "updated_preferences": 3,
+    "prior_preferences": 1,
+    "ties": 0,
+    "note": "Weak preference in owl identity; the prior version has a clearer winding key. One model-reviewed run is not a reliable general effect estimate."
+  },
+  "browser": {
+    "artifacts": 8,
+    "canvases": 24,
+    "mismatched_cells": 0,
+    "method": "CDP getImageData against anonymous canonical grids",
+    "viewport": [
+      1280,
+      720
+    ],
+    "scale_definition": "CSS native and integer enlargement, not physical-device 1x"
+  },
+  "pairs": [
+    {
+      "case": "A",
+      "preferred_label": "A1",
+      "preferred_arm": "updated",
+      "observation": "Both read as long-legged birds carrying a package. A1 has clearer body volume and a compact suspended parcel. A2 has a clear slender neck but a boxy body and thin outline-led construction. A1 is still uneven around the hip; no species claim.",
+      "sides": [
+        {
+          "label": "A1",
+          "arm": "updated",
+          "fingerprint": "0c1e47f29a855e37fad4b34b55e7562ecca3665b15bcfc76cbbdffea8348075c"
+        },
+        {
+          "label": "A2",
+          "arm": "prior",
+          "fingerprint": "b82d1f7cf449208d7aa37c24f025b349468b7e1ad07bfaeb7c5355263e4f0c3b"
+        }
+      ]
+    },
+    {
+      "case": "B",
+      "preferred_label": "B1",
+      "preferred_arm": "prior",
+      "observation": "B1 presents the arch opening and broken upper-right edge with fewer competing marks. B2 has richer stone shading but the cap breaks into spikes and reads as a more intact narrow arch. Both upper curves remain squared at this grid.",
+      "sides": [
+        {
+          "label": "B1",
+          "arm": "prior",
+          "fingerprint": "e36884b77fa2a27c7a71b2b3e60d67a9d354c0adb0f170c90be57d35dfcb87dd"
+        },
+        {
+          "label": "B2",
+          "arm": "updated",
+          "fingerprint": "0c0c9198803a8527c35a48bdf00a502279360e50debba22d34fa383947a3aee7"
+        }
+      ]
+    },
+    {
+      "case": "C",
+      "preferred_label": "C1",
+      "preferred_arm": "updated",
+      "observation": "C1 reads more readily as an owl with a belly clock. C2 separates a cool dial and exposes a side winding key but its angular face also reads cat or robot. C1 winding mechanism is less explicit. Preference is weak, identity over mechanism.",
+      "sides": [
+        {
+          "label": "C1",
+          "arm": "updated",
+          "fingerprint": "371303b84101e85779833b62d08b46ea34dbba2592c2b3cd5ddc9f85c92de27b"
+        },
+        {
+          "label": "C2",
+          "arm": "prior",
+          "fingerprint": "1ac440b74bc0bdea71b10b932d97b2c64142d25c778e65539cca03a03bdaf2ee"
+        }
+      ]
+    },
+    {
+      "case": "D",
+      "preferred_label": "D1",
+      "preferred_arm": "updated",
+      "observation": "D1 gives a clearer leaping creature, braced stance and hand-to-spear relationship. D2 large skin-colored forearm reads as a slab and its creature is less specific; both feet reach the bridge. D1 has noisy armor but stronger action at native scale.",
+      "sides": [
+        {
+          "label": "D1",
+          "arm": "updated",
+          "fingerprint": "5f78b9aeb4daa51d42653c8acfbcc644ca80bb34132659b71ee08cfa31204839"
+        },
+        {
+          "label": "D2",
+          "arm": "prior",
+          "fingerprint": "c35cddbe2cec07dc04617159e22a0d3ae3dee3d57aa18335b929f8fe91d2ebd5"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Partial blinding: parent knew the briefs and agent progress, and authored the skill under test.",
+    "Only one run per arm, without independent replication or human recognition study.",
+    "The updated arm used about 65 percent more elapsed time, despite equal maximum allowance.",
+    "The updated owl final was flattened by the generic repair route. Its visual preference does not establish preserved editable construction.",
+    "After the frozen trial, flat repair was blocked for constructed exports, an inside-support constraint was added, and seven lessons were integrated. These later changes have mechanical and development evidence, not this trial as forward evidence.",
+    "A later replay recovered the owl five-part source with exactly the same final grid; the frozen trial remains unchanged."
+  ],
+  "snapshot_manifest": {
+    "base_revision": "42d2b10",
+    "treatment": "named part construction and staged review; development snapshot before forward-test feedback",
+    "sha256": {
+      "SKILL.md": "3c8ea56fc638e04fbebcad907eed0c4e4e720929c358bd9f47fd0d01b7fa641d",
+      "agents/openai.yaml": "1c7f1d60bc8aec09848e1f652d0194324042ea42ddc524337af077dacc884070",
+      "assets/construction-plan.json": "bfc23080d99c075d2d1d10f288989dfd595511cc53ea0e032e91f960b80fd6b5",
+      "assets/pixel-art-collection-template.html": "71ac8cb6a0577866c593cd2f37fac9f984a17cdf198475ed253a94291babb5c9",
+      "assets/pixel-art-construction-template.html": "ba0fc664654a5d4c43346998bc5369a8211c01ae345e38a61ea65de7660eca7e",
+      "assets/pixel-art-project-hub-template.html": "dee90bd1a97e95f2916d3e467cd64e76aa4edf48dd43b71dc7ad72fbfd1a30b1",
+      "assets/pixel-art-scene-template.html": "408e31a96199efecd06677b09b311e83140bac8e452de24a42c4f36c2663dfa7",
+      "assets/pixel-art-study-template.html": "a1695343a42262410e87957ed59557a79f7ebe5e3e16b3a1adf4e27c919834d1",
+      "assets/pixel-art-template.html": "c7bd91c2107477bb05922eab91e4094d2c2b19ecb080c70e8c925ef794797c47",
+      "assets/pixel-patch.json": "20770d6e565486860c771ec6c8457aad070ad1f6b602ae69336d796df0a88f9c",
+      "assets/visual-review-input.json": "fe8fd1a1088d084eb8bcfef9af634f718f1f71ded17cc84e4c14a31435f3be39",
+      "assets/visual-review-template.md": "34ae38bfc0f5f3fb8815911fb1c93a1afed7a794c0c35501e87c657a822b2c91",
+      "evals/evals.json": "8675c88ce36fa7b7e2a2548ecdbe160828437fa90afeca38668246849d46df57",
+      "evals/trigger_queries.json": "b327655160c8ea7a340b631637caa486062add15b958cba3031737ef3a3e2d6e",
+      "references/artifact-schema.md": "6ba011bbaa3ff19aaa4c9db1ba7fb0ce6637f391f45d632a167af23aad134598",
+      "references/artistic-construction.md": "779a1ba59322ba5dd6d98a18c706e54fdd754314c2bf8c0e8775a958b58abeea",
+      "references/command-reference.md": "bc9da7fdc25618233e28ff4c7bf342919674904231c173853cbadbb314309cf4",
+      "references/construction-workflow.md": "17f6008b5ef10eec38d44f3612b0a1c633bd1a270be211dc597aa88904aa8d30",
+      "references/craft-workflow.md": "064fb82c00031f9fe2dd0a32fc2f2866b72b1b5db5653e3ad890ef3de1aad2d1",
+      "references/executable-construction.md": "afce19585e5a5302533ec187a2410f6a226a21df6071a5d31910f2e0036723bb",
+      "references/image-source-brief.md": "b3c4da64b13c2abf5bdd72f845e68960462ec0e4c8a14ba41d8f25041ea59dbe",
+      "references/project-library.md": "151bcaa6e23864238d6e9047840dd0d3beffa5a3db265ad72d43720b0fdbaa63",
+      "references/quality-contract.md": "2885b6e295ff6c546700ee81a3c4f5823720dfd15b919d9ebc874e0c91d69cd3",
+      "references/reference-library.md": "c9dd1856f9a490892ee2d50fbb2f8ea513062c71b16069898897421228f2ecca",
+      "references/scene-composition.md": "67f55f6e52945814437d7cf3a852dcc129c4787b21c550137d1d6283d51f634d",
+      "references/source-recovery.md": "7b0086efeeb1e54bcccb183bdc67685c71dfa20b2aee7cdc16feb161529ed714",
+      "references/subject-recipes.md": "3bc585b1fd78d6db69e0e0b209eb0240b7241bfee2026f16f965bb0d1576c064",
+      "references/techniques.json": "f286285dcc8b4231758aca44f7f4d50e140a63569c2bae4c963f58c28e69ecbc",
+      "references/visual-review.md": "fc656591830224bdc41137087fbba829fabc0089e60cb92827083a31e39c9ea8",
+      "scripts/benchmark_small_grids.py": "be1aab393c845f6eeba2b4f0c73185388fd75b01bef99975c0b15cdd2cf8a0e0",
+      "scripts/build_pixel_art.py": "b9d4ce7acb19369ecc63d96f76296da70fc05f1b2c40d93eb8d6f451a235633d",
+      "scripts/compose_scene.py": "fe7d01621f797b4e98246aa2c222e26a9e7a790f5ffb8dcab55cf2f57065fafa",
+      "scripts/construct.py": "2992cc8993925044239b842abf3f10b4ab62ac169f1a791748d0f786ac5bcacd",
+      "scripts/pixel_lab.py": "e21d619811cfeb0610d0ff68130a92ecd6c583e3f4ffe6f1710063e2d5bfc611",
+      "scripts/reference_library.py": "7ebde8c6cf241c3766f3a06189afd6a20e61f9e0ce7237e603982139be333948",
+      "scripts/test_build_pixel_art.py": "e7b0b2b55ccdd3b56fed4ab6d2bd824b9ccb74b1ec81f9642eb61f5263afc2d4",
+      "scripts/fixtures/beacon.json": "0e0a3c620e2b3efa2515724a26245e52de33aa0ea41af808e1b9d1bb37cc668e",
+      "references/subjects/characters-creatures.md": "69106695147fc8fd71343c231173281fa41fe05495c722e65db910e5f9f9a94e",
+      "references/subjects/environments-tiles.md": "01b37ad67895ad22d541e01fccd0e4cfe5dbee2a09a7e47ad02298110f682f33",
+      "references/subjects/props-ui.md": "93f9f9748404099789e9080e175d09a2c40c975c30a2a035183d8403fdfaba6e",
+      "references/subjects/vehicles-architecture.md": "4a6d84a07fa89ae701b035622e66911fdc9bb40951771c8d9d59013d9238f17d",
+      "examples/city-clash/build_city.py": "b768486ee1e21f938ff072805789fe1e531880ec79ff1b2d12b4c1bba2fbf6f2",
+      "examples/city-clash/preview.png": "287b933bf4f1ff1a50c23bc2d57c365f31d42071497546c07e01746f799894ec",
+      "examples/city-clash/README.md": "821d8d3917f83441795960f4fc2d9733c90c677710fa7692da8143f0124c34e5",
+      "examples/construction-repair/blind-comparison.png": "f7afb34a72d2c20c89541a97db134940741c849224bb572257097a0db53f21f2",
+      "examples/construction-repair/comparison.json": "d3919cd991d4e21b4a13d9312adcb4b350e34ee0f0d8788a907de2f0d58d1482",
+      "examples/construction-repair/mech-after.json": "ea7a5b3a2295a7414add3f8bc26630321bf72f0c057728769701ca1ae206e0c1",
+      "examples/construction-repair/mech-before.json": "55d3844a68e43f574419a9bda06851e429879c1ac3e62903062553810f94be1a",
+      "examples/construction-repair/oak-after.json": "af368341b7dcc65efae0d872b8d56d1c0b8a0f0c144010d2ef59593c4021afb1",
+      "examples/construction-repair/oak-before.json": "1bdf7f015203d93575347064b09833ad3f9f3db7f221abeec5113872bd8cccc4",
+      "examples/construction-repair/portrait-after.json": "04f9adb7d204e47ba00ef0db33bfb2da2ec33c35be07e8c7b60b0b3351a9f788",
+      "examples/construction-repair/portrait-before.json": "a4e3c694e6370e6534fd6139f1eac2ce3d31eb3380a5a8c5491f097367f9d58c",
+      "examples/construction-repair/README.md": "89b3ffc36943af6400ca5233007e2c549346d8735c7aa54b9643f90394b1cf5a",
+      "examples/cursed-salvage/README.md": "bb175f75aca43556491b5388f6f27447f72760cbffec412d7252c9513ac7ee33",
+      "examples/cursed-salvage/visual-review.md": "8a435f14f9ce4bdf95d36d029d25cebdc634b57fafab17f3d9f4ee0d3a459959",
+      "examples/part-construction/create_sources.py": "62c16cdd235f06abd6c156905a000b94f65d067266589797933fcc601174fd6e",
+      "examples/small-grid-repair/README.md": "9d4649c90780ec79e8d214843b5e841b95c8a5f99e32bd972c06486cd8bb36ce",
+      "examples/small-grid-repair/visual-review.md": "b315ba02c8efaf598aa55388a63080461231be1f8dc8f1d40d8ad639d509f14d",
+      "examples/small-grid-repair/baselines/16x16.json": "bb85b3d7725daab3a3e9709ef3ece7b09b3ca3a6b15a8c8adb13fa3662de5fb3",
+      "examples/small-grid-repair/baselines/8x8.json": "46eed2e629dd254a5002fc8222142a3f4ded5846ed536ff13fe1f672b9e304ae",
+      "examples/small-grid-repair/directions/a-bound-flask.json": "86830775b8bd896390c81d7b21cdc20813918cd6144e5c6588a48f295fd0c2fa",
+      "examples/small-grid-repair/directions/b-signal-vial.json": "c9a87b87bd3c0c625952ae5c5853c9d23b7a7fce706b968f95e385fde61141bf",
+      "examples/small-grid-repair/directions/c-heart-reliquary.json": "205604807577b4d6b1570eb9a96fc04d66f2b011612e723a14e0e110d6b95d3b",
+      "examples/small-grid-repair/previews/authored-16.png": "b187e8f20242d80cf3d6ba2052635ca636dd40caa4dcf145278752730c8dd292",
+      "examples/small-grid-repair/previews/authored-8.png": "795af1f9d2b17d30415d1e5617f09aeaed4d6bd3c960a8b74f87521f6741f7a8",
+      "examples/small-grid-repair/previews/automatic-16.png": "17e0a7fcb34b0914278d9726195f302798c06fe3db07f6c6e8474c8c576e51b1",
+      "examples/small-grid-repair/previews/automatic-8.png": "259d6dd65d0131076b9611d95ef79c5347c54015081d22767d1b92e4aee403fb",
+      "examples/small-grid-repair/previews/direction-a.png": "d3851c51e3e532b7bc24c4d51e432356f864efaef542bc83bb13e0fac7998c44",
+      "examples/small-grid-repair/previews/direction-b.png": "11ad0c24699ad3cd52c286675a9edb64d537d3e2b9bcccf9f362bd2ff175243b",
+      "examples/small-grid-repair/previews/direction-c.png": "676167b30aa92c6325552efa4dcc7ba91ff88c97e0be6d5ef937f540a53be6a6",
+      "examples/small-grid-repair/repairs/potion-16.json": "577737e2ba409822a08d213bd941a4247200d54c54521001549dbf51cba5af23",
+      "examples/small-grid-repair/repairs/potion-8.json": "ae50547a87530bc2bc8a3d2a7366a06255b5401d13ed5b084b32be5e99c1ae44",
+      "examples/small-grid-repair/transfer/baselines/character-8.json": "6a6b35589ffd924b7214d9f2b9658c6e732dd339dfdba295467dca72f88a2cd9",
+      "examples/small-grid-repair/transfer/baselines/ship-8.json": "18e7ad09390fbe1b769ee7f44bc2c6b95a0d216dd8d59095306e950586db6ca3",
+      "examples/small-grid-repair/transfer/previews/character-authored.png": "d2053515a1e1ac7a0ca2e79bbbdc4f370a51c27453ab993979829dc4e2746565",
+      "examples/small-grid-repair/transfer/previews/character-automatic.png": "a6d5a0ec48c99a7786d403132bc7784fdcdb77e8c99bfbb0f7cfe1abff6c1963",
+      "examples/small-grid-repair/transfer/previews/character-source.png": "e653236c2084b945d77eeb8a9bbd8cc3a6a7341e65897543498608f917aa7ea2",
+      "examples/small-grid-repair/transfer/previews/ship-authored.png": "6ca766135feb416769e41637e5c1a183c140b509b17c21e4e8660e1e683aa2c7",
+      "examples/small-grid-repair/transfer/previews/ship-automatic.png": "9fdfd9b608493cd38c419b071697c3a2c68bd8e7171b7ef2851acd789244249f",
+      "examples/small-grid-repair/transfer/previews/ship-source.png": "07a4e3b3fff10ccf427c9812584bbefa347d29205fc9a859683f21dcc88845e2",
+      "examples/small-grid-repair/transfer/repairs/character-8.json": "7ec4d8b9bf22e4d8359b55c822d4d15b312413e471c215ce6c6837d439f07be4",
+      "examples/small-grid-repair/transfer/repairs/ship-8.json": "a4caa4f2b1a47f8d15b87bddc43ded247aabb0e1cc0affbdc26c0825d084d88e",
+      "examples/small-grid-repair/transfer/sources/character-32.json": "6fde12d5c64702df5a8423e06fc3e905326253dea051ff64a3913c98971543c0",
+      "examples/small-grid-repair/transfer/sources/ship-32.json": "4b97df381f7fc5dda9b42cd4296ac42815dc70ca7e2c6289a99113a60bfb39df",
+      "examples/cursed-salvage/previews/crystal.png": "15b695e4fd7982e088691c0156772d4871049e9caf26c39c2200cd937fbd18d7",
+      "examples/cursed-salvage/previews/key.png": "17077018b3a42fa9b1828cf5f1da63dd53c53d757696554cc566d4de425cafdb",
+      "examples/cursed-salvage/previews/potion.png": "73d79163f4a6544a9b68dbbc68cfd30856aa342c516fd09e8f0e776da0a2ca98",
+      "examples/cursed-salvage/previews/shield.png": "6614bc87984e26356ed6bc735331314701d4843816590c2d7c7835b4fbffd56e",
+      "examples/cursed-salvage/specs/crystal.json": "16f5438aaef4955f6d84b6e5d28150f71e28d46502ebd5f359d8b0137994afa0",
+      "examples/cursed-salvage/specs/key.json": "3073684b346452347a44e03cf3ecb1f459916a34717b38d767b6aa1c66abfe99",
+      "examples/cursed-salvage/specs/potion.json": "3150eb142030969d1822beb94c884f0f3f9dcfe7d0b14a2a4886183e7839df65",
+      "examples/cursed-salvage/specs/shield.json": "666f5379610aabc995234dfc8132efdaf6efd5cbabbee09d421cafdfaab6a358",
+      "evals/fixtures/character-source.ppm": "cf9b096cbe2df367d154ab9e26c055817a47df1df07823f5f15c873889bb4394",
+      "evals/results/paired-2026-09-08.json": "c74bf807e73f3304e7cee8438b148e87b0b07e360790b867d63f559e38aa703f"
+    }
+  }
+}

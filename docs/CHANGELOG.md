@@ -2,6 +2,12 @@
 
 ## 2026-09-08
 
+- Added editable construction parts, parent translation, mask ownership, explicit attachment/support constraints, and a native diagnostic viewer.
+- Bound block-to-planes-to-material transitions to source and grid reviews; stale geometry returns to block. Flat repairs now reject constructed exports to preserve named parts.
+- Added three original recorded studies and seven failure/repair lessons, including a rejected patch and an explicitly partial weapon repair.
+- Completed a separate four-case paired trial: the parent preferred the update in three cases and the prior skill in one. The update took 17m05s versus 10m21s within equal 24-minute allowances. One partially blinded run is not general artistic proof.
+
+
 - Added an exact scene compositor and a standalone canvas with pointer/keyboard pan, anchored zoom, native physical-pixel scaling, group visibility, and subject silhouettes.
 - Added an original city encounter with 12 actors, 38 native masters, 27 colors, and reproducible source construction.
 - Completed one six-case paired comparison of the prior and updated skill. Four case preferences favored the update and two favored the prior workflow; this is a single model-reviewed run, not general proof of artistic superiority.
