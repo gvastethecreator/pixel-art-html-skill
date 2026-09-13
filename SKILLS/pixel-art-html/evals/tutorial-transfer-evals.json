@@ -1,0 +1,156 @@
+{
+  "schema": "pixel-art-tutorial-evaluation/v1",
+  "status": "not-run",
+  "purpose": "Art transfer study; not the unit or browser smoke suite.",
+  "arms": {
+    "baseline": "Observed main with existing techniques and tools; no new bridge",
+    "candidate": "Same baseline plus this additive extension"
+  },
+  "controls": [
+    "Same model/version and runtime tools",
+    "Same brief, native dimensions, palette budget and allowed context",
+    "Matched time/token budget and tool permissions",
+    "Keep every attempt, including failures",
+    "Randomize A/B labels for reviewers; record the actual randomization",
+    "Use matched seeds when the runtime supports them; otherwise explicitly record that limitation"
+  ],
+  "review": {
+    "required": [
+      "native 1x",
+      "2x/4x diagnostic",
+      "actual background",
+      "grayscale and silhouette where appropriate"
+    ],
+    "record": [
+      "interpretation before seeing brief",
+      "observed failure region",
+      "constraint success or failure",
+      "new defect caused by repair",
+      "uncertainty",
+      "reviewer role and independence"
+    ],
+    "prohibited_claims": [
+      "Singleton count is artistic quality",
+      "Builder review is independent review",
+      "A fixture preference proves improved agent output",
+      "Blank receipts prove observed construction"
+    ],
+    "decision": "Describe absolute task success before paired preference. No automatic promotion."
+  },
+  "cases": [
+    {
+      "id": "holdout-conifer",
+      "brief": "A wind-bent coastal conifer, not a round deciduous tree",
+      "grid": [
+        32,
+        48
+      ],
+      "palette_budget": 8,
+      "projection": "side",
+      "candidate_lesson": "canopy-overlap-repair",
+      "acceptance_question": "Crown species, connected branches and coherent light; reject disconnected topiary balls.",
+      "results": null,
+      "review_status": "not-reviewed"
+    },
+    {
+      "id": "holdout-cenital-shrine",
+      "brief": "Small abandoned stone shrine seen strictly from above",
+      "grid": [
+        48,
+        48
+      ],
+      "palette_budget": 8,
+      "projection": "top-down-orthographic",
+      "candidate_lesson": "projection-name-preflight",
+      "acceptance_question": "No front wall inserted to make the building recognizable; overhead footprint remains legible.",
+      "results": null,
+      "review_status": "not-reviewed"
+    },
+    {
+      "id": "holdout-marsh-corners",
+      "brief": "Mud and reed terrain with one inlet, one peninsula and an inner corner",
+      "grid": [
+        16,
+        16
+      ],
+      "palette_budget": 8,
+      "projection": "top-down-orthographic",
+      "candidate_lesson": "tile-neighborhood-matrix",
+      "acceptance_question": "Mixed neighbors and concave/convex corners agree, not merely opposite borders.",
+      "results": null,
+      "review_status": "not-reviewed"
+    },
+    {
+      "id": "holdout-dark-sentry",
+      "brief": "A dark sentry over three parts of a dim industrial background",
+      "grid": [
+        32,
+        48
+      ],
+      "palette_budget": 12,
+      "projection": "top-down-oblique",
+      "candidate_lesson": "sprite-background-trial",
+      "acceptance_question": "Head, support foot and equipment remain distinguishable without making the whole world brighter.",
+      "results": null,
+      "review_status": "not-reviewed"
+    },
+    {
+      "id": "holdout-rusted-sign",
+      "brief": "A rusted metal sign and matte cloth banner sharing palette roles",
+      "grid": [
+        32,
+        32
+      ],
+      "palette_budget": 8,
+      "projection": "side",
+      "candidate_lesson": "texture-subtraction-test",
+      "acceptance_question": "Material remains distinct after nonfunctional flecks are removed; not simply the version with fewer pixels.",
+      "results": null,
+      "review_status": "not-reviewed"
+    },
+    {
+      "id": "holdout-asymmetric-courier",
+      "brief": "Courier with a left shoulder bag and right-hand lantern in eight static orientations",
+      "grid": [
+        32,
+        48
+      ],
+      "palette_budget": 12,
+      "projection": "top-down-oblique",
+      "candidate_lesson": "directional-identity-proof",
+      "acceptance_question": "Bag/lantern retain body-side identity and readable overlaps; timing and atlas assembly remain out of scope.",
+      "results": null,
+      "review_status": "not-reviewed"
+    },
+    {
+      "id": "holdout-water-ramp",
+      "brief": "Transparent-looking shallow pool under a fixed 8-color final palette",
+      "grid": [
+        32,
+        32
+      ],
+      "palette_budget": 8,
+      "projection": "top-down-orthographic",
+      "candidate_lesson": "palette-safe-transparency",
+      "acceptance_question": "The water reads without introducing unlisted final colors; do not treat alpha itself as prohibited.",
+      "results": null,
+      "review_status": "not-reviewed"
+    },
+    {
+      "id": "holdout-night-hills",
+      "brief": "Night hills behind an interactive cabin, including a lit distant tower",
+      "grid": [
+        160,
+        96
+      ],
+      "palette_budget": 12,
+      "projection": "side",
+      "candidate_lesson": "distance-detail-allocation",
+      "acceptance_question": "Depth remains coherent while allowing distant emissive detail; do not impose a universal dark-to-light depth order.",
+      "results": null,
+      "review_status": "not-reviewed"
+    }
+  ],
+  "visibility": "Public development briefs. Legacy holdout-* IDs are retained for compatibility, not a claim of hidden evaluation.",
+  "results": null
+}

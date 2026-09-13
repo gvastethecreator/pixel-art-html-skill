@@ -49,7 +49,7 @@
   ],
   "art_direction": {
     "use": "prop",
-    "light": "upper left; lantern interiors emit warm light",
+    "light": "upper left; one external light shared by foliage and bark",
     "construction": "Separate three unequal crown volumes through overlap and contour inlets, on a bent trunk."
   }
 }

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "status": "not-run",
+  "results": null,
+  "baseline_revision": "72f22179d2a10c2a1e5bdd49e88f65ea28481d56",
+  "purpose": "Artistic calibration and transfer protocol, separate from interpretation unit tests.",
+  "reference_cases": "tutorial-transfer-evals.json",
+  "calibration": [
+    {
+      "id": "identity-prop",
+      "status": "not-authored",
+      "grid": [
+        16,
+        24
+      ],
+      "palette_budget": 8,
+      "brief": "Original weathered signal flask: offset protective cage and hooked cork distinguish it from a potion. Preserve those relationships while testing glass and metal under one external light.",
+      "preserve": [
+        "Offset cage encloses rather than replaces the flask",
+        "Hooked cork remains readable"
+      ],
+      "failure_limit": "A cleaner outline is not successful if the flask reads as a lantern or generic bottle."
+    },
+    {
+      "id": "braced-sentry",
+      "status": "not-authored",
+      "grid": [
+        32,
+        48
+      ],
+      "palette_budget": 12,
+      "brief": "Original road sentry braced against a gust. Establish support, torso lean, and spear grip before dressing the dummy. No borrowed character silhouette.",
+      "preserve": [
+        "Unequal shoulder masses",
+        "Continuous hand-to-spear ownership"
+      ],
+      "failure_limit": "Do not make the pose symmetrical to remove overlaps; judge gesture before finish."
+    },
+    {
+      "id": "cargo-module",
+      "status": "not-authored",
+      "grid": [
+        48,
+        40
+      ],
+      "palette_budget": 10,
+      "brief": "Original wheeled cargo module with a low closed cab, offset load bed and visible two-point mounts. Establish one coherent volume before expanding a small compatible family.",
+      "preserve": [
+        "Cab belongs to chassis rather than a held object",
+        "Load is supported rather than read as a head"
+      ],
+      "failure_limit": "An open frame may clarify support while looking too fragile. Record both effects."
+    }
+  ],
+  "pilot": {
+    "arms": [
+      "A: pinned baseline",
+      "B: frozen prior extension",
+      "C: these interpretation fixes at a recorded commit"
+    ],
+    "cases": 8,
+    "replicates_per_arm": 2,
+    "planned_outputs": 48,
+    "completed_outputs": 0,
+    "results": null,
+    "requirements": [
+      "Record exact commits, model version, tools and budgets for all arms",
+      "Separate sessions without other-arm outputs",
+      "Record actual reference access and all failed attempts",
+      "Judge actual native read before revealing brief; evaluate requirements before preference",
+      "Permit tie, uncertainty and both fail; retain per-family regressions",
+      "Human owner review remains distinct from builder or independent model review",
+      "These visible cases are not a hidden holdout; later verification needs new briefs",
+      "No automatic promotion or beauty score; two repetitions are an exploratory pilot"
+    ]
+  }
+}
