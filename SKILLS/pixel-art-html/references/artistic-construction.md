@@ -16,7 +16,7 @@ The sentence must predict geometry. “Detailed,” “professional,” “beaut
 | Form clusters | Turn surfaces, show overlaps, and distinguish material. | Horizontal bands, equal highlight islands, or unrelated triangular facets. |
 | Edge pixels | Control a contour step, glint, expression, notch, or transition. | Small marks conceal unresolved form or make every boundary equally loud. |
 
-Move between these scales as needed. A material problem may require rebuilding a main mass. A face problem may require moving several connected features. Finishing is not a promise to keep every earlier shape.
+Plan these scales together before drawing. During single-pass construction, a failure that requires rebuilding an earlier mass is a limitation to record. Rebuilding is available for an explicit bounded repair request.
 
 Author broad geometry with compact helpers when useful, then take ownership of its native contour and internal clusters. A polygon rasterizer chooses a staircase from coordinates; it does not decide whether that staircase describes a cheek, roof, leaf group, or metal bevel.
 
@@ -69,7 +69,7 @@ Record four concrete statements:
 3. **Intervention:** the region and operation to change; what must stay intact.
 4. **Expected change:** what should become clearer at native size.
 
-Keep the same grid and palette budget during the comparison unless the brief explicitly changes. Preserve the earlier draft. Use a local patch for a local error; use a same-grid authored repair when the cause is structural. If two local attempts leave the wrong read intact, change the construction hypothesis rather than making the same detail pass again.
+Keep the same grid and palette budget during the comparison unless the brief explicitly changes. Preserve the earlier draft. Use a local patch for a local error; use a same-grid authored repair when the cause is structural. Use this comparison for one explicitly requested intervention. If the wrong read remains, deliver that limitation without another attempt.
 
 ## Judge improvement on the visible problem
 
@@ -82,7 +82,7 @@ Use this order for a serious critique:
 3. **Material and light:** identify what distinguishes surfaces beyond their hue. Expose a highlight that does not belong to a surface, an opaque glass wall, or texture that ignores a plane.
 4. **Design and finish:** identify accidental repetition, uniform edge emphasis, ambiguous focal hierarchy, or decorative pixels doing no useful work.
 
-For each major defect, record the region, visible evidence, cause, intended intervention, and a constraint the intervention could damage. Distinguish an observable conflict from a style preference. Prioritize at most three major defects in an iteration so their causes remain testable. Do not replace an unsuccessful diagnosis with a long list of minor polish requests.
+For each major defect, record the region, visible evidence, cause, intended intervention, and a constraint the intervention could damage. Distinguish an observable conflict from a style preference. For an explicit repair, select one bounded relationship; record other defects without another intervention. Do not replace an unsuccessful diagnosis with a long list of minor polish requests.
 
 Compare anonymous before/after views with the same background and integer scale. Ask what each depicts before disclosing the intended design. A difference in the file, additional texture, or a larger color count is not a win.
 

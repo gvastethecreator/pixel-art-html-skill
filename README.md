@@ -13,179 +13,110 @@
   <a href="LICENSE"><img alt="MIT license" src="https://shieldcn.dev/github/license/gvastethecreator/pixel-art-html-skill.svg?variant=secondary&size=xs" /></a>
 </p>
 
-> Codex skill for creating exact-grid pixel art and self-contained HTML artifact libraries without calling a model API.
+# Pixel Art HTML
 
-Pixel Art HTML connects reference study to deliberate pixel construction. Retrieve a relevant technique, plan masses and overlaps, build silhouette and value, then repair visible problems at exact coordinates. The local compiler exports editable JSON, PNG, and standalone HTML with review evidence tied to the final grid.
+Create exact-grid pixel art up to 512×512, including rectangular masters, with editable JSON, PNG, and standalone HTML proofs. The skill uses local deterministic tools; the compiler does not call a model API.
 
-[Project site](https://gvastethecreator.github.io/pixel-art-html-skill/) · [Skill workflow](./SKILLS/pixel-art-html/SKILL.md) · [Contributing](./CONTRIBUTING.md) · [Sponsor](https://github.com/sponsors/gvastethecreator)
+The default workflow is one pass: choose one direction, construct and inspect each stage once, then export and deliver with the observed limits. Alternatives require an explicit request. A requested artistic repair is one bounded intervention. A failed stage remains incomplete.
 
-The [executable construction studies](SKILLS/pixel-art-html/examples/part-construction/README.md) add named editable parts, masks and anchors, observed stage reviews, seven original failure/repair lessons, and a reproducible encounter canvas with pan and zoom. These controls preserve construction evidence; they do not automatically judge artistic quality.
-
-## Shipped examples
-
-These are the existing skill fixtures. They are distinct from the new original construction exercises.
-
-The new [construction-repair examples](SKILLS/pixel-art-html/examples/construction-repair/README.md) contain three original before/after cases with editable grids, independent criticism, and remaining limitations. They teach the repair process without presenting every preferred draft as finished art.
-
-| Cursed potion | Hook key |
-| --- | --- |
-| ![Cursed red potion rendered on its exact pixel grid](docs/assets/examples/cursed-potion.png) | ![Angular gold hook key rendered on its exact pixel grid](docs/assets/examples/hook-key.png) |
-| **Automatic 16×16 recovery** | **Authored 16×16 repair** |
-| ![Automatic small-grid potion recovery](docs/assets/examples/automatic-16.png) | ![Authored small-grid potion repair with a clearer silhouette](docs/assets/examples/authored-16.png) |
-
-- Build single images or deliberate multi-resolution sets from 8x8 through 128x128.
-- Compose native masters into a larger world with exact depth order and a standalone canvas for pan, anchored zoom, group visibility, and actor silhouette proof. The [original city scene](SKILLS/pixel-art-html/examples/city-clash/README.md) includes a reproducible builder.
-- Retrieve 18 construction techniques with source links across 62 SLYNYRD Pixelblog chapters, without requiring a local corpus.
-- Index local text, images, GIFs, and videos; recover gallery captions, collapse byte duplicates, and create sampled reference boards with provenance.
-- Inspect coordinate regions and cluster locations, render labeled comparison loupes, then apply fingerprinted patches with expected colors, protected regions, and a palette budget.
-- Classify exact-grid, pseudo-pixel, and painterly sources before conversion, then record the detector, confidence, inferred lattice, and applied reconstruction in canonical metadata.
-- Convert locally with Pillow using target-aware structure/color packing while enforcing exact dimensions and palette limits.
-- Repair losing 8x8/16x16 drafts through a declarative authored spec that preserves the exact baseline, required silhouette/identity/subtraction decisions, changed-cell evidence, and blind before/after proof.
-- Reuse exact cluster motifs with flips and palette maps instead of scattering one-off pixels.
-- Author only fixture or draft output; promote to representative or production-candidate only through a reviewer-bound exact-grid fingerprint.
-- Compile exactly three same-grid directions into a separate anonymous board for rejected or direction-sensitive quality work.
-- Surface bounds, cluster, singleton, value-span, and boundary-contrast risks without pretending to score subjective quality.
-- Review every artifact at native 1x, 2x, 4x, flat silhouette, and grayscale value inside the standalone proof workbench.
-- Review tile/texture intent in an automatic 3x repetition proof, and group same-size icons or variants into named asset packs.
-- Validate PNG dimensions and every nearest-neighbor RGBA cell against the canonical JSON grid.
-- Keep ImageGen optional and separate from deterministic pixel processing.
-- Produce standalone proof pages with no external runtime or network requests.
-- Maintain `pixel-art/YYYY/MM/NNN-slug/` iterations and a generated project hub.
+[Project site](https://gvastethecreator.github.io/pixel-art-html-skill/) · [Skill workflow](SKILLS/pixel-art-html/SKILL.md) · [Contributing](CONTRIBUTING.md)
 
 ## Install
-
-Install with the Skills CLI:
 
 ```powershell
 npx skills add gvastethecreator/pixel-art-html-skill --skill pixel-art-html
 ```
 
-Or clone the repository and install `SKILLS/pixel-art-html` through your Codex skill workflow.
+You can also clone this repository and install `SKILLS/pixel-art-html` through your client's skill workflow. Scripts need Python 3.11 or newer. Image conversion and reference boards need Pillow 12.3.0; exact-grid authoring and validation use the standard library.
 
-## Quick Start
+## Start a piece
 
-Retrieve a construction method before authoring:
+Give the agent the subject, action, dimensions, palette budget, camera, and review background. It follows the [skill workflow](SKILLS/pixel-art-html/SKILL.md), chooses a direction, and preserves up to two identity relationships.
 
-```powershell
-python .\SKILLS\pixel-art-html\scripts\reference_library.py techniques "tree foliage volume"
-```
-
-Local reference setup: [Reference library](./SKILLS/pixel-art-html/references/reference-library.md). Planning and controlled repairs: [Construction workflow](./SKILLS/pixel-art-html/references/construction-workflow.md). The package contains original synthesis and source attribution; the user's reference media stay local. Demonstrations and mechanical checks do not establish artistic superiority across models.
-
-For recognizable but flat or generic art, use [Artistic construction](./SKILLS/pixel-art-html/references/artistic-construction.md): give clusters a surface, solve shared axes, distinguish cargo from a body, and compare a specific construction change at the same grid and palette budget.
-
-Create a managed artifact from a compact scene spec:
+For direct CLI use, run these commands from the repository root. A topic search retrieves construction guidance:
 
 ```powershell
-python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py from-spec .\scene.json --project-root . --slug night-beacon
+python ./SKILLS/pixel-art-html/scripts/reference_library.py techniques "tree foliage volume"
 ```
 
-Compare three draft directions without titles or provenance:
+For a defect report, use the interpreter so negated or uncertain symptoms do not become repair instructions:
 
 ```powershell
-python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py study .\a.json .\b.json .\c.json --output .\direction-study
+python ./SKILLS/pixel-art-html/scripts/tutorial_bridge.py diagnose "no tiene ruido pero la pose es rígida" --subject character --stage block
 ```
 
-Open `direction-study/blind.html` before the named overview.
+Use the [structured input contract](SKILLS/pixel-art-html/references/interpretation-contract.md) when you need to record observations, exclusions, and preservation requirements. A retrieved method is a candidate intervention, not proof of a defect.
 
-Convert an image into the recommended resolution ladder:
+Create a spec using the [artifact schema](SKILLS/pixel-art-html/references/artifact-schema.md), then export it:
 
 ```powershell
-uv run --with pillow==12.3.0 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py from-image .\source.png --project-root . --slug character-set --sizes all
+python ./SKILLS/pixel-art-html/scripts/build_pixel_art.py from-spec ./scene.json --project-root . --slug night-beacon
 ```
 
-For very small runtime grids, request them explicitly and treat every result as a repair draft:
+Managed outputs live under `pixel-art/YYYY/MM/NNN-slug/`; `pixel-art/index.html` links the project library. Use `--output <directory>` for a standalone destination. Multipart assets use [named construction parts](SKILLS/pixel-art-html/references/executable-construction.md), which preserve masks, anchors, and stage reviews.
+
+Inspect the final HTML at native 1×, 2×, and 4×, with silhouette and value views. Validate the exact export and inspect its craft-risk report:
 
 ```powershell
-uv run --with pillow==12.3.0 python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py from-image .\source.png --output .\small-grid-drafts --sizes 8,16,24,32 --colors 8 --reconstruction auto
+python ./SKILLS/pixel-art-html/scripts/build_pixel_art.py validate ./output
+python ./SKILLS/pixel-art-html/scripts/build_pixel_art.py critique ./output
 ```
 
-The proof page shows the source class, detection confidence, inferred source lattice, reconstruction route, and a toggleable recovered-lattice overlay. `auto` preserves an exact matching lattice with nearest-neighbor sampling and otherwise uses two-stage target packing. It does not turn an 8x8 draft into authored art; repair silhouette and identity cues per size.
+Structural checks prove file and pixel consistency. They do not establish artistic quality. Keep the result at `draft` until the [review and promotion contract](SKILLS/pixel-art-html/references/visual-review.md) is satisfied. Final inspection records problems without starting another artistic repair loop.
 
-Turn one generated draft into a provenance-preserving authored repair:
+## Choose a specialized route
 
-```powershell
-python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py repair .\draft\pixel-art.json .\repair-spec.json --output .\authored-repair
-```
+| Need | Guide |
+|---|---|
+| Convert a reference image | [Source brief](SKILLS/pixel-art-html/references/image-source-brief.md) and [small-grid recovery](SKILLS/pixel-art-html/references/source-recovery.md) |
+| Repair a requested relationship | [Construction workflow](SKILLS/pixel-art-html/references/construction-workflow.md) and [artistic construction](SKILLS/pixel-art-html/references/artistic-construction.md) |
+| Compare explicitly requested alternatives | [Direction study](SKILLS/pixel-art-html/references/visual-review.md#direction-study); `study` requires three different same-grid drafts |
+| Compose native masters into a scene | [Scene composition](SKILLS/pixel-art-html/references/scene-composition.md) |
+| Build a resolution set, asset pack, or tile proof | [Commands and layouts](SKILLS/pixel-art-html/references/command-reference.md) |
+| Search local text, images, GIFs, or videos | [Reference library](SKILLS/pixel-art-html/references/reference-library.md) |
+| Select subject-specific construction advice | [Subject routing](SKILLS/pixel-art-html/references/subject-recipes.md) |
 
-The repair spec is a normal exact-grid spec plus `repair_decisions.silhouette`, `identity_cue`, and `subtraction`. No-op or dimension-changing repairs are rejected.
+Asset packs include a compact showcase with integer zoom, color/value/silhouette views, background controls, and links to each exact proof and export. Large native previews scroll without being reduced below 1×.
 
-Both commands regenerate `pixel-art/index.html`, which navigates every managed iteration in the project. Use `--output <directory>` when an unindexed standalone destination is preferable.
+All proof pages are self-contained and make no runtime network requests. ImageGen is optional source generation, separate from exact-grid processing. Reference media, full articles, and private indexes stay local; the package contains original synthesis and source attribution.
 
-At artifact closeout, run the structural validator and craft-risk report:
+## Inspect the examples
 
-```powershell
-python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py validate .\output
-python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py critique .\output
-```
+Examples are reproducible drafts with documented limits. They teach construction and review decisions, not a house style or general superiority across models.
 
-After a real blind review, promote the exact draft:
+| Cursed potion | Hook key |
+|---|---|
+| ![Cursed red potion on its native grid](docs/assets/examples/cursed-potion.png) | ![Angular gold hook key on its native grid](docs/assets/examples/hook-key.png) |
+| **Automatic 16×16 recovery** | **Authored 16×16 repair** |
+| ![Automatic small-grid potion recovery](docs/assets/examples/automatic-16.png) | ![Authored small-grid potion repair](docs/assets/examples/authored-16.png) |
 
-```powershell
-python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py promote .\output .\review-input.json --tier representative
-```
+- [Cursed salvage](SKILLS/pixel-art-html/examples/cursed-salvage/README.md): recovery and a rejected pickup family.
+- [Small-grid repairs](SKILLS/pixel-art-html/examples/small-grid-repair/README.md): constrained silhouettes and identity cues.
+- [Construction repairs](SKILLS/pixel-art-html/examples/construction-repair/README.md): three original before/after cases.
+- [Editable parts](SKILLS/pixel-art-html/examples/part-construction/README.md): recorded stage reviews and seven failure/repair lessons.
+- [City scene](SKILLS/pixel-art-html/examples/city-clash/README.md): native masters in an interactive world canvas.
 
-The command refuses self-review, binds the review to every exact cell, and makes later grid drift fail validation. Production-candidate promotion requires an owner review.
+Historical revisions in these examples are not instructions to repeat artistic attempts during an ordinary request.
 
-Package related same-size assets without pretending they are a resolution ladder:
+## Develop and verify
 
-```powershell
-python .\SKILLS\pixel-art-html\scripts\build_pixel_art.py pack .\potion.json .\key.json .\shield.json .\crystal.json --output .\pickup-pack --title "RPG pickups"
-```
-
-## Develop And Verify
-
-Node 20 or newer and Python 3.11 or newer are recommended:
-
-```powershell
-pnpm run check:core
-```
-
-`check:core` validates the pack and runs the 33 dependency-free tests. `test:full` and `check:full` require Pillow and run all 42 tests; they stop with an install command when Pillow is missing instead of silently reporting a partial gate. CI installs `pillow==12.3.0` and runs `check:full` on Windows and Ubuntu.
+Use Node 20 or newer, Python 3.11 or newer, and the `packageManager` version in [package.json](package.json): pnpm 11.21.0. The package has no npm dependencies.
 
 ```powershell
 python -m pip install pillow==12.3.0
 pnpm run check:full
 ```
 
-Run the deterministic recovery benchmark separately when changing classification or image packing:
+`check:full` validates the skill package and real method catalog, then runs the complete Python suite. It fails if Pillow is missing or a test is skipped. `check:core` selects the dependency-free tests and reports the excluded Pillow cases. Use one sufficient gate; the full gate includes the core coverage. Counts come from the runner, so documentation does not need a separate test tally.
 
-```powershell
-uv run --with pillow==12.3.0 python .\SKILLS\pixel-art-html\scripts\benchmark_small_grids.py --output .\.scratch\small-grid-benchmark
-```
+[VS Code tasks](.vscode/tasks.json) expose the same commands without installing dependencies. CI verifies the complete gate on Windows and Ubuntu. The [contribution guide](CONTRIBUTING.md) explains when to run the optional reconstruction benchmark and how to inspect the [source-backed code map](docs/codemap/codemap.md).
 
-The image-conversion test runs when Pillow is installed; all other tests use the Python standard library.
+## Attribution and license
 
-## Documentation
+Inspired by the agent-directed conversion concept in [robustonian/ai-pixel-art-converter](https://github.com/robustonian/ai-pixel-art-converter). This is an independent implementation and does not use that project's API or server code.
 
-- [Skill workflow](./SKILLS/pixel-art-html/SKILL.md)
-- [Command and artifact reference](./SKILLS/pixel-art-html/references/command-reference.md)
-- [Artifact schema](./SKILLS/pixel-art-html/references/artifact-schema.md)
-- [Craft workflow](./SKILLS/pixel-art-html/references/craft-workflow.md)
-- [Subject routing](./SKILLS/pixel-art-html/references/subject-recipes.md)
-- [Image-source brief and repixelization](./SKILLS/pixel-art-html/references/image-source-brief.md)
-- [Small-grid source recovery](./SKILLS/pixel-art-html/references/source-recovery.md)
-- [Project library contract](./SKILLS/pixel-art-html/references/project-library.md)
-- [Visual quality contract](./SKILLS/pixel-art-html/references/quality-contract.md)
-- [Visual review and evidence tiers](./SKILLS/pixel-art-html/references/visual-review.md)
-- [Recovery draft case study](./SKILLS/pixel-art-html/examples/cursed-salvage/README.md)
-- [8x8/16x16 repair draft case study](./SKILLS/pixel-art-html/examples/small-grid-repair/README.md)
+The craft guidance includes original synthesis from [SLYNYRD's Pixelblog catalog](https://www.slynyrd.com/pixelblog-catalogue) and the attributed sources in the [interpretation contract](SKILLS/pixel-art-html/references/interpretation-contract.md). Source-specific preferences are not universal art rules.
 
-## Background
+[MIT license](LICENSE) · [Security reports](SECURITY.md) · [Changelog](docs/CHANGELOG.md)
 
-The project was inspired by the idea of agent-directed pixel-art conversion explored by [robustonian/ai-pixel-art-converter](https://github.com/robustonian/ai-pixel-art-converter). This repository is an independent implementation focused on Codex skills, local deterministic processing, standalone HTML, and project-level artifact navigation; it does not use that project's API/server implementation.
-
-The craft workflow and subject routing also synthesize lessons from Raymond Schlitter's [SLYNYRD Pixelblog catalogue](https://www.slynyrd.com/pixelblog-catalogue), analyzed through a local educational wiki. The skill translates recurring principles into provider-neutral construction and review rules; it does not ask models to imitate an artist's signature style.
-
-## Status
-
-The skill pack is available. The deterministic spec and HTML paths are dependency-free; image conversion requires Pillow. Direction study, native-read checkpoints, exact parity, blind review, and fingerprint-bound promotion make the proof boundary explicit. Final artistic acceptance still belongs to a real native-scale reviewer.
-
-## License
-
-[MIT](./LICENSE)
-
-## Support
-
-Support continued maintenance through [GitHub Sponsors](https://github.com/sponsors/gvastethecreator) or [Ko-fi](https://ko-fi.com/gvaste).
-
+Support maintenance through [GitHub Sponsors](https://github.com/sponsors/gvastethecreator) or [Ko-fi](https://ko-fi.com/gvaste).

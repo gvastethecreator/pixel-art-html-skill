@@ -1,101 +1,57 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="color-scheme" content="dark">
-  <link rel="icon" href="data:,">
-  <title>__TITLE_TEXT__</title>
-  <style>
-    :root { color-scheme: dark; font-family: Bahnschrift, "Arial Narrow", "Helvetica Neue", sans-serif; --base:#080907; --surface:#11130f; --surface-2:#181a16; --ink:#f2efe6; --muted:#aaa69b; --line:rgba(102,108,97,.34); --edge:rgba(78,84,74,.30); --edge-strong:rgba(96,102,91,.42); --signal:#4a4f49; --signal-text:#92988f; --button:#0d0f0c; --button-hover:#1a1d18; --button-text:#aeb3ac; --focus:#90968e; --noise:url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C%2Ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'%2F%3E%3C%2Fsvg%3E"); }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; color: var(--ink); background-color: var(--base); background-image: var(--noise), radial-gradient(var(--line) .7px, transparent .7px); background-size: 160px 160px, 14px 14px; }
-    a:focus-visible, canvas:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-    main { width: min(1320px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 48px; }
-    header { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; margin-bottom: 24px; }
-    .kicker { margin: 0 0 8px; color: var(--signal-text); font: 800 12px/1 ui-monospace, "Cascadia Mono", monospace; letter-spacing: .13em; text-transform: uppercase; }
-    h1 { max-width: 20ch; margin: 0; font-size: clamp(34px, 6vw, 72px); font-weight: 780; line-height: .92; letter-spacing: -.055em; overflow-wrap: anywhere; text-wrap: balance; }
-    .set-stamp { min-width: 170px; max-width: 100%; padding: 11px 13px; border: 2px solid var(--edge-strong); background: var(--surface); box-shadow: 4px 4px 0 #000; font: 700 12px/1.4 ui-monospace, "Cascadia Mono", monospace; overflow-wrap: anywhere; }
-    .set-stamp strong { display: block; font-size: 20px; }
-    .grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 14px; }
-    article { width: 100%; max-width: calc((100% - 28px) / 3); min-width: 0; flex: 0 1 calc((100% - 28px) / 3); display: grid; grid-template-rows: auto minmax(320px, 1fr) auto; border: 2px solid var(--edge-strong); background: var(--surface); box-shadow: 6px 6px 0 #000; }
-    .card-head, .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 13px; font: 750 12px/1.25 ui-monospace, "Cascadia Mono", monospace; }
-    .card-head { flex-wrap: wrap; }
-    .card-meta { display: flex; flex: 0 0 auto; align-items: center; gap: 8px; margin-left: auto; }
-    .tier { padding: 3px 5px; border: 1px solid var(--edge-strong); color: var(--muted); font-size: 9px; text-transform: uppercase; }
-    .card-head { border-bottom: 2px solid var(--edge); }
-    .size { min-width: 0; color: var(--signal-text); font-size: 15px; overflow-wrap: anywhere; }
-    .stage { min-width: 0; display: grid; place-items: center; padding: 24px; overflow: auto; background-color: #020302; background-image: linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px); background-size: 20px 20px; }
-    .proof { padding: 10px; border: 2px solid var(--edge-strong); background-color: #20231d; background-image: linear-gradient(45deg,#171914 25%,transparent 25%),linear-gradient(-45deg,#171914 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#171914 75%),linear-gradient(-45deg,transparent 75%,#171914 75%); background-size: 16px 16px; background-position: 0 0,0 8px,8px -8px,-8px 0; }
-    canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
-    .card-foot { align-items: stretch; flex-direction: column; border-top: 2px solid var(--edge); }
-    .tape { display: flex; height: 10px; overflow: hidden; border: 1px solid var(--edge-strong); }
-    .tape span { min-width: 2px; }
-    .facts { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); }
-    .open { display: block; padding: 10px 12px; border: 2px solid var(--edge-strong); color: var(--button-text); background: var(--button); text-align: center; text-decoration: none; font: 780 13px/1 Bahnschrift, sans-serif; }
-    .open:hover { border-color: var(--signal); color: #c8ccc6; background: var(--button-hover); }
-    .set-stamp, article, .card-head, .card-foot, .open { background-image: var(--noise); background-size: 160px 160px; }
-    @media (width <= 60rem) { article { max-width: calc((100% - 14px) / 2); flex-basis: calc((100% - 14px) / 2); } }
-    @media (width <= 42rem) { main { width: calc(100% - 20px); padding-top: 18px; } header { grid-template-columns: 1fr; } h1 { font-size: clamp(36px,13vw,58px); } .set-stamp { width: fit-content; } article { max-width: 100%; flex-basis: 100%; grid-template-rows:auto minmax(300px,55vh) auto; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:,">
+<title>__TITLE_TEXT__</title>
+<style>
+:root{color-scheme:dark;font-family:Bahnschrift,"Segoe UI",sans-serif;color:#edece5;background:#101715;--muted:#aebbb4;--line:#35443d;--surface:#18231e;--focus:#e8c77a}
+*{box-sizing:border-box}body{margin:0}main{max-width:1240px;margin:auto;padding:28px 24px 48px}h1,h2,p{margin:0}h1{font-size:clamp(28px,4vw,48px);line-height:1.08;letter-spacing:-.035em;overflow-wrap:anywhere}header{display:grid;gap:12px;margin-bottom:24px}.eyebrow{font:600 12px/1.4 ui-monospace,monospace;text-transform:uppercase;letter-spacing:.14em;color:#d8be84}.intro{max-width:65ch;line-height:1.6;color:var(--muted)}.summary{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:14px}.toolbar{display:flex;gap:20px;flex-wrap:wrap;align-items:end;padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:12px}label{display:grid;gap:8px;font-size:13px;color:var(--muted)}select{font:inherit;color:#edece5;background:#101715;border:1px solid #607468;border-radius:6px;min-height:40px;padding:8px 32px 8px 10px}a{color:#e8c77a}a:focus-visible,select:focus-visible,.stage:focus-visible{outline:3px solid var(--focus);outline-offset:4px}.hint{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:24px}article{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:var(--surface);display:flex;flex-direction:column}.card-head{padding:20px;display:grid;gap:10px}h2{font-size:19px;font-weight:600;line-height:1.35;overflow-wrap:anywhere}.card-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:var(--muted);font:12px/1.4 ui-monospace,monospace}.tier{border:1px solid #607468;border-radius:4px;padding:3px 6px;text-transform:uppercase;font-size:10px}.stage{height:256px;overflow:auto;background:#26333a;padding:24px}.proof{width:max-content;min-width:100%;min-height:100%;display:grid;place-items:center}canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges;max-width:none}.card-foot{padding:20px;display:grid;gap:16px;margin-top:auto}.tape{display:flex;height:6px;overflow:hidden;border-radius:3px}.tape span{min-width:2px}.links{display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:13px}.open{margin-inline-end:auto;display:inline-flex;align-items:center;min-height:40px;padding:10px 14px;border:1px solid #607468;border-radius:6px;text-decoration:none;color:#f2eee1}.open:hover{background:#2a3931}.facts{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font:12px/1.4 ui-monospace,monospace}.footer{margin-top:32px;max-width:75ch;color:var(--muted);font-size:13px;line-height:1.6}@media(max-width:540px){main{padding:24px 16px 40px}.toolbar{gap:16px;padding:16px}.card-head,.card-foot{padding:16px}.stage{height:300px;padding:16px}}
+</style>
 </head>
 <body>
-  <main>
-    <header><div><p class="kicker" id="collection-kicker">Pixel proof / artifact set</p><h1 id="title"></h1></div><div class="set-stamp"><strong id="count"></strong><span id="range"></span></div></header>
-    <section class="grid" id="grid" aria-label="Pixel art artifact variants"></section>
-  </main>
-  <script id="collection-data" type="application/json">__COLLECTION_JSON__</script>
-  <script>
-    const data = JSON.parse(document.querySelector('#collection-data').textContent);
-    const isPack = data.kind === 'pack';
-    const isStudy = data.kind === 'study';
-    const isNamedSet = isPack || isStudy;
-    document.querySelector('#collection-kicker').textContent = isStudy ? 'Pixel proof / named direction study' : (isPack ? 'Pixel proof / asset pack' : 'Pixel proof / resolution set');
-    document.querySelector('#title').textContent = data.title;
-    document.querySelector('#count').textContent = `${data.items.length} ${isStudy ? 'directions' : (isPack ? 'assets' : 'masters')}`;
-    const sizes = data.items.map(item => `${item.artifact.width}x${item.artifact.height}`);
-    document.querySelector('#range').textContent = [...new Set(sizes)].join(' / ');
-    const grid = document.querySelector('#grid');
-    grid.setAttribute('aria-label', isStudy ? 'Named pixel art direction study' : (isPack ? 'Pixel art asset pack' : 'Pixel art resolution variants'));
-    data.items.forEach(item => {
-      const artifact = item.artifact;
-      const flat = artifact.grid.flat();
-      const usage = new Map(artifact.palette.map(color => [color, flat.filter(cell => cell === color).length]));
-      const article = document.createElement('article');
-      const head = document.createElement('div'); head.className = 'card-head';
-      const label = document.createElement('span'); label.className = 'size'; label.textContent = isNamedSet ? artifact.title : `${artifact.width} x ${artifact.height}`;
-      const colorCount = document.createElement('span'); colorCount.textContent = `${artifact.palette.length} colors`;
-      const cardMeta = document.createElement('span'); cardMeta.className = 'card-meta';
-      const tier = document.createElement('span'); tier.className = 'tier'; tier.textContent = artifact.evidence_tier || 'unlabeled';
-      cardMeta.append(tier, colorCount); head.append(label, cardMeta);
-      const stage = document.createElement('div'); stage.className = 'stage';
-      const proof = document.createElement('div'); proof.className = 'proof';
-      const canvas = document.createElement('canvas'); canvas.tabIndex = 0; canvas.setAttribute('aria-label', `${artifact.title}, ${artifact.width} by ${artifact.height} pixel art`);
-      proof.appendChild(canvas); stage.appendChild(proof);
-      function renderCanvas() {
-        const styles = getComputedStyle(stage);
-        const horizontalChrome = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight) + 24;
-        const verticalChrome = parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom) + 24;
-        const available = Math.max(artifact.width, Math.min(256, stage.clientWidth - horizontalChrome, stage.clientHeight - verticalChrome));
-        const scale = Math.max(1, Math.floor(available / Math.max(artifact.width, artifact.height)));
-        canvas.width = artifact.width * scale; canvas.height = artifact.height * scale;
-        const context = canvas.getContext('2d');
-        artifact.grid.forEach((row,y) => row.forEach((color,x) => { if (color) { context.fillStyle=color; context.fillRect(x*scale,y*scale,scale,scale); } }));
-      }
-      new ResizeObserver(renderCanvas).observe(stage);
-      requestAnimationFrame(renderCanvas);
-      const foot = document.createElement('div'); foot.className = 'card-foot';
-      const tape = document.createElement('div'); tape.className = 'tape'; tape.setAttribute('aria-label','Color usage distribution');
-      artifact.palette.forEach(color => { const segment=document.createElement('span'); segment.style.background=color; segment.style.flexGrow=String(Math.max(1,usage.get(color)||0)); segment.title=`${color}: ${usage.get(color)||0} cells`; tape.appendChild(segment); });
-      const facts = document.createElement('div'); facts.className = 'facts';
-      const painted = document.createElement('span'); painted.textContent = isNamedSet ? `${artifact.width} x ${artifact.height}` : `${flat.filter(Boolean).length} painted`;
-      const source = document.createElement('span'); source.textContent = artifact.source?.kind || 'spec';
-      facts.append(painted,source);
-      const open = document.createElement('a'); open.className='open'; open.href=`${item.path}/index.html`; open.textContent='Open exact proof';
-      foot.append(tape,facts,open); article.append(head,stage,foot); grid.appendChild(article);
-    });
-    window.__PIXEL_ART_COLLECTION_METRICS__ = { count:data.items.length, sizes, evidenceTiers:data.items.map(item => item.artifact.evidence_tier || 'legacy-unlabeled') };
-    window.__PIXEL_ART_COLLECTION_READY__ = true;
-  </script>
+<main>
+<header><p class="eyebrow" id="collection-kicker">Pixel art / showcase</p><h1 id="title"></h1><p class="intro">Explore each piece at native scale, compare its silhouette, or open the full proof and exports.</p><div class="summary"><span id="count"></span><span id="range"></span></div></header>
+<div class="toolbar" role="group" aria-label="Showcase viewing controls">
+<label>Scale<select id="scale"><option value="auto">Auto · integer pixels</option><option value="1">Native · 1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option></select></label>
+<label>View<select id="view"><option value="color">Color</option><option value="value">Values</option><option value="silhouette">Silhouette</option></select></label>
+<label>Background<select id="background"><option value="#26333A">Slate</option><option value="#F3F0E8">Paper</option><option value="#101715">Ink</option><option value="transparent">Transparency grid</option></select></label>
+</div>
+<p class="hint" id="view-status" aria-live="polite">Each preview uses whole pixels. Larger pieces scroll inside their frame.</p>
+<section class="grid" id="grid" aria-label="Pixel art collection"></section>
+<p class="footer">A showcase presents the work; it does not grant artistic acceptance. Evidence tiers stay attached to each piece. Original grids and exports remain unchanged when you use these controls.</p>
+</main>
+<script id="collection-data" type="application/json">__COLLECTION_JSON__</script>
+<script>
+const data=JSON.parse(document.querySelector('#collection-data').textContent);
+const isStudy=data.kind==='study', isPack=data.kind==='pack', isNamedSet=isStudy||isPack;
+document.querySelector('#title').textContent=data.title;
+document.querySelector('#collection-kicker').textContent=isStudy?'Pixel art / named direction study':'Pixel art / showcase';
+document.querySelector('#count').textContent=`${data.items.length} ${isStudy?'directions':isPack?'pieces':'masters'}`;
+const sizes=data.items.map(item=>`${item.artifact.width}×${item.artifact.height}`);
+document.querySelector('#range').textContent=[...new Set(sizes)].join(' · ');
+const grid=document.querySelector('#grid'),scaleControl=document.querySelector('#scale'),viewControl=document.querySelector('#view'),backgroundControl=document.querySelector('#background');
+const renders=[];
+function element(tag,className,text){const e=document.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;}
+for(const item of data.items){
+ const art=item.artifact,article=element('article'),head=element('div','card-head'),title=element('h2','',isNamedSet?art.title:`${art.width} × ${art.height}`),meta=element('div','card-meta');
+ meta.append(element('span','tier',art.evidence_tier||'unlabeled'),element('span','',`${art.width} × ${art.height} · ${art.palette.length} colors`));head.append(title,meta);
+ const stage=element('div','stage');stage.tabIndex=0;stage.setAttribute('role','region');stage.setAttribute('aria-label',`${art.title} preview; scroll to inspect at larger scales`);
+ const proof=element('div','proof'),canvas=element('canvas');canvas.width=art.width;canvas.height=art.height;canvas.setAttribute('role','img');canvas.setAttribute('aria-label',`${art.title}, ${art.width} by ${art.height} pixel art`);proof.append(canvas);stage.append(proof);
+ const context=canvas.getContext('2d'),image=context.createImageData(art.width,art.height),usage=new Map();
+ for(const row of art.grid)for(const color of row)if(color)usage.set(color,(usage.get(color)||0)+1);
+ function paint(){let index=0;for(const row of art.grid)for(const color of row){let red=0,green=0,blue=0;if(color){red=parseInt(color.slice(1,3),16);green=parseInt(color.slice(3,5),16);blue=parseInt(color.slice(5,7),16);if(viewControl.value==='value')red=green=blue=Math.round(red*.2126+green*.7152+blue*.0722);if(viewControl.value==='silhouette')red=green=blue=backgroundControl.value==='#F3F0E8'?20:245;}image.data.set([red,green,blue,color?255:0],index);index+=4;}context.putImageData(image,0,0);}
+ const foot=element('div','card-foot'),tape=element('div','tape');tape.setAttribute('aria-label','Palette color usage');for(const color of art.palette){const swatch=element('span');swatch.style.background=color;swatch.style.flexGrow=String(usage.get(color)||1);swatch.title=color;tape.append(swatch);}
+ const facts=element('div','facts'),scaleLabel=element('span','', '');facts.append(scaleLabel,element('span','',`${[...usage.values()].reduce((a,b)=>a+b,0).toLocaleString()} painted cells`));
+ const links=element('div','links');for(const [label,file,style] of [['Open proof','index.html','open'],['PNG','pixel-art.png',''],['JSON','pixel-art.json','']]){const link=element('a',style,label);link.href=`${item.path}/${file}`;link.setAttribute('aria-label',`${label}: ${art.title}`);links.append(link);}foot.append(tape,facts,links);article.append(head,stage,foot);grid.append(article);
+ function resize(){const css=getComputedStyle(stage),width=stage.clientWidth-parseFloat(css.paddingLeft)-parseFloat(css.paddingRight),height=stage.clientHeight-parseFloat(css.paddingTop)-parseFloat(css.paddingBottom);const scale=scaleControl.value==='auto'?Math.max(1,Math.min(8,Math.floor(Math.min(width/art.width,height/art.height)))):Number(scaleControl.value);canvas.style.width=`${art.width*scale}px`;canvas.style.height=`${art.height*scale}px`;scaleLabel.textContent=`${scale}× display${art.width*scale>width||art.height*scale>height?' · scroll to inspect':''}`;}
+ function refresh(){stage.style.backgroundColor=backgroundControl.value==='transparent'?'#26333a':backgroundControl.value;stage.style.backgroundImage=backgroundControl.value==='transparent'?'conic-gradient(#334149 25%, #26333a 0 50%, #334149 0 75%, #26333a 0)':'none';stage.style.backgroundSize='16px 16px';paint();resize();}
+ renders.push(refresh);new ResizeObserver(resize).observe(stage);refresh();
+}
+for(const control of [scaleControl,viewControl,backgroundControl])control.addEventListener('change',()=>{renders.forEach(render=>render());document.querySelector('#view-status').textContent=`${viewControl.selectedOptions[0].textContent} view · ${backgroundControl.selectedOptions[0].textContent} background. Whole-pixel scaling; scroll larger previews inside their frames.`;});
+window.__PIXEL_ART_COLLECTION_METRICS__={count:data.items.length,sizes,evidenceTiers:data.items.map(item=>item.artifact.evidence_tier||'unlabeled')};window.__PIXEL_ART_COLLECTION_READY__=true;
+</script>
 </body>
 </html>

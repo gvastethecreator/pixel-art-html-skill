@@ -1,6 +1,6 @@
 # Artifact schema
 
-Author a JSON object. Dimensions must be integers from 8 through 128.
+Author a JSON object. Dimensions must be integers from 8 through 512.
 
 ```json
 {
@@ -111,7 +111,7 @@ Canonical palette arrays follow first raster appearance, not source declaration 
 
 ## Resolution collections
 
-Recommended square masters: `16`, `24`, `32`, `40`, `48`, and `64`. Single artifacts: any width and height from 8 through 128.
+Recommended square masters: `16`, `24`, `32`, `40`, `48`, and `64`. Single artifacts: any width and height from 8 through 512.
 
 - Image input: pass `--sizes all` or a comma-separated list. Convert each target directly from the original image. `--reconstruction auto` preserves a trustworthy exact lattice only if it matches the target. Otherwise it uses two-stage target packing. Use `legacy` only for comparison.
 - Text input: author one spec per target size, then pass the files to `collection`.

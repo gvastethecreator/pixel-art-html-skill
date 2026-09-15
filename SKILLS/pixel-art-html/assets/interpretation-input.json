@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "original_text": "",
+  "subject": null,
+  "stage": null,
+  "projection": null,
+  "problem_kind": "unspecified",
+  "observed": [],
+  "ruled_out": [],
+  "uncertain": [],
+  "preserve": []
+}

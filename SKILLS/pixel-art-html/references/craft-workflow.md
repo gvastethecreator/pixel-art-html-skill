@@ -64,7 +64,7 @@ At 1x:
 - delete orphan pixels unless deliberate eye, glint, star, spark, particle
 - clear tangencies that merge forms
 - lower detail and contrast away from focus
-- compare against losing baseline or alternate directions
+- compare against an existing baseline only for an explicit repair; alternatives require an explicit request
 
 Pass: another removal weakens recognition, material, focus, useful signature.
 
@@ -82,7 +82,9 @@ Inspect:
 
 Deterministic critique reports bounds, cluster count, singleton count, value span, and low-contrast boundaries. They are questions, not grades. A clean report can describe bad anatomy, generic design, or the wrong material. `pixel_lab.py inspect` locates small clusters on the grid; `patch` and `diff` support a controlled repair in a new draft.
 
-## Repair map
+## Repair map for an explicit bounded intervention
+
+During new single-pass construction, use this map to name a blocking limitation, not to return to an earlier stage. Variants remain explicit-only.
 
 | Symptom | Return to | Change |
 |---|---|---|

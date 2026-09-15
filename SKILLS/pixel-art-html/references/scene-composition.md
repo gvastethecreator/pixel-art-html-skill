@@ -1,6 +1,6 @@
 # Compose a scene from native masters
 
-Use this route when several sprites and structures must share a world, or when the user needs a canvas with pan and zoom. Keep individual masters within the existing 8–128 pixel contract. Compose them at integer world coordinates; do not enlarge a small scene and call it a more detailed master.
+Use this route when several sprites and structures must share a world, or when the user needs a canvas with pan and zoom. Keep individual masters within the existing 8–512 pixel contract. Compose them at integer world coordinates; do not enlarge a small scene and call it a more detailed master.
 
 ## Design relationships before decoration
 

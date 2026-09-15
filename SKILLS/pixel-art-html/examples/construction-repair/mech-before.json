@@ -52,7 +52,7 @@
   ],
   "art_direction": {
     "use": "vehicle",
-    "light": "upper left; lantern interiors emit warm light",
+    "light": "upper left; one external light shared by crate, pallet, chassis, and cab",
     "construction": "A long strapped crate rests on a pallet above four supports, behind a small sensor muzzle."
   }
 }

@@ -15,7 +15,7 @@ A spec or image command can author only `fixture` or `draft`. Self-review can im
 
 ## Direction study
 
-Use `study` if work was rejected, a quality claim matters, or the direction is uncertain.
+Use `study` only when the user explicitly requests alternatives. Rejection, uncertainty and quality comparisons do not require variants. Otherwise review the single delivered result.
 
 1. Keep subject, use, grid, background context, and proof scale fixed.
 2. Author exactly three draft grids with different silhouette or construction theses.

@@ -51,7 +51,7 @@ def text(value, name):
 def compile_parts(source):
     if source.get('kind') != 'construction' or source.get('schema_version') != 1 or source.get('stage') not in STAGES:
         raise ValueError('Expected construction schema 1 and block, planes, or material stage')
-    width, height = [integer(source.get(k), k, 8, 128) for k in ('width', 'height')]
+    width, height = [integer(source.get(k), k, 8, core.MAX_DIMENSION) for k in ('width', 'height')]
     text(source.get('title'), 'title')
     text(source.get('intent'), 'intent')
     text(source.get('light'), 'light')
@@ -81,8 +81,8 @@ def compile_parts(source):
         if not isinstance(rows, list) or not rows or not all(isinstance(r, str) for r in rows):
             raise ValueError(f'{name}: grid needs string rows')
         pw = len(rows[0])
-        if not 1 <= pw <= 128 or len(rows) > 128 or any(len(r) != pw for r in rows):
-            raise ValueError(f'{name}: grid must be rectangular, at most 128x128')
+        if not 1 <= pw <= core.MAX_DIMENSION or len(rows) > core.MAX_DIMENSION or any(len(r) != pw for r in rows):
+            raise ValueError(f'{name}: grid must be rectangular, at most {core.MAX_DIMENSION}x{core.MAX_DIMENSION}')
         if any(c not in colors and c != '.' for r in rows for c in r):
             raise ValueError(f'{name}: unknown palette alias')
         if not any(c != '.' for r in rows for c in r):
@@ -144,7 +144,7 @@ def compile_parts(source):
         kind = c.get('kind')
         if kind == 'anchor':
             a, b = anchor(c.get('a')), anchor(c.get('b'))
-            limit = integer(c.get('max_distance', 0), 'max_distance', 0, 128)
+            limit = integer(c.get('max_distance', 0), 'max_distance', 0, core.MAX_DIMENSION)
             actual = max(abs(a[0] - b[0]), abs(a[1] - b[1]))
             passed = actual <= limit
             detail = {'a': a, 'b': b, 'distance': actual, 'maximum': limit}

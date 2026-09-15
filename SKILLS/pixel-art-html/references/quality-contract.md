@@ -10,7 +10,7 @@ The artifact must pass all applicable rows. Record `N/A` only with a concrete re
 |---|---|
 | Evidence tier | authoring: `fixture` or `draft` only. Promoted tiers need a valid fingerprint-bound `visual-review.json` |
 | Resolution fit | honor fixed runtime grids. Else enough cells for identity, materials, signature. Do not hide a weak silhouette |
-| Direction | recovery / direction-risk work uses a validated three-item same-grid study. Record blind selection, signature, subtraction |
+| Direction | one direction chosen before drawing; a validated three-item study is required only for explicitly requested alternatives |
 | Silhouette | subject, orientation, pose read at native 1x without interior detail |
 | Composition | one dominant mass/read, one focal cue, intentional padding or edge contact |
 | Projection | every compatible element follows one view, scale, and overlap convention |

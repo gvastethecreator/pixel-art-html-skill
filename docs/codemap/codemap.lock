@@ -1,0 +1,173 @@
+{
+  "schema_version": 2,
+  "source_commit": "72f22179d2a10c2a1e5bdd49e88f65ea28481d56",
+  "working_tree_dirty": true,
+  "generated_at": "2026-09-13T05:38:38Z",
+  "generation_id": "7625411af2b00092a26685215cbaca0585a9864dc774d3729420ffaf47601e7b",
+  "analysis": {
+    "version": "syntax-1",
+    "digest": "277e322054c030f72811f774ad4e959bcf8d1244bfb70c076e298cf824ccdc3c"
+  },
+  "inventory": {
+    "policy": {
+      "inventory": "working-tree",
+      "scope": [
+        "."
+      ],
+      "exclude": [
+        ".agents",
+        ".cache",
+        ".git",
+        ".hg",
+        ".next",
+        ".nuxt",
+        ".obsidian",
+        ".scratch",
+        ".svn",
+        ".turbo",
+        ".venv",
+        ".vscode",
+        "__pycache__",
+        "build",
+        "coverage",
+        "dist",
+        "docs/codemap",
+        "generated",
+        "node_modules",
+        "out",
+        "target",
+        "vendor",
+        "venv"
+      ],
+      "config_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "files": [
+      {
+        "path": "SKILLS/pixel-art-html/SKILL.md",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "8bdea663c935ab95a767516f29bd187b0b803212cea13f4c41c9f9cb38760d31",
+        "size": 15983
+      },
+      {
+        "path": "SKILLS/pixel-art-html/examples/city-clash/build_city.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "b768486ee1e21f938ff072805789fe1e531880ec79ff1b2d12b4c1bba2fbf6f2",
+        "size": 19896
+      },
+      {
+        "path": "SKILLS/pixel-art-html/examples/part-construction/build_demo.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "8b6b748f06f4cd2e098918d0334883fdca1479522d030ad48fc6b05d0ef49451",
+        "size": 8232
+      },
+      {
+        "path": "SKILLS/pixel-art-html/examples/part-construction/create_sources.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "d512276b04788e1c4faf5e448ebf891b322abda86e7d0d07168821bdc117f720",
+        "size": 15918
+      },
+      {
+        "path": "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "be1aab393c845f6eeba2b4f0c73185388fd75b01bef99975c0b15cdd2cf8a0e0",
+        "size": 13327
+      },
+      {
+        "path": "SKILLS/pixel-art-html/scripts/build_pixel_art.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "7a773af05eb817f95dd3e72b5cbac0b064b8c8c9c67abffad380fe069a3bd59a",
+        "size": 97284
+      },
+      {
+        "path": "SKILLS/pixel-art-html/scripts/compose_scene.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "fe7d01621f797b4e98246aa2c222e26a9e7a790f5ffb8dcab55cf2f57065fafa",
+        "size": 8156
+      },
+      {
+        "path": "SKILLS/pixel-art-html/scripts/construct.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "1290fbbd679b600b03364f306d1340d2ff9aceccd492c02f7819fc706ff71fd5",
+        "size": 17610
+      },
+      {
+        "path": "SKILLS/pixel-art-html/scripts/interpretation.py",
+        "origin": "untracked",
+        "state": "present",
+        "digest": "3f9cd8d585cdfc26794f27a20c17c29696079f755cd06fd060c0951444f111ac",
+        "size": 17623
+      },
+      {
+        "path": "SKILLS/pixel-art-html/scripts/pixel_lab.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "e21d619811cfeb0610d0ff68130a92ecd6c583e3f4ffe6f1710063e2d5bfc611",
+        "size": 14128
+      },
+      {
+        "path": "SKILLS/pixel-art-html/scripts/reference_library.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "7ebde8c6cf241c3766f3a06189afd6a20e61f9e0ce7237e603982139be333948",
+        "size": 16519
+      },
+      {
+        "path": "SKILLS/pixel-art-html/scripts/test_build_pixel_art.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "095c5d514cc55a825c0b6f51002e81a7d3e4072951b0e228801e51146d1a370d",
+        "size": 73905
+      },
+      {
+        "path": "SKILLS/pixel-art-html/scripts/test_interpretation.py",
+        "origin": "untracked",
+        "state": "present",
+        "digest": "8f70e7c70299ef732a08849078eb3871a2476b97b56a1caadeef226886b1c5d3",
+        "size": 25178
+      },
+      {
+        "path": "SKILLS/pixel-art-html/scripts/tutorial_bridge.py",
+        "origin": "untracked",
+        "state": "present",
+        "digest": "2349f6ed99ec7acf688f5857700f50aedb0217c679ec7bb2ba272b5e1de187e5",
+        "size": 18142
+      },
+      {
+        "path": "package.json",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "a45688e00ce1a5f2ab071289b4c389780ef8182f6f6d2932d0dacd626856ba6f",
+        "size": 910
+      },
+      {
+        "path": "scripts/run-pixel-art-tests.py",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "cd5cd654b57e025cfb2848f5b4b56b76dba547b58e560dedeef299ded4f8f528",
+        "size": 3250
+      },
+      {
+        "path": "scripts/validate-skill-pack.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "f093f6c6ceea99723e6859c4d04221c3b34ea7c94c93d60b88bd6a08840ae379",
+        "size": 15100
+      }
+    ],
+    "digest": "2deebe8218ceac3cd83198c6df76330ba6b379ffeaa0ca411f489eb837ffcc92"
+  },
+  "source_digest": "2ece24a5f3ba7bb4a0a81ec1cb79fccde8a6fc1cd4c546881dcec9a9e4cefc9c",
+  "artifact_hashes": {
+    "codemap.json": "5906636ffcae0993ab22d1d2300e23cd0a9430a3defcf1c6526a5748068c0512",
+    "codemap.md": "6725f02a5f7fd34e998a89d36bfbceec3fe13a37328c1799f1c8f18fb5067ac8",
+    "codemap.html": "5c56735ba65305cece6efbf4d9dff71c516e6386b6d81d86368af46e6ef862a2"
+  }
+}

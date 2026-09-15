@@ -52,7 +52,7 @@
   ],
   "art_direction": {
     "use": "vehicle",
-    "light": "upper left; lantern interiors emit warm light",
+    "light": "upper left; one external light shared by crate, pallet, chassis, and cab",
     "construction": "Separate the closed crate, pallet, chassis, joints, and integrated front cab with continuous part boundaries."
   },
   "repair_decisions": {

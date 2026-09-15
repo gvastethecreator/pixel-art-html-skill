@@ -13,6 +13,8 @@ Real context:
 
 ## Direction choice
 
+Complete this section only for explicitly requested alternatives. For a single piece, go directly to blind observations.
+
 | Anonymous sample | Native read | Strongest construction | Losing reason |
 |---|---|---|---|
 | A | | | |
@@ -48,4 +50,4 @@ Per-item reads, if a set:
 | Browser proof | | |
 | Set/repeat context, if applicable | | |
 
-If any required gate fails, revise the draft. If no authorized reviewer inspected the unlabeled final proof, keep the artifact at `draft`.
+If any required gate fails, deliver an incomplete `draft` with the failed gate recorded. A repair requires an explicit request. If no authorized reviewer inspected the unlabeled final proof, keep the artifact at `draft`.

@@ -1,5 +1,7 @@
 # From visual evidence to exact pixels
 
+Follow the [single-pass contract](../SKILL.md#single-pass-delivery). The study and repair sections below apply only to explicitly requested alternatives or a bounded repair.
+
 ## Make references change decisions
 
 A useful reference note has three parts:
@@ -66,7 +68,7 @@ Keep an inadequate study as evidence when it exposes weak exploration. Do not tu
 
 An experiment changes one causal feature, not necessarily one cell. Repairing a face angle may move several connected clusters. Recoloring every surface while changing the silhouette prevents a useful before/after explanation.
 
-Write: `The right arm merges with the torso at x18..20/y12..16. Remove the dark bridge and move the hand outward. The arm/weapon gap should become readable at 1x.` Then inspect, patch, and compare. If the expected read does not appear, keep the losing evidence and revise the hypothesis.
+Write: `The right arm merges with the torso at x18..20/y12..16. Remove the dark bridge and move the hand outward. The arm/weapon gap should become readable at 1x.` For the requested repair, inspect, patch, and compare once. If the expected read does not appear, retain the failed result and report the unresolved relationship.
 
 For a local patch:
 

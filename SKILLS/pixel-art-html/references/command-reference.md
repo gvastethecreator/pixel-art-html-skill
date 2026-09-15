@@ -13,6 +13,7 @@
 ## Prerequisites
 
 - `from-spec`, `study`, `repair`, `collection`, `pack`, `promote`, `validate`, `critique`, `hub`: Python, no extra deps.
+- Interpretation and conditional method selection: `tutorial_bridge.py`, Python 3.11+ without extra dependencies. See the [structured input and diagnosis contract](interpretation-contract.md).
 - Local image conversion + small-grid benchmark: Pillow. `uv run --with pillow==12.3.0` keeps it local to the command.
 - Reference indexing, boards, and coordinate loupes: Pillow. Video metadata/samples additionally use local `ffprobe`/`ffmpeg`. Technique search, indexed text search, and pixel inspection, diff, and patch need only Python 3.11+.
 - `--output`: unindexed scratch. `--project-root` plus `--slug`: managed iteration.
@@ -35,6 +36,10 @@ Reference provenance and sampling limits: [reference-library.md](reference-libra
 `loupe` writes a new diagnostic PNG and JSON receipt with native context, coordinate labels, shared palette aliases, exact ROI rows, and source fingerprints. Limit the ROI to 32 by 32 cells; omit `--region` for a smaller whole grid. `--compare` requires the same dimensions and declared background. Labels and cell gaps belong only to the diagnostic. The command does not alter either artifact or decide whether a repair improves it.
 
 ## Build and repair commands
+
+Masters accept integer width and height from 8 through 512, including rectangular grids. The default PNG export is 16× for masters up to 128 pixels per side and native 1× for larger masters. Explicit `--scale` accepts 1–32, with a maximum exported side of 4096 pixels. Display zoom never changes the source grid.
+
+`pack` also builds a compact standalone showcase with integer scale, color/value/silhouette views, background controls, and links to each proof, PNG, and JSON. It supports mixed master sizes. Large previews scroll at native scale instead of shrinking below one pixel per cell. A named showcase is not an anonymous review or a promotion.
 
 For native assets and direction studies, use the existing compiler commands below.
 
@@ -61,7 +66,7 @@ Scratch build:
 python <skill-dir>/scripts/build_pixel_art.py from-spec <spec.json> --output <scratch-output>
 ```
 
-Same-grid three-way study:
+Same-grid three-way study, only for explicitly requested alternatives:
 
 ```bash
 python <skill-dir>/scripts/build_pixel_art.py study <a.json> <b.json> <c.json> --output <study-output> --title "Direction study"

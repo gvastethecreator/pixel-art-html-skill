@@ -1,0 +1,50 @@
+[
+  {
+    "file": "oak-before.json",
+    "original_blob_sha": "d2a703c795562ca7deead45f75040bd2f0299681",
+    "pixel_payload_sha256": "5fec6c8abb05e2c9190bad5acfc6ec054d0e7cce9c81831fc0961eeee49e13b0",
+    "changed_fields": [
+      "art_direction.light"
+    ]
+  },
+  {
+    "file": "oak-after.json",
+    "original_blob_sha": "18295eb4c1f518e5a2d0ac33196c03ffacc44870",
+    "pixel_payload_sha256": "9d8036883b80ece36f8ad37abb5dadd60cb79f82f2be6360eaff3ea67c880059",
+    "changed_fields": [
+      "art_direction.light"
+    ]
+  },
+  {
+    "file": "mech-before.json",
+    "original_blob_sha": "1344cc0c029d57390392a512bc33e3b995b603e2",
+    "pixel_payload_sha256": "0e23e151916f8d8b0950e8edb5ee1b8ba09ee0a8aed6bfebf42d223b42e3b096",
+    "changed_fields": [
+      "art_direction.light"
+    ]
+  },
+  {
+    "file": "mech-after.json",
+    "original_blob_sha": "2fc3263c177eec60736aa5cc7fafa3b36217c3c3",
+    "pixel_payload_sha256": "6854dd089491102d19f5e52d94609df7ff543dbee73bee20fd99a91462eff34f",
+    "changed_fields": [
+      "art_direction.light"
+    ]
+  },
+  {
+    "file": "portrait-before.json",
+    "original_blob_sha": "edc468e43ff433ef812c0c71c3d8e8afa6c553b1",
+    "pixel_payload_sha256": "83b2a5b5976c59f66356b9fca851d890299d6a0d48e196df59d434c6f80eb58f",
+    "changed_fields": [
+      "art_direction.light"
+    ]
+  },
+  {
+    "file": "portrait-after.json",
+    "original_blob_sha": "84705025281ba0501a5c25aedb93670012571be6",
+    "pixel_payload_sha256": "945b7af2f76d153cb874086c081b4bc41a38560a3a0f376c19555acf0fe85989",
+    "changed_fields": [
+      "art_direction.light"
+    ]
+  }
+]

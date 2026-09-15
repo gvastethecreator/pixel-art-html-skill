@@ -2,7 +2,7 @@
 
 Use for Codex ImageGen, an attached image, a local render, or a photo/reference that will become exact-grid pixel art. Source supplies composition and shape evidence; it does not satisfy the final pixel-art contract.
 
-For recovery or direction-risk work, generate or sketch three materially different draft concepts from the same source brief, then select one. Concepts prove a direction decision only. The manually repixelized exact grid remains the artifact. Any promoted tier comes later through blind review.
+Choose one source direction before construction. Follow the [single-pass contract](../SKILL.md#single-pass-delivery); generate alternatives only when explicitly requested. A source concept does not satisfy the exact-grid artifact or its review requirements.
 
 ## Build the source brief
 
@@ -40,9 +40,8 @@ Hard pixel edges in the source can help. Never trust a model-generated image for
 3. Crop and choose `contain` or `cover` based on use. Use `stretch` only for intentional distortion.
 4. Convert every target size directly from the original source. Leave `--reconstruction auto`. It preserves an exact matching lattice and uses target-aware two-stage packing otherwise.
 5. Inspect silhouette, crop, alpha fringe, value groups, palette, focal cue, and the recovered source-lattice overlay.
-6. Open the canonical grid or reconstruct it as a spec. Merge noisy colors, repair stair steps, replace source texture with cluster motifs, and remove accidental singletons.
-7. At 8x8 or 16x16, redraw the silhouette and one identity cue rather than accepting the automatic cell choices. Omission is part of the deliverable.
-8. Rebuild and compare at native 1x, 2x, and 4x.
+6. When manual repixelization is part of the brief, use the conversion as a scaffold for one progressive construction pass. At 8x8 or 16x16, reserve the silhouette and one identity cue before detail. A conversion-only request ends with the inspected draft and its limits.
+7. Export and inspect the result at native 1x, 2x, and 4x. Record failures without starting another artistic repair cycle. Technical export corrections remain allowed.
 
 Image quantization preserves photographic or model noise well. Manual repixelization uses the same pass order as text authoring: silhouette -> projection -> value/palette -> directional light -> material clusters -> focus/cleanup.
 
@@ -78,7 +77,7 @@ If the source is already pixel-clean and its lattice matches the target, automat
 - Semi-transparent edge halos absent or easy to replace.
 - Silhouette works before interior texture.
 
-## Reject or regenerate the source when
+## Record an unsuitable source when
 
 - identity depends on detail smaller than the target grid
 - limbs, props, or focal features are clipped
@@ -87,3 +86,5 @@ If the source is already pixel-clean and its lattice matches the target, automat
 - every surface has photographic texture or micro-contrast
 - palette reduction merges the subject into the background
 - a cleaner source costs less than a manual rescue of the conversion
+
+State the limiting source property. Regeneration requires an explicit request; an unsuitable source does not authorize alternatives or retries.

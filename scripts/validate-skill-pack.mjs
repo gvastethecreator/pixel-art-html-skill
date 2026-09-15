@@ -1,7 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = process.cwd();
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const skill = path.join(root, "SKILLS", "pixel-art-html");
 const required = [
   ".gitignore",
@@ -107,6 +108,16 @@ const required = [
   "SKILLS/pixel-art-html/examples/city-clash/preview.png",
   "SKILLS/pixel-art-html/scripts/benchmark_small_grids.py",
   "SKILLS/pixel-art-html/scripts/test_build_pixel_art.py",
+  "SKILLS/pixel-art-html/scripts/interpretation.py",
+  "SKILLS/pixel-art-html/scripts/tutorial_bridge.py",
+  "SKILLS/pixel-art-html/scripts/test_interpretation.py",
+  "SKILLS/pixel-art-html/assets/interpretation-input.json",
+  "SKILLS/pixel-art-html/references/interpretation-contract.md",
+  "SKILLS/pixel-art-html/references/tutorial-lessons.json",
+  "SKILLS/pixel-art-html/references/tutorial-sources.json",
+  "SKILLS/pixel-art-html/evals/interpretation-evals.json",
+  "SKILLS/pixel-art-html/evals/interpretation-metadata.json",
+  "SKILLS/pixel-art-html/evals/tutorial-transfer-evals.json",
   "scripts/run-pixel-art-tests.py"
 ];
 const errors = [];
@@ -186,7 +197,7 @@ if (techniques.schema_version !== 1 || !Array.isArray(techniques.sources) || !Ar
   }
 }
 
-for (const file of (await walk(skill)).filter(file => file.endsWith(".md"))) {
+for (const file of (await walk(root)).filter(file => file.endsWith(".md"))) {
   const text = await fs.readFile(file, "utf8");
   for (const match of text.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
     const target = match[1].split("#")[0];
@@ -234,7 +245,7 @@ if (errors.length) {
 async function walk(dir, output = []) {
   const entries = await fs.readdir(dir, { withFileTypes: true }).catch(() => []);
   for (const entry of entries) {
-    if ([".git", ".local", ".scratch", ".vscode", "node_modules"].includes(entry.name)) continue;
+    if ([".git", ".local", ".scratch", ".vscode", "node_modules", "__pycache__", ".staging", ".review", ".publication"].includes(entry.name)) continue;
     const absolute = path.join(dir, entry.name);
     output.push(absolute);
     if (entry.isDirectory()) await walk(absolute, output);

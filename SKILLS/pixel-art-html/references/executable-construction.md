@@ -4,7 +4,7 @@ Use `construct.py` for a multipart sprite whose supports, pose, or occlusion nee
 
 ## Source
 
-The example below is a mechanical fixture for the format, not an artistic model. The world uses the existing 8–128 grid contract. Parts may be smaller. Palette keys are single characters; `.` is transparent. Parts paint in array order. Parent relationships control translation, not paint order. An origin is relative to its parent, or to the world when `parent` is absent. Anchors are local cell coordinates inside the part's rectangular grid. They may deliberately sit in a transparent cell; an anchor check alone does not prove contact with visible paint.
+The example below is a mechanical fixture for the format, not an artistic model. The world uses the existing 8–512 grid contract. Parts may be smaller. Palette keys are single characters; `.` is transparent. Parts paint in array order. Parent relationships control translation, not paint order. An origin is relative to its parent, or to the world when `parent` is absent. Anchors are local cell coordinates inside the part's rectangular grid. They may deliberately sit in a transparent cell; an anchor check alone does not prove contact with visible paint.
 
 ```json
 {
@@ -57,7 +57,7 @@ Create a review input using the exact fingerprints from `construction-report.jso
 }
 ```
 
-For `rework`, record one to three blocking issues. Each needs `region_or_part`, `observed`, `cause`, `intervention`, and `preserve`. Keep the rejected review. An `advance` decision must have no unresolved blocking issues and all declared constraints must pass. Planes and material reviews also require the value view.
+For `rework`, record one to three blocking issues. Each needs `region_or_part`, `observed`, `cause`, `intervention`, and `preserve`. Keep the rejected review. Under the [single-pass contract](../SKILL.md#single-pass-delivery), this ends construction with an incomplete draft. An `advance` decision must have no unresolved blocking issues and all declared constraints must pass. Planes and material reviews also require the value view.
 
 ```bash
 python <skill-dir>/scripts/construct.py review work/block-a block-review-input.json --output work/block-review.json
@@ -67,11 +67,13 @@ python <skill-dir>/scripts/construct.py build material-source.json --previous wo
 python <skill-dir>/scripts/construct.py validate work/material-a
 ```
 
-The next stage keeps the same part IDs, masks, origins, parents, anchors, paint order, constraints, intent, light, background, dimensions, and palette budget. Color allocation can change within those masks. A structural improvement returns to `block` with a new source and review. This preserves the freedom to redraw while preventing an old review from authorizing a changed pose. Material may be the final pass; it still needs actual final visual inspection and remains a draft.
+The next stage keeps the same part IDs, masks, origins, parents, anchors, paint order, constraints, intent, light, background, dimensions, and palette budget. Color allocation can change within those masks. An explicitly requested structural repair returns to `block` with a new source and review; an old review cannot authorize a changed pose. Material may be the final pass; it still needs actual final visual inspection and remains a draft.
 
 The output embeds reviewed ancestor sources and reviews so validation remains portable. It recomputes each ancestor and rejects missing stages, rework decisions, and stale source or pixel fingerprints. The records are declarations by the reviewer, not authenticated identities or proof of human perception. A self-review is valid authoring feedback, never independent acceptance. Use the existing promotion path only when its actual review requirements are met.
 
 ## Repair a part
+
+Use this route for one explicitly requested repair. A failed final inspection does not start it automatically.
 
 ```json
 {

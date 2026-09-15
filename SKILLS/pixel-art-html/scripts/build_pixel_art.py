@@ -25,6 +25,8 @@ COLLECTION_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-collection-template
 STUDY_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-study-template.html"
 PROJECT_HUB_TEMPLATE_PATH = SKILL_DIR / "assets" / "pixel-art-project-hub-template.html"
 CLEAR_TOKENS = {None, "", ".", "..", "none", "null", "transparent", "clear"}
+MAX_DIMENSION = 512
+MAX_EXPORT_DIMENSION = 4096
 RECOMMENDED_SIZES = (16, 24, 32, 40, 48, 64)
 EVIDENCE_TIERS = ("fixture", "draft", "representative", "production-candidate")
 AUTHORING_EVIDENCE_TIERS = ("fixture", "draft")
@@ -62,8 +64,8 @@ def checked_dimension(value: Any, name: str) -> int:
         result = int(value)
     except (TypeError, ValueError) as exc:
         raise ArtifactError(f"{name} must be an integer") from exc
-    if not 8 <= result <= 128:
-        raise ArtifactError(f"{name} must be between 8 and 128")
+    if not 8 <= result <= MAX_DIMENSION:
+        raise ArtifactError(f"{name} must be between 8 and {MAX_DIMENSION}")
     return result
 
 
@@ -427,12 +429,17 @@ def png_chunk(kind: bytes, payload: bytes) -> bytes:
     return struct.pack(">I", len(payload)) + kind + payload + struct.pack(">I", binascii.crc32(kind + payload) & 0xFFFFFFFF)
 
 
-def write_png(artifact: dict[str, Any], path: Path, scale: int) -> None:
+def write_png(artifact: dict[str, Any], path: Path, scale: int | None) -> None:
+    if scale is None:
+        scale = 16 if max(artifact["width"], artifact["height"]) <= 128 else 1
     if not 1 <= scale <= 32:
         raise ArtifactError("scale must be between 1 and 32")
     width = artifact["width"] * scale
     height = artifact["height"] * scale
-    rows: list[bytes] = []
+    if max(width, height) > MAX_EXPORT_DIMENSION:
+        raise ArtifactError(f"export exceeds {MAX_EXPORT_DIMENSION} pixels per side; choose a smaller --scale")
+    compressor = zlib.compressobj(9)
+    chunks: list[bytes] = []
     for source_row in artifact["grid"]:
         row = bytearray()
         for color in source_row:
@@ -442,10 +449,11 @@ def write_png(artifact: dict[str, Any], path: Path, scale: int) -> None:
                 rgba = bytes((0, 0, 0, 0))
             row.extend(rgba * scale)
         encoded = b"\x00" + bytes(row)
-        rows.extend([encoded] * scale)
+        for _ in range(scale):
+            chunks.append(compressor.compress(encoded))
     signature = b"\x89PNG\r\n\x1a\n"
     ihdr = struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0)
-    path.write_bytes(signature + png_chunk(b"IHDR", ihdr) + png_chunk(b"IDAT", zlib.compress(b"".join(rows), 9)) + png_chunk(b"IEND", b""))
+    path.write_bytes(signature + png_chunk(b"IHDR", ihdr) + png_chunk(b"IDAT", b"".join(chunks) + compressor.flush()) + png_chunk(b"IEND", b""))
 
 
 def paeth_predictor(left: int, above: int, upper_left: int) -> int:
@@ -648,14 +656,14 @@ def render_study_html(artifacts: list[dict[str, Any]], path: Path) -> None:
     path.write_text(result, encoding="utf-8", newline="\n")
 
 
-def write_artifact(artifact: dict[str, Any], output: Path, scale: int) -> None:
+def write_artifact(artifact: dict[str, Any], output: Path, scale: int | None) -> None:
     output.mkdir(parents=True, exist_ok=True)
     (output / "pixel-art.json").write_text(json.dumps(artifact, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
     render_html(artifact, output / "index.html")
     write_png(artifact, output / "pixel-art.png", scale)
 
 
-def write_collection(artifacts: list[dict[str, Any]], output: Path, scale: int, title: str, kind: str = "collection") -> dict[str, Any]:
+def write_collection(artifacts: list[dict[str, Any]], output: Path, scale: int | None, title: str, kind: str = "collection") -> dict[str, Any]:
     if len(artifacts) < 2:
         raise ArtifactError("a collection or pack needs at least two artifacts")
     if kind not in {"collection", "pack"}:
@@ -725,7 +733,7 @@ def validate_study_artifacts(artifacts: list[dict[str, Any]]) -> None:
         raise ArtifactError("direction study candidates must be draft artifacts")
 
 
-def write_study(artifacts: list[dict[str, Any]], output: Path, scale: int, title: str) -> dict[str, Any]:
+def write_study(artifacts: list[dict[str, Any]], output: Path, scale: int | None, title: str) -> dict[str, Any]:
     validate_study_artifacts(artifacts)
     output.mkdir(parents=True, exist_ok=True)
     paths = ("sample-a", "sample-b", "sample-c")
@@ -1700,31 +1708,31 @@ def parse_args() -> argparse.Namespace:
     spec_parser = subparsers.add_parser("from-spec", help="Compile a compact JSON scene spec.")
     spec_parser.add_argument("spec", type=Path)
     add_output_options(spec_parser)
-    spec_parser.add_argument("--scale", type=int, default=16)
+    spec_parser.add_argument("--scale", type=int, default=None, help="PNG scale: defaults to 16 through 128px masters, otherwise native 1x; export sides must not exceed 4096px.")
 
     repair_parser = subparsers.add_parser("repair", help="Compile an authored same-grid repair from canonical JSON plus a compact spec.")
     repair_parser.add_argument("baseline", type=Path, help="Canonical pixel-art.json baseline to preserve for comparison.")
     repair_parser.add_argument("spec", type=Path, help="Authored repair spec with repair_decisions.")
     add_output_options(repair_parser)
-    repair_parser.add_argument("--scale", type=int, default=16)
+    repair_parser.add_argument("--scale", type=int, default=None, help="PNG scale: defaults to 16 through 128px masters, otherwise native 1x; export sides must not exceed 4096px.")
 
     study_parser = subparsers.add_parser("study", help="Compile exactly three same-grid draft directions plus an anonymous blind board.")
     study_parser.add_argument("specs", nargs=3, type=Path)
     study_parser.add_argument("--output", type=Path, required=True)
     study_parser.add_argument("--title", default="Pixel art direction study")
-    study_parser.add_argument("--scale", type=int, default=16)
+    study_parser.add_argument("--scale", type=int, default=None, help="PNG scale: defaults to 16 through 128px masters, otherwise native 1x; export sides must not exceed 4096px.")
 
     collection_parser = subparsers.add_parser("collection", help="Compile several exact specs into one resolution set.")
     collection_parser.add_argument("specs", nargs="+", type=Path)
     add_output_options(collection_parser)
     collection_parser.add_argument("--title", default="Pixel art resolution set")
-    collection_parser.add_argument("--scale", type=int, default=16)
+    collection_parser.add_argument("--scale", type=int, default=None, help="PNG scale: defaults to 16 through 128px masters, otherwise native 1x; export sides must not exceed 4096px.")
 
     pack_parser = subparsers.add_parser("pack", help="Compile several same-size or mixed-size specs into one named asset set.")
     pack_parser.add_argument("specs", nargs="+", type=Path)
     add_output_options(pack_parser)
     pack_parser.add_argument("--title", default="Pixel art asset pack")
-    pack_parser.add_argument("--scale", type=int, default=16)
+    pack_parser.add_argument("--scale", type=int, default=None, help="PNG scale: defaults to 16 through 128px masters, otherwise native 1x; export sides must not exceed 4096px.")
 
     image_parser = subparsers.add_parser("from-image", help="Convert a local image with Pillow.")
     image_parser.add_argument("image", type=Path)
@@ -1747,7 +1755,7 @@ def parse_args() -> argparse.Namespace:
     image_parser.add_argument("--min-cluster", type=int, default=1, help="Merge image-derived color clusters smaller than N cells; keep 1 for no cleanup.")
     image_parser.add_argument("--title")
     image_parser.add_argument("--evidence-tier", choices=AUTHORING_EVIDENCE_TIERS, default="draft", help="Label the authored artifact; promotion is a separate reviewed command.")
-    image_parser.add_argument("--scale", type=int, default=16)
+    image_parser.add_argument("--scale", type=int, default=None, help="PNG scale: defaults to 16 through 128px masters, otherwise native 1x; export sides must not exceed 4096px.")
 
     promote_parser = subparsers.add_parser("promote", help="Promote one draft after a fingerprint-bound blind review.")
     promote_parser.add_argument("output", type=Path)

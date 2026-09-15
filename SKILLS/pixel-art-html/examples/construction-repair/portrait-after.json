@@ -52,7 +52,7 @@
   ],
   "art_direction": {
     "use": "portrait",
-    "light": "upper left; lantern interiors emit warm light",
+    "light": "upper left; one external light shared by face, hair, and coat",
     "construction": "Align eyes and face on a shared axis; build a coherent cheek and sweeping hair mass."
   },
   "repair_decisions": {

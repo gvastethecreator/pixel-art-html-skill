@@ -72,7 +72,7 @@ The repair spec uses the normal exact-grid schema and must add:
 
 The compiler rejects missing decisions, dimension drift, and zero-cell no-ops. Canonical output preserves the full baseline grid/palette, repair decisions, original image analysis if present, and recomputed changed/painted-cell evidence. Its proof page shows baseline and repair at equal scale. Blind mode hides the artifact title and changes captions to neutral `Sample A` / `Sample B` labels. These fields prove a reviewable authored intervention, never automatic artistic acceptance.
 
-If the subject cannot read after subtraction, change the crop, pose, or source direction. More structure labels or colors will not repair an information-budget failure.
+If the subject cannot read after a requested recovery intervention, record the unresolved crop, pose or source-direction limitation and deliver. Do not start another recovery cycle.
 
 ## 5. Run the deterministic reconstruction benchmark
 

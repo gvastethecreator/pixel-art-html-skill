@@ -51,7 +51,7 @@
     .preview-foot strong { color: var(--ink); }
     .status { display: inline-flex; align-items: center; gap: 8px; }
     .status::before { width: 9px; height: 9px; content: ""; border-radius: 50%; background: var(--control); box-shadow: 0 0 0 2px var(--paper-raised), 0 0 0 3px var(--edge-strong); }
-    .stage { min-width: 0; min-height: 430px; display: grid; place-items: center; padding: 58px; overflow: auto; background-color: var(--stage); background-image: linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px); background-size: 20px 20px; scrollbar-color: var(--control) var(--stage); }
+    .stage { min-width: 0; min-height: 430px; display: grid; align-items: safe center; justify-items: safe center; padding: 58px; overflow: auto; background-color: var(--stage); background-image: linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px); background-size: 20px 20px; scrollbar-color: var(--control) var(--stage); }
     .proof-frame { position: relative; padding: 14px; border: 2px solid var(--edge-strong); background-color: #20231d; background-image: linear-gradient(45deg, #171914 25%, transparent 25%), linear-gradient(-45deg, #171914 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #171914 75%), linear-gradient(-45deg, transparent 75%, #171914 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0; }
     canvas { display: block; max-width: none; image-rendering: pixelated; image-rendering: crisp-edges; background: transparent; }
     .inspector { display: flex; flex-direction: column; min-width: 0; background: var(--paper); }
@@ -140,7 +140,7 @@
         <section class="panel">
           <h2 class="panel-title"><span>View</span><span class="panel-index">01</span></h2>
           <label class="control-label" for="zoom"><span>Cell scale</span><output id="zoom-value" for="zoom"></output></label>
-          <input id="zoom" type="range" min="4" max="32" step="1" value="16">
+          <input id="zoom" type="range" min="1" max="32" step="1" value="16">
           <label class="check-row" for="grid"><input id="grid" type="checkbox" checked><span>Show grid overlay</span></label>
           <label class="check-row" id="source-grid-row" data-blind-sensitive for="source-grid" hidden><input id="source-grid" type="checkbox"><span id="source-grid-label">Show recovered source lattice</span></label>
           <label class="check-row" for="blind-review"><input id="blind-review" type="checkbox"><span>Hide title for blind review</span></label>
@@ -409,6 +409,8 @@
       window.__PIXEL_ART_READY__ = true;
     }
 
+    zoom.max = String(Math.min(32, Math.floor(4096 / Math.max(data.width, data.height))));
+
     function fitCanvas() {
       const stageStyles = getComputedStyle(stage);
       const frameStyles = getComputedStyle(proofFrame);
@@ -416,11 +418,11 @@
       const verticalChrome = parseFloat(stageStyles.paddingTop) + parseFloat(stageStyles.paddingBottom) + parseFloat(frameStyles.paddingTop) + parseFloat(frameStyles.paddingBottom) + parseFloat(frameStyles.borderTopWidth) + parseFloat(frameStyles.borderBottomWidth);
       const availableWidth = Math.max(64, stage.clientWidth - horizontalChrome);
       const availableHeight = Math.max(64, stage.clientHeight - verticalChrome);
-      zoom.value = String(Math.max(4, Math.min(32, Math.floor(Math.min(availableWidth / data.width, availableHeight / data.height)))));
+      zoom.value = String(Math.max(1, Math.min(Number(zoom.max), Math.floor(Math.min(availableWidth / data.width, availableHeight / data.height)))));
       render();
     }
 
-    function exportCanvas(scale = 16) {
+    function exportCanvas(scale = Math.max(data.width, data.height) <= 128 ? 16 : 1) {
       const output = document.createElement('canvas');
       output.width = data.width * scale;
       output.height = data.height * scale;

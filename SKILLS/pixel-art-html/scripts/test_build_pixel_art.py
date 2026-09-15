@@ -28,6 +28,31 @@ def requires_pillow(test_method):
 
 
 class PixelArtBuilderTests(unittest.TestCase):
+    def test_large_rectangular_master_exports_native_and_preserves_edge_cells(self):
+        artifact = module.compile_spec({
+            'width': 512, 'height': 256, 'evidence_tier': 'fixture',
+            'pixels': [{'x': 0, 'y': 0, 'color': '#123456'},
+                       {'x': 511, 'y': 255, 'color': '#ABCDEF'}],
+        })
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)
+            module.write_artifact(artifact, output, None)
+            self.assertEqual(module.validate_png_parity(artifact, output / 'pixel-art.png'), 1)
+            self.assertEqual(module.validate_output(output)['grid'][255][511], '#ABCDEF')
+            self.assertIsNone(artifact['grid'][255][510])
+            with self.assertRaisesRegex(module.ArtifactError, 'smaller --scale'):
+                module.write_png(artifact, output / 'too-large.png', 16)
+        with self.assertRaisesRegex(module.ArtifactError, 'between 8 and 512'):
+            module.compile_spec({'width': 513, 'height': 256})
+        source = {'kind': 'construction', 'schema_version': 1, 'stage': 'block',
+                  'title': 'Large part fixture', 'intent': 'Boundary checks only',
+                  'light': 'Upper left', 'width': 256, 'height': 512,
+                  'palette_budget': 1, 'background': None, 'palette': {'x': '#123456'},
+                  'parts': [{'id': 'edge', 'origin': [255, 0], 'grid': ['x'] * 512}],
+                  'constraints': []}
+        part_artifact, _ = construct.compile_parts(source)
+        self.assertEqual(part_artifact['grid'][511][255], '#123456')
+
     def test_compile_spec_and_write_standalone_artifact(self) -> None:
         spec = {
             "title": "Test beacon",
