@@ -1271,6 +1271,8 @@ def validate_artifact(artifact: dict[str, Any]) -> None:
         raise ArtifactError("unsupported schema_version")
     if "evidence_tier" in artifact:
         checked_evidence_tier(artifact["evidence_tier"])
+    if artifact.get("evidence_tier") in PROMOTED_EVIDENCE_TIERS and artifact.get("source", {}).get("manual_repair_required") is True:
+        raise ArtifactError("promotion requires an authored same-grid repair for this image draft")
     width = checked_dimension(artifact["width"], "width")
     height = checked_dimension(artifact["height"], "height")
     if not isinstance(artifact["grid"], list) or len(artifact["grid"]) != height:
@@ -1560,12 +1562,12 @@ def promote_output(output: Path, review: dict[str, Any], tier: str) -> dict[str,
         ]
         if any(artifact.get("evidence_tier") != "draft" for artifact in artifacts):
             raise ArtifactError("every artifact in a set must be draft before promotion")
-        promoted_artifacts: list[dict[str, Any]] = []
+        promoted_artifacts = [{**artifact, "evidence_tier": promoted_tier} for artifact in artifacts]
+        for promoted in promoted_artifacts:
+            validate_artifact(promoted)
         root_fingerprints: dict[str, str] = {}
-        for path, artifact in zip(paths, artifacts):
+        for path, artifact, promoted in zip(paths, artifacts, promoted_artifacts):
             scale = validate_png_parity(artifact, output / path / "pixel-art.png")
-            promoted = {**artifact, "evidence_tier": promoted_tier}
-            promoted_artifacts.append(promoted)
             fingerprint = artifact_fingerprint(promoted)
             root_fingerprints[f"{path}/pixel-art.json"] = fingerprint
             write_artifact(promoted, output / path, scale)
@@ -1584,6 +1586,7 @@ def promote_output(output: Path, review: dict[str, Any], tier: str) -> dict[str,
         validate_review_fields(review, promoted_tier)
         scale = validate_png_parity(result, output / "pixel-art.png")
         promoted = {**result, "evidence_tier": promoted_tier}
+        validate_artifact(promoted)
         write_artifact(promoted, output, scale)
         record = canonical_review_record(
             review,

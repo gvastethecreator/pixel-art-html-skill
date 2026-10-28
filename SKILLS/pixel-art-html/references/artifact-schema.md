@@ -105,7 +105,7 @@ Use the normal spec fields plus three mandatory decisions:
 }
 ```
 
-Compile with `repair <canonical-baseline.json> <repair-spec.json>`. Dimensions default to the baseline but must never differ. Canonical repair source records `kind: manual-repair`, `manual_repair_status: authored-review-required`, full baseline grid/palette, the decisions, original analysis if present, and exact delta evidence. Validation recomputes baseline palette, dimensions, subject cells, changed cells, repaired subject cells, proof intents, and status. Edited metadata cannot fake the comparison.
+Compile with `repair <canonical-baseline.json> <repair-spec.json>`. Dimensions default to the baseline but must never differ. Canonical repair source records `kind: manual-repair`, `manual_repair_status: authored-review-required`, full baseline grid/palette, the decisions, original analysis if present, and exact delta evidence. Validation recomputes the comparison against the embedded baseline and rejects inconsistent counts or status. It does not authenticate that baseline against an independently preserved original.
 
 Canonical palette arrays follow first raster appearance, not source declaration order. If order is not part of the test, compare palette sets or semantic source aliases.
 

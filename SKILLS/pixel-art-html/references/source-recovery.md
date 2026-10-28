@@ -1,6 +1,6 @@
 # Small-grid source recovery
 
-Use this if you convert an uncertain image source to an exact 8x8-32x32 runtime grid. Recovery improves cell placement; it does not replace low-resolution art direction or manual pixel editing.
+Use this if you convert an uncertain image source to an exact 8x8-32x32 runtime grid. Recovery attempts to recover source structure; inspect the result. It does not replace low-resolution art direction or manual pixel editing.
 
 ## 1. Classify before packing
 
@@ -47,7 +47,7 @@ Automatic conversion always remains a draft at 8x8 and 16x16:
 - keep one orientation cue and one identity/focal cue
 - remove secondary forms that compete for the same cells
 - prefer connected dark, mid, and light clusters over local source fidelity
-- use at most one or two single-cell accents, only if they survive native 1x review
+- keep isolated accents only when each serves a visible purpose at native 1x
 - compare without the title or source image visible
 
 Image-derived canonical metadata sets `manual_repair_required` for these sizes unless an exact matching lattice was preserved. The proof page repeats that as a review warning so a clean validator result cannot hide the missing authoring pass.

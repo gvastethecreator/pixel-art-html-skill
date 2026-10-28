@@ -339,6 +339,19 @@ class PixelArtBuilderTests(unittest.TestCase):
             self_review = {**review, "reviewer": {"kind": "self", "name": "Builder"}}
             with self.assertRaisesRegex(module.ArtifactError, "non-builder reviewer"):
                 module.promote_output(output, self_review, "representative")
+            image_draft = {**artifact, "source": {"kind": "image", "manual_repair_required": True}}
+            image_output = Path(temp) / "image-draft"
+            module.write_artifact(image_draft, image_output, 4)
+            before = {p.name: p.read_bytes() for p in image_output.iterdir()}
+            with self.assertRaisesRegex(module.ArtifactError, "authored same-grid repair"):
+                module.promote_output(image_output, review, "representative")
+            self.assertEqual({p.name: p.read_bytes() for p in image_output.iterdir()}, before)
+            with self.assertRaisesRegex(module.ArtifactError, "authored same-grid repair"):
+                module.validate_artifact({**image_draft, "evidence_tier": "representative"})
+            preserved_image = {**artifact, "source": {"kind": "image", "manual_repair_required": False, "reconstruction": "exact-nearest"}}
+            preserved_output = Path(temp) / "preserved-image"
+            module.write_artifact(preserved_image, preserved_output, 4)
+            self.assertEqual(module.promote_output(preserved_output, review, "representative")["evidence_tier"], "representative")
             promoted = module.promote_output(output, review, "representative")
             self.assertEqual(promoted["evidence_tier"], "representative")
             verified = module.validate_output(output)
@@ -417,6 +430,12 @@ class PixelArtBuilderTests(unittest.TestCase):
             with self.assertRaisesRegex(module.ArtifactError, "every item path"):
                 module.promote_output(output, missing_item, "representative")
             self.assertEqual(module.validate_output(output)["kind"], "pack")
+            image_pack = Path(temp) / "image-pack"
+            module.write_collection([first, {**second, "source": {"kind": "image", "manual_repair_required": True}}], image_pack, 4, "Key set", kind="pack")
+            before = {p.relative_to(image_pack).as_posix(): p.read_bytes() for p in image_pack.rglob("*") if p.is_file()}
+            with self.assertRaisesRegex(module.ArtifactError, "authored same-grid repair"):
+                module.promote_output(image_pack, review, "representative")
+            self.assertEqual({p.relative_to(image_pack).as_posix(): p.read_bytes() for p in image_pack.rglob("*") if p.is_file()}, before)
             promoted = module.promote_output(output, review, "representative")
             self.assertEqual(promoted["kind"], "pack")
             self.assertEqual(module.result_summary(promoted, output)["evidence_tiers"], ["representative", "representative"])

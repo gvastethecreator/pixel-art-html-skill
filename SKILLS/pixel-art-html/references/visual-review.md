@@ -57,7 +57,7 @@ Reviewer kinds: `self` (structured author review; cannot promote); `user` (can p
 python <skill-dir>/scripts/build_pixel_art.py promote <draft-output> <review-input.json> --tier representative
 ```
 
-Revalidates JSON/PNG/HTML parity. Refuses fixtures, already-promoted output, and direction studies. Validates reviewer authority, observations, and gates. Fingerprints width, height, background, palette, and every exact grid cell. Writes canonical `visual-review.json`, updates the evidence tier and embedded proof, then validates the promoted output again.
+Revalidates JSON/PNG/HTML parity. Refuses fixtures, already-promoted output, direction studies, and image drafts still marked `manual_repair_required`. Checks declared reviewer role, observations, and gates; the JSON does not authenticate a reviewer or prove perception. Fingerprints width, height, background, palette, and every exact grid cell. Writes canonical `visual-review.json`, updates the evidence tier and embedded proof, then validates the promoted output again.
 
 For a set, every child receives the same bound review and the root record binds every child path. Later pixel drift, a stale proof page, a missing item observation, or a changed fingerprint fails `validate`.
 

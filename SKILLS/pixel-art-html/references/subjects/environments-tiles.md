@@ -17,7 +17,7 @@ Retrieve `foliage-bundles`, `stone-facets`, `water-flow`, `masonry-rhythm`, `til
 2. Shape the governing material structure: strata for rock, crown masses for foliage, connected flow for water, grout rhythm for walls, plane breaks for metal.
 3. Repeat a small cluster vocabulary with controlled spacing, hue, and orientation. Inspect overlap junctions for holes and isolated remnants.
 4. For seamless work, make opposite edges agree and inspect the generated 3x repeat proof.
-5. Add restrained variants that preserve projection, light, palette roles, and edge contract.
+5. If variants were requested, preserve projection, light, palette roles, and edge contract.
 
 ## Reject
 

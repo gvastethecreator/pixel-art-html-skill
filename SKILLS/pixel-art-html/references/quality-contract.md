@@ -54,7 +54,7 @@ Canonical source metadata records classified source type, confidence, detector, 
 
 `contain` preserves complete icons/characters. `cover` fills scenes. `stretch` is explicit distortion. Final crop preserves identity features and required negative space. Alpha edges have no source-background halo. Replace quantization noise with authored clusters. Palette count within the requested limit and still provides value separation. The exact grid, not the source image, carries recognition.
 
-At 8x8 and 16x16, automatic reconstruction stays `draft` until a human or agent explicitly repairs the silhouette and one identity cue and passes the title-free native-scale read. Representative 8x8/16x16 image recovery preserves the losing canonical baseline, records silhouette/identity/subtraction decisions, and exposes a same-grid blind before/after proof. A non-empty changed-cell delta proves intervention, not improvement. Reconstruction benchmark metrics can justify routing changes — they do not measure composition, specificity, material read, or artistic quality.
+Automatic conversion starts as `draft`. If `source.manual_repair_required` is true, promotion requires an authored same-grid repair preserving the losing baseline, silhouette/identity/subtraction decisions, and blind before/after proof. An exact matching source lattice preserved with nearest sampling does not require an invented repair. Both routes still require the normal fingerprint-bound review for promotion. A non-empty changed-cell delta proves intervention, not improvement. Reconstruction benchmark metrics do not measure artistic quality.
 
 If the source is not already pixel-clean, read [image-source-brief.md](image-source-brief.md) before generation or conversion.
 
@@ -80,6 +80,6 @@ Resolve every warning through visual inspection or state why it is intentional.
 - Every item recognizable but interchangeable with a stock pictogram — no useful signature or specific construction survives.
 - Background has equal or greater contrast/detail than the focal subject.
 - Any requested collection master is missing or mechanically resized from another master.
-- An image-derived 8x8/16x16 artifact promoted without an authored same-grid repair record, title-hidden baseline comparison, and fingerprint-bound reviewer record.
+- An image draft marked `manual_repair_required` promoted without an authored same-grid repair and title-hidden baseline comparison, or any artifact promoted without its required fingerprint-bound review.
 - Browser proof absent, blurry, clipped, empty, or not the final generated artifact.
 - HTML depends on a server, CDN, external font, framework, or network request.

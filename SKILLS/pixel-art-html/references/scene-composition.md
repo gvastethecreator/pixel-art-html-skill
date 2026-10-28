@@ -57,7 +57,7 @@ The new output contains standalone `index.html`, editable `scene.json` with embe
 
 The viewer provides drag pan, wheel zoom at the pointer, zoom buttons, native scale, fit, keyboard arrows and Home, optional group visibility, and authored focus points. Color, values, and actor silhouettes are separate views. Actor silhouettes leave a subdued environment for occlusion context.
 
-The camera uses integer physical pixels, including fractional device pixel ratios. `1×` means one native cell per physical display pixel. The backing canvas uses its content box; including the CSS border in its backing dimensions stretches the art. Pointer positions must use the same device-pixel conversion as the camera. Record the viewport and device pixel ratio when judging native readability.
+The camera computes integer positions and scale in canvas backing pixels using `window.devicePixelRatio`. `1×` maps one native cell to one backing pixel. The backing canvas uses its content box; including the CSS border in its backing dimensions stretches the art. Pointer positions use the same conversion as the camera. Inspect the browser output at the actual viewport and DPR; this calculation alone does not prove physical display alignment or clarity.
 
 At closeout, inspect the composed image, a crowded interaction, and a foreground/background crossing. Exercise actual drag, wheel anchoring, zoom limits, fit, native scale, keyboard pan, and group toggles. Check cancellation or loss of pointer capture so the camera does not remain in dragging state. Source/PNG equality alone does not prove these controls.
 

@@ -39,7 +39,7 @@ Pass: title-free viewer identifies subject, orientation, pose/action. If the sha
 - Strongest contrast on focal cue.
 - Light as connected plane-shaped clusters. Avoid bright center with dark edges.
 
-Pass: grayscale separates main planes and focus. If silhouette or value fails twice, reset direction instead of polishing.
+Pass: grayscale separates main planes and focus. If silhouette or value blocks advancement, stop with an incomplete draft. Restarting or changing direction requires an explicit request.
 
 ## FINISH - material and signature
 
@@ -88,7 +88,7 @@ During new single-pass construction, use this map to name a blocking limitation,
 
 | Symptom | Return to | Change |
 |---|---|---|
-| valid but generic | STUDY / BLOCK | different silhouette thesis. Preserve one construction |
+| valid but generic | BLOCK | strengthen the silhouette thesis within the requested repair |
 | recognizable only by title | BLOCK | enlarge identity cue and negative gap |
 | muddy despite many colors | LIGHT | merge colors; widen value jobs |
 | flat volume | LIGHT | one source; rebuild plane clusters |
@@ -96,4 +96,4 @@ During new single-pass construction, use this map to name a blocking limitation,
 | noisy | FINISH / CUT | reusable clusters and quiet gaps |
 | tiny conversion looks like thumbnail | BLOCK | same-grid repair. Remove sampled micro-detail |
 | tile repeats visibly | FINISH / PROVE | neutralize base, fix edges, move landmarks to variants |
-| set looks coherent but interchangeable | STUDY / BLOCK | strengthen item-specific silhouette cues |
+| set looks coherent but interchangeable | BLOCK | strengthen item-specific silhouette cues |

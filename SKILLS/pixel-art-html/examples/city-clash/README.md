@@ -15,7 +15,7 @@ python SKILLS/pixel-art-html/scripts/compose_scene.py validate .local/city-clash
 
 The output directory must be new. The builder writes editable source specs, native HTML/JSON/PNG masters, block and plane checkpoints for structures and actors, a scene manifest, and a standalone viewer. Open `view/index.html`. Use drag, wheel, the camera buttons, or keyboard arrows and Home. Faction buttons hide/show their actors and contact shadows. The proof selector shows values or actor silhouettes.
 
-The camera scales in physical pixels, so `1×` stays exact on fractional-DPR screens. This can appear smaller than one CSS pixel per source cell. The PNG always remains 480x320.
+The camera computes backing dimensions from `window.devicePixelRatio`; `1×` uses one backing pixel per source cell. This can appear smaller than one CSS pixel per cell. Check the actual browser presentation at its viewport and DPR; the calculation does not certify every screen. The native PNG remains 480x320.
 
 ## Construction decisions and criticism
 

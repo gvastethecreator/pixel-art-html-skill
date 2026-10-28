@@ -19,7 +19,7 @@
     {
       "id": "text-storm-lighthouse-16",
       "route": "text",
-      "prompt": "Create a 16x16 exact-grid lighthouse in a night storm. It must read at native size, use one warm lantern against cool water, and ship as standalone HTML, editable JSON, and PNG.",
+      "prompt": "Create a 16x16 exact-grid lighthouse in a night storm. Compare three anonymous same-grid directions, then finish one selected direction. It must read at native size, use one warm lantern against cool water, and ship as standalone HTML, editable JSON, and PNG.",
       "expected_output": "A draft 16x16 lighthouse with three anonymous same-grid directions, explicit silhouette/value checkpoints, a warm focal cue, exact standalone artifacts, and an honest blind-read verdict.",
       "files": [],
       "required_evidence": [
@@ -92,7 +92,7 @@
     {
       "id": "severe-grid-scout-ship-8",
       "route": "severe-grid-repair",
-      "prompt": "Recover the supplied 32x32 scout-ship fixture into an exact 8x8 master. Preserve top-down orientation, an amber cockpit cue, and two cool engine cues. Keep the automatic 8x8 baseline and prove an authored same-grid repair without labels.",
+      "prompt": "Recover the supplied 32x32 scout-ship fixture into an exact 8x8 master. Compare three anonymous same-grid directions and select one for a single authored repair. Preserve top-down orientation, an amber cockpit cue, and two cool engine cues. Keep the automatic 8x8 baseline and prove that repair without labels.",
       "expected_output": "An 8x8 repair case with a preserved losing baseline, three anonymous direction grids, explicit repair decisions, exact proof artifacts, and a blind verdict that may remain draft if craft recognition is ambiguous.",
       "files": [
         "examples/small-grid-repair/transfer/sources/ship-32.json"
@@ -130,7 +130,7 @@
     {
       "id": "reference-foliage-tree-32",
       "route": "reference-construction",
-      "prompt": "Create an original 32x32 transparent tree for a top-down game with at most eight colors. Use a foliage construction technique and inspect local process references if available. Keep a readable trunk and an asymmetric crown. Show how silhouette, value, and material were built, then repair one observed visual problem.",
+      "prompt": "Create an original 32x32 transparent tree for a top-down game with at most eight colors. Compare three anonymous same-grid directions, then finish one selected direction. Use a foliage construction technique and inspect local process references if available. Keep a readable trunk and an asymmetric crown. Show how silhouette, value, and material were built, then repair one observed visual problem.",
       "expected_output": "An original draft with reference decisions, part and overlap planning, distinct same-grid directions, buildable passes, and one evidence-based pixel repair.",
       "files": [],
       "required_evidence": [
