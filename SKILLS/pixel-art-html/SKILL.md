@@ -111,7 +111,7 @@ For image input, retain the automatic draft and provenance. See [source-recovery
 
 ## 6. Prove the final pixels and presentation
 
-Run `validate` and `critique`. Inspect generated HTML in a real browser at native 1x, 2x, 4x, silhouette and value. Use available browser tooling; `$browser-ui-verification` gives the procedure when installed. Distinguish logical grid, canvas backing pixels, CSS scale, device pixel ratio and screen origin. A fractional DPR alone is not a failure; an integer product of CSS scale and DPR can still align. Do not attribute presentation blur to the drawing or silently resample the master.
+Run `validate` and `critique`. Inspect generated HTML in a real browser at native 1x, 2x, 4x, silhouette and value. Use available browser tooling to open the artifact, exercise its controls and capture the relevant rendered states. No separate browser skill is required. Distinguish logical grid, canvas backing pixels, CSS scale, device pixel ratio and screen origin. A fractional DPR alone is not a failure; an integer product of CSS scale and DPR can still align. Do not attribute presentation blur to the drawing or silently resample the master.
 
 Review without title, provenance, metrics or direction card first. Record actual subject, orientation/action, material, focus, signature and mismatch. A builder who knows the brief cannot claim an independent blind test.
 
