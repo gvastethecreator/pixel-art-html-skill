@@ -246,6 +246,8 @@ def validate_output(output):
     artifact, report = compile_parts(source)
     check_lineage(source, lineage)
     actual = core.validate_output(output)
+    if actual.get('evidence_tier') in core.PROMOTED_EVIDENCE_TIERS:
+        artifact['evidence_tier'] = actual['evidence_tier']
     if actual != artifact or read(output / 'construction-report.json') != report:
         raise ValueError('Construction, report, and native artifact disagree')
     if core.read_embedded_json(output / 'parts.html', 'construction-data') != payload(source, report):

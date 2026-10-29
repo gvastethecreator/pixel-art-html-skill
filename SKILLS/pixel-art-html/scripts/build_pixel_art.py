@@ -60,20 +60,16 @@ def normalize_color(value: Any, palette: dict[str, str] | None = None) -> str | 
 
 
 def checked_dimension(value: Any, name: str) -> int:
-    try:
-        result = int(value)
-    except (TypeError, ValueError) as exc:
-        raise ArtifactError(f"{name} must be an integer") from exc
+    result = checked_int(value, name)
     if not 8 <= result <= MAX_DIMENSION:
         raise ArtifactError(f"{name} must be between 8 and {MAX_DIMENSION}")
     return result
 
 
 def checked_int(value: Any, name: str) -> int:
-    try:
-        return int(value)
-    except (TypeError, ValueError) as exc:
-        raise ArtifactError(f"{name} must be an integer") from exc
+    if type(value) is not int:
+        raise ArtifactError(f"{name} must be an integer")
+    return value
 
 
 def checked_evidence_tier(value: Any) -> str:
@@ -760,7 +756,11 @@ def parse_sizes(value: str) -> list[int]:
     tokens = [str(size) for size in RECOMMENDED_SIZES] if value.strip().lower() == "all" else [token.strip() for token in value.split(",") if token.strip()]
     if not tokens:
         raise ArtifactError("sizes cannot be empty")
-    sizes = [checked_dimension(token, "size") for token in tokens]
+    try:
+        parsed = [int(token) for token in tokens]
+    except ValueError as exc:
+        raise ArtifactError("size must be an integer") from exc
+    sizes = [checked_dimension(size, "size") for size in parsed]
     if len(sizes) != len(set(sizes)):
         raise ArtifactError("sizes cannot contain duplicates")
     return sizes
@@ -773,8 +773,6 @@ def fit_image(image: Any, width: int, height: int, fit: str, resample: str = "la
     resampling = Image.Resampling.NEAREST if resample == "nearest" else Image.Resampling.LANCZOS
     if fit == "stretch":
         return source.resize((width, height), resampling)
-    source_ratio = source.width / source.height
-    target_ratio = width / height
     if fit == "contain":
         scale = min(width / source.width, height / source.height)
     else:
@@ -925,8 +923,8 @@ def run_pixel_fixer_detector(binary: Path, image: Path, mode: str = "full", time
     if payload is None:
         raise ArtifactError("pixel-fixer detector did not emit a JSON object")
     try:
-        columns = int(payload["cols"])
-        rows = int(payload["rows"])
+        columns = checked_int(payload["cols"], "cols")
+        rows = checked_int(payload["rows"], "rows")
         step_x = float(payload["step_x"])
         step_y = float(payload["step_y"])
     except (KeyError, TypeError, ValueError) as exc:
@@ -1015,7 +1013,6 @@ def two_stage_target_image(image: Any, target_width: int, target_height: int, fi
     structural_rgb = Image.new("RGB", source.size)
     structural_rgb.putdata([(r, g, b) if a > alpha_threshold else dominant for r, g, b, a in rgba_pixels])
     labels_image = structural_rgb.quantize(colors=structure_colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
-    labels = image_pixels(labels_image)
     source_pixels = source.load()
     label_pixels = labels_image.load()
     target = Image.new("RGBA", (target_width, target_height), (0, 0, 0, 0))
@@ -1620,6 +1617,8 @@ def slugify(value: str) -> str:
 
 def resolve_output(args: argparse.Namespace, title: str, now: datetime | None = None) -> tuple[Path, Path | None]:
     if args.output:
+        if args.output.exists():
+            raise ArtifactError("output must be a new directory; keep the previous draft")
         return args.output, None
     moment = now or datetime.now(timezone.utc)
     library = (args.project_root or Path.cwd()) / "pixel-art"
@@ -1668,6 +1667,13 @@ def discover_iterations(library: Path) -> list[dict[str, Any]]:
         except (OSError, json.JSONDecodeError):
             continue
         if isinstance(item, dict) and item.get("schema_version") == 1 and item.get("entry"):
+            relative = metadata_path.parent.relative_to(library).as_posix()
+            for field in ("entry", "thumbnail"):
+                value = item.get(field)
+                if (not isinstance(value, str) or not value.startswith(relative + "/")
+                    or any(part in {"", ".", ".."} for part in value.split("/"))
+                    or any(character in value for character in "\\:%?#")):
+                    raise ArtifactError(f"invalid managed {field} in {metadata_path}")
             items.append(item)
     return sorted(items, key=lambda item: (str(item.get("created_at", "")), str(item.get("id", ""))), reverse=True)
 
@@ -1805,9 +1811,10 @@ def main() -> int:
                 if not isinstance(spec, dict):
                     raise ArtifactError(f"spec root must be an object: {spec_path}")
                 artifacts.append(compile_spec(spec))
-            write_study(artifacts, args.output, args.scale, args.title)
-            result = validate_output(args.output)
-            print(json.dumps(result_summary(result, args.output), ensure_ascii=False))
+            output, _ = resolve_output(args, args.title)
+            write_study(artifacts, output, args.scale, args.title)
+            result = validate_output(output)
+            print(json.dumps(result_summary(result, output), ensure_ascii=False))
         elif args.command == "collection":
             artifacts: list[dict[str, Any]] = []
             for spec_path in args.specs:

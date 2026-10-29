@@ -39,6 +39,8 @@ Reference provenance and sampling limits: [reference-library.md](reference-libra
 
 Masters accept integer width and height from 8 through 512, including rectangular grids. The default PNG export is 16× for masters up to 128 pixels per side and native 1× for larger masters. Explicit `--scale` accepts 1–32, with a maximum exported side of 4096 pixels. Display zoom never changes the source grid.
 
+Authoring CLI commands require a new output directory. Keep earlier drafts; `promote` is the separate reviewed update to an existing draft.
+
 `pack` also builds a compact standalone showcase with integer scale, color/value/silhouette views, background controls, and links to each proof, PNG, and JSON. It supports mixed master sizes. Large previews scroll at native scale instead of shrinking below one pixel per cell. A named showcase is not an anonymous review or a promotion.
 
 For native assets and direction studies, use the existing compiler commands below.

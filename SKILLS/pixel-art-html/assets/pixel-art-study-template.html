@@ -10,12 +10,12 @@
     :root {
       color-scheme: dark;
       font-family: ui-monospace, "Cascadia Mono", monospace;
-      --paper: #090b09;
-      --raised: #111510;
-      --ink: #f2efe6;
-      --muted: #9ca198;
-      --line: #3b4139;
-      --stage: #020302;
+      --paper: #111111;
+      --raised: #1a1a1a;
+      --ink: #eeeeee;
+      --muted: #9f9f9f;
+      --line: #3f3f3f;
+      --stage: #111111;
     }
     * { box-sizing: border-box; }
     body { margin: 0; color: var(--ink); background: var(--paper); }
@@ -29,7 +29,7 @@
     .stage { min-height: 330px; display: grid; place-items: center; padding: 24px; overflow: auto; background: var(--stage); }
     canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
     .proof { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; margin-top: 14px; color: var(--muted); font-size: 11px; }
-    .native-shell { min-height: 42px; display: flex; align-items: center; padding: 8px; border: 1px solid var(--line); background: var(--stage); }
+    .native-shell { min-height: 42px; display: flex; align-items: center; padding: 8px; border: 1px solid var(--line); background: var(--stage);  overflow: auto; }
     @media (width <= 48rem) {
       header { align-items: start; flex-direction: column; }
       .board { grid-template-columns: 1fr; }
@@ -77,6 +77,9 @@
       label.textContent = 'Native 1x';
       const shell = document.createElement('span');
       shell.className = 'native-shell';
+      shell.tabIndex = 0;
+      shell.setAttribute('role', 'region');
+      shell.setAttribute('aria-label', `${item.label} native proof`);
       const native = document.createElement('canvas');
       native.setAttribute('aria-label', `${item.label} native proof`);
       paint(native, item, 1);

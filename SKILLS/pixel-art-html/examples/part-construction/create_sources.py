@@ -18,7 +18,7 @@ PALETTE = dict(i='#101923', s='#263946', d='#3E5260', m='#65776E', l='#9BAB9E',
 class Drawing:
     def __init__(self, title, size, intent, budget=16):
         self.source = dict(kind='construction', schema_version=1, stage='block', title=title,
-                           width=size[0], height=size[1], intent=intent, light='Upper left; warm beacon only in the lighthouse',
+                           width=size[0], height=size[1], intent=intent, light='Upper left',
                            background='#17232C', palette_budget=budget, palette=PALETTE.copy(), parts=[], constraints=[])
         self.world_origins = {}
 
@@ -46,6 +46,7 @@ class Drawing:
 
 def lighthouse():
     c=Drawing('El faro del espolón',(16,16),'A slender sea lighthouse rises from a broken rock shelf; the small lantern is its brightest cue',8)
+    c.source['light']='Upper left; warm beacon only in the lighthouse'
     c.shape('sea',[(0,12),(15,12),(15,15),(0,15)],'s')
     c.shape('rock',[(2,15),(3,13),(6,12),(11,12),(14,15)],'d')
     for p in c.source['parts']:p['role']='environment'

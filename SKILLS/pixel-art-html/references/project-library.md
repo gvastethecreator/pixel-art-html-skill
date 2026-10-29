@@ -15,6 +15,7 @@ pixel-art/
 - Allocate `NNN` from the highest existing number in that month.
 - Keep every artifact standalone. Never import runtime files from siblings or the hub.
 - Store factual title, kind, timestamp, sizes, source kind, entry, and thumbnail in `iteration.json`.
+- Keep entry and thumbnail paths within their iteration. Hub rebuild rejects URL schemes, traversal, and URL-encoded paths before replacing the catalog.
 - Preserve `kind: pack` and `source_kind: pack` for same-size asset sets. If a 32x32 item is present, select it as the thumbnail. Otherwise select the first manifest item.
 - Rebuild the root hub from iteration metadata after every managed build.
 - Interpret automatic loading as build-time catalog regeneration. Browsers cannot safely enumerate arbitrary `file://` folders.

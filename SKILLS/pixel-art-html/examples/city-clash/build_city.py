@@ -300,7 +300,7 @@ def main():
     def put(name,x,y,depth,group=None,flip=False,subject=False):
         placements.append(dict(asset=name,x=x,y=y,depth=depth,flip_x=flip,subject=subject,**({'group':group} if group else {})))
     floor=ground()
-    # The world is assembled from exact chunks; individual masters retain the 128px contract.
+    # Exact chunks keep each native master independently editable.
     for y in range(0,320,80):
         for x in range(0,480,120):
             part=Art(120,80);im=floor.image().crop((x,y,x+120,y+80))

@@ -9,9 +9,11 @@ import hashlib
 from html.parser import HTMLParser
 import io
 import json
+import os
 from pathlib import Path
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import unicodedata
@@ -87,7 +89,16 @@ def index_library(roots: dict[str, Path], probe: bool = False, workers: int = 4)
     tasks = []
     captions = {}
     for alias, root in roots.items():
-        for path in sorted(root.rglob("*")):
+        paths = []
+        for folder, directories, files in os.walk(root, followlinks=False):
+            for name in directories[:]:
+                child = Path(folder) / name
+                if name in {".git", "node_modules", "__pycache__"} or child.is_symlink() or (
+                    os.name == "nt" and child.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT
+                ):
+                    directories.remove(name)
+            paths.extend(Path(folder) / name for name in files)
+        for path in sorted(paths):
             if path.is_symlink() or not path.is_file():
                 continue
             relative = path.relative_to(root).as_posix()
@@ -144,7 +155,7 @@ def index_library(roots: dict[str, Path], probe: bool = False, workers: int = 4)
                          "exact_duplicates": sum("duplicate_of" in e for e in entries),
                          "errors": sum("error" in e for e in entries),
                          "visual_review": "none; indexing is not a visual review",
-                         "excluded": ["symlinks", ".git", "node_modules", "__pycache__"]},
+                         "excluded": ["symlinks", "Windows directory reparse points", ".git", "node_modules", "__pycache__"]},
             "entries": entries}
 
 
@@ -229,7 +240,7 @@ def make_board(index: dict, entries: list[dict], output: Path, fractions=(0.0,),
         except (OSError, ValueError) as exc:
             source_error = str(exc)
         for fraction in fractions:
-            tile = Image.new("RGB", (240, 200), "#20252d")
+            tile = Image.new("RGB", (240, 200), "#1a1a1a")
             draw = ImageDraw.Draw(tile)
             record = {"id": entry["id"], "path": entry["path"], "root": entry["root"],
                       "source_sha256": entry["sha256"], "fraction": fraction}
@@ -246,15 +257,15 @@ def make_board(index: dict, entries: list[dict], output: Path, fractions=(0.0,),
             except (OSError, ValueError, subprocess.SubprocessError) as exc:
                 record["error"] = str(exc)
                 draw.text((8, 50), "SAMPLE UNAVAILABLE", fill="#ffbb88")
-            draw.text((8, 157), f"{len(cells):03} {entry['id']} {fraction:g}", fill="#e8edf4")
+            draw.text((8, 157), f"{len(cells):03} {entry['id']} {fraction:g}", fill="#eeeeee")
             label = entry.get("caption") or entry["path"]
             label = label.rsplit("/", 1)[-1]
-            draw.text((8, 173), label[:35], fill="#bfc9d6")
-            draw.text((8, 186), label[35:70], fill="#bfc9d6")
+            draw.text((8, 173), label[:35], fill="#aaaaaa")
+            draw.text((8, 186), label[35:70], fill="#aaaaaa")
             records.append(record)
             cells.append(tile)
     rows = (len(cells) + columns - 1) // columns
-    board = Image.new("RGB", (240 * columns, rows * 200), "#12161d")
+    board = Image.new("RGB", (240 * columns, rows * 200), "#111111")
     for number, tile in enumerate(cells):
         board.paste(tile, (number % columns * 240, number // columns * 200))
     output.parent.mkdir(parents=True, exist_ok=True)

@@ -94,7 +94,7 @@ def grid_delta(before: dict, after: dict) -> dict:
             "changes": changes, "verdict": "not-assessed; a delta does not prove improvement"}
 
 
-def write_loupe(artifact: dict, output: Path, region=None, compare=None, background="#26333A") -> dict:
+def write_loupe(artifact: dict, output: Path, region=None, compare=None, background="#222222") -> dict:
     """Render a bounded coordinate diagnostic without altering either grid."""
     try:
         from PIL import Image, ImageColor, ImageDraw
@@ -120,22 +120,22 @@ def write_loupe(artifact: dict, output: Path, region=None, compare=None, backgro
     zoom_left = 36 + artifact["width"]
     panel_width = max(400, left + width * cell + 20, zoom_left + artifact["width"] * scale + 12)
     legend_top = top + height * cell + 24
-    image = Image.new("RGB", (panel_width * len(artifacts), legend_top + 20 * (len(colors) + 2)), "#151D27")
+    image = Image.new("RGB", (panel_width * len(artifacts), legend_top + 20 * (len(colors) + 2)), "#111111")
     draw = ImageDraw.Draw(image)
     panels = []
     for index, current in enumerate(artifacts):
         offset = index * panel_width
         native = Image.new("RGB", (current["width"], current["height"]), background)
         native.putdata([ImageColor.getrgb(c or background) for row in current["grid"] for c in row])
-        draw.text((offset + 12, 10), "BASELINE" if compare is not None and index == 0 else "CURRENT", fill="#E7E5CF")
+        draw.text((offset + 12, 10), "BASELINE" if compare is not None and index == 0 else "CURRENT", fill="#EEEEEE")
         image.paste(native, (offset + 12, 34))
         image.paste(native.resize((native.width * scale, native.height * scale), Image.Resampling.NEAREST), (offset + zoom_left, 34))
-        draw.text((offset + 12, top - 22), f"ROI x={x}, y={y}, w={width}, h={height}", fill="#E7E5CF")
+        draw.text((offset + 12, top - 22), f"ROI x={x}, y={y}, w={width}, h={height}", fill="#EEEEEE")
         for px in range(width):
-            draw.text((offset + left + px * cell + 2, top - 12), str(x + px), fill="#B8C8D6")
+            draw.text((offset + left + px * cell + 2, top - 12), str(x + px), fill="#AAAAAA")
         rows = []
         for py in range(height):
-            draw.text((offset + 14, top + py * cell + 3), str(y + py), fill="#B8C8D6")
+            draw.text((offset + 14, top + py * cell + 3), str(y + py), fill="#AAAAAA")
             row = current["grid"][y + py][x:x + width]
             rows.append({"y": y + py, "x_start": x, "cells": [aliases[c] for c in row]})
             for px, color in enumerate(row):
@@ -145,8 +145,8 @@ def write_loupe(artifact: dict, output: Path, region=None, compare=None, backgro
                        "roi_image_origin_xy": [offset + left, top]})
     for index, color in enumerate(colors):
         draw.rectangle((12, legend_top + index * 20, 25, legend_top + index * 20 + 13), fill=color)
-        draw.text((34, legend_top + index * 20), f"{aliases[color]}  {color}", fill="#E7E5CF")
-    draw.text((12, legend_top + len(colors) * 20), ". = transparent; labels and gaps are diagnostic", fill="#B8C8D6")
+        draw.text((34, legend_top + index * 20), f"{aliases[color]}  {color}", fill="#EEEEEE")
+    draw.text((12, legend_top + len(colors) * 20), ". = transparent; labels and gaps are diagnostic", fill="#AAAAAA")
     report = {"kind": "coordinate-loupe", "region": [x, y, width, height], "display_background": background,
               "coordinates": "zero-based native cells; image origins and cell pitch are diagnostic pixels",
               "legend": {alias: color for color, alias in aliases.items()}, "panels": panels,
@@ -211,7 +211,7 @@ def main() -> int:
     loupe_cmd.add_argument("artifact", type=Path)
     loupe_cmd.add_argument("--region", type=int, nargs=4, metavar=("X", "Y", "W", "H"))
     loupe_cmd.add_argument("--compare", type=Path)
-    loupe_cmd.add_argument("--background", default="#26333A")
+    loupe_cmd.add_argument("--background", default="#222222")
     loupe_cmd.add_argument("--output", type=Path, required=True)
     patch_cmd = commands.add_parser("patch")
     patch_cmd.add_argument("artifact", type=Path)

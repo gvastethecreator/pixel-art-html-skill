@@ -212,7 +212,7 @@ def exercise_plan(lesson: dict, registry: dict) -> dict:
             'reference_transfer':{'observed_in_reference':None,'inference':None,'deliberate_differences':None},
             'review':{'baseline_path':None,'revised_path':None,'browser_observed':False,
                       'result':'not-reviewed','remaining_problem':None,'reviewer_role':None},
-            'next_step':'Fill from actual observation, then use the existing construct/study/pixel_lab workflow. A/B repairs do not replace a required three-direction study.'}
+            'next_step':'Fill from actual observation, then use the existing construct/pixel_lab workflow within the authorized pass or repair. Use study only when alternatives were explicitly requested.'}
 
 
 def scale_contract(width: int, height: int, scale: int, target_width: int | None = None,

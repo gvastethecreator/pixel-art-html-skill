@@ -27,7 +27,7 @@ python <skill-dir>/scripts/reference_library.py index --root "wiki=<wiki-directo
 
 Repeat `--root` for each collection. Aliases must be unique. The output must be outside the source roots. Indexing needs Pillow; optional video metadata uses local `ffprobe`. Images and GIFs are hashed, probed, and decoded at the first frame. Video probing reads metadata, not the entire stream. Text is indexed in full. Exact byte duplicates are linked, not deleted. Paths and complete text stay in the private index.
 
-Coverage reports all discovered files, kinds, duplicate counts, errors, and exclusions. Indexing is not visual review. An index is a snapshot: rebuild after a source changes. Keep it in project scratch or another private location, outside a distributable skill package.
+Coverage reports discovered files, kinds, duplicate counts, errors, and exclusions. Discovery prunes symbolic links, Windows directory reparse points, `.git`, `node_modules`, and `__pycache__` before descent. Indexing is not visual review. An index is a snapshot: rebuild after a source changes. Keep it in project scratch or another private location, outside a distributable skill package.
 
 Gallery captions restore useful names for numbered wiki images. For example, `images/08.gif` becomes searchable by its original tutorial name. A social-media filename may contain only an ID and date; inspect those images through a broad survey before selecting a reference. The tool does not invent subjects from opaque filenames or run OCR.
 

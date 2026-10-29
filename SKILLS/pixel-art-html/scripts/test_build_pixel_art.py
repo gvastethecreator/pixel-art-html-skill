@@ -44,6 +44,10 @@ class PixelArtBuilderTests(unittest.TestCase):
                 module.write_png(artifact, output / 'too-large.png', 16)
         with self.assertRaisesRegex(module.ArtifactError, 'between 8 and 512'):
             module.compile_spec({'width': 513, 'height': 256})
+        for spec in ({'width': 8.5, 'height': 8, 'background': '#123456'},
+                     {'width': 8, 'height': 8, 'pixels': [{'x': 1.75, 'y': 1, 'color': '#123456'}]}):
+            with self.subTest(spec=spec), self.assertRaisesRegex(module.ArtifactError, 'must be an integer'):
+                module.compile_spec(spec)
         source = {'kind': 'construction', 'schema_version': 1, 'stage': 'block',
                   'title': 'Large part fixture', 'intent': 'Boundary checks only',
                   'light': 'Upper left', 'width': 256, 'height': 512,
@@ -526,6 +530,18 @@ class PixelArtBuilderTests(unittest.TestCase):
                 check=False,
             )
             self.assertEqual(build_run.returncode, 0, build_run.stderr)
+            for output, command in (
+                (study_output, ['study', *(str(path) for path in specs)]),
+                (final_output, ['from-spec', str(specs[1])]),
+            ):
+                before = {p.relative_to(output).as_posix(): p.read_bytes() for p in output.rglob('*') if p.is_file()}
+                repeated = subprocess.run(
+                    [sys.executable, str(MODULE_PATH), *command, '--output', str(output)],
+                    capture_output=True, text=True, check=False,
+                )
+                self.assertEqual(repeated.returncode, 1, repeated.stderr)
+                self.assertIn('new directory', repeated.stderr)
+                self.assertEqual({p.relative_to(output).as_posix(): p.read_bytes() for p in output.rglob('*') if p.is_file()}, before)
             review_path = root / "review.json"
             review_path.write_text(json.dumps(review), encoding="utf-8")
             promote_run = subprocess.run(
@@ -934,6 +950,10 @@ class PixelArtBuilderTests(unittest.TestCase):
             with self.assertRaisesRegex(module.ArtifactError, "needs cols, rows, step_x, and step_y"):
                 module.run_pixel_fixer_detector(fake, source)
 
+            fake.write_text("print('{\"cols\": 8.5, \"rows\": 8, \"step_x\": 5, \"step_y\": 5}')\n", encoding="utf-8")
+            with self.assertRaisesRegex(module.ArtifactError, "needs cols, rows, step_x, and step_y"):
+                module.run_pixel_fixer_detector(fake, source)
+
             fake.write_text("print('{\"cols\": 8, \"rows\": 8, \"step_x\": NaN, \"step_y\": 5}')\n", encoding="utf-8")
             with self.assertRaisesRegex(module.ArtifactError, "invalid grid dimensions"):
                 module.run_pixel_fixer_detector(fake, source)
@@ -1018,6 +1038,12 @@ class PixelArtBuilderTests(unittest.TestCase):
             hub = (library / "index.html").read_text(encoding="utf-8")
             self.assertNotIn("__HUB_JSON__", hub)
             self.assertNotIn("https://", hub)
+            before = {name: (library / name).read_bytes() for name in ('index.html', 'catalog.json')}
+            metadata['entry'] = "javascript:void(0)"
+            (first / 'iteration.json').write_text(json.dumps(metadata), encoding='utf-8')
+            with self.assertRaisesRegex(module.ArtifactError, 'invalid managed entry'):
+                module.rebuild_project_hub(library)
+            self.assertEqual({name: (library / name).read_bytes() for name in before}, before)
 
     def test_collection_metadata_prefers_32_thumbnail(self) -> None:
         artifacts = [module.compile_spec({"title": str(size), "width": size, "height": size, "background": "#123"}) for size in (16, 32, 64)]
@@ -1166,6 +1192,14 @@ class PixelArtBuilderTests(unittest.TestCase):
             (root / "copy.png").write_bytes((images / "01.png").read_bytes())
             (chapter / "article.html").write_text('<figure><img src="images/01.png"><figcaption>https://example.com/Leaf_Bundle.png</figcaption></figure>', encoding="utf-8")
             (chapter / "notes.md").write_text("ordinary text " * 2000 + "late-stage-construction", encoding="utf-8")
+            outside = Path(temp) / 'outside'
+            outside.mkdir()
+            (outside / 'outside.txt').write_text('Must stay outside the corpus', encoding='utf-8')
+            link = root / 'linked'
+            if sys.platform == 'win32':
+                subprocess.run(['cmd', '/d', '/c', 'mklink', '/J', str(link), str(outside)], check=True, capture_output=True)
+            else:
+                link.symlink_to(outside, target_is_directory=True)
             index = reference_library.index_library({"wiki": root})
             self.assertEqual(index["coverage"]["files"], 4)
             self.assertEqual(index["coverage"]["exact_duplicates"], 1)
@@ -1358,6 +1392,14 @@ class ConstructionTests(unittest.TestCase):
             construct.build(source, output)
             with self.assertRaisesRegex(ValueError, 'new directory'):
                 construct.build(source, output)
+            review = {
+                'reviewer': {'kind': 'user', 'name': 'Synthetic promotion fixture'},
+                'blind': True, 'decision': 'accept',
+                'observations': {key: 'Mechanics only; no actual visual review' for key in module.REVIEW_OBSERVATION_FIELDS},
+                'gates': {key: 'passed' for key in module.REVIEW_GATE_FIELDS},
+            }
+            module.promote_output(output, review, 'representative')
+            self.assertEqual(construct.validate_output(output)['source'], source)
             page = output / 'parts.html'
             page.write_text(page.read_text(encoding='utf-8').replace('A pole carries a flag', 'A different intent'), encoding='utf-8')
             with self.assertRaisesRegex(ValueError, 'payload drift'):
