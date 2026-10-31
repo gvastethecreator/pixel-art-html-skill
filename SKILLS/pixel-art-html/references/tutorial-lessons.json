@@ -134,7 +134,7 @@
       "source_ids": ["slynyrd-55"],
       "source_observation": "El capítulo 55 distingue un dummy simétrico de un personaje con equipo asimétrico.",
       "transfer_decision": "Registrar mano, equipo, apoyo e identidad como invariantes antes de delegar el atlas.",
-      "pixel_operations": ["Autorizar cada orientación base requerida; no prometer ocho vistas a partir de cinco reflejos sin comprobar las asimetrías.", "Comparar posición del apoyo, masa de cabeza y lado del equipo.", "Entregar estos invariantes a spritesheet-expert junto con las decisiones de simplificación."],
+      "pixel_operations": ["Autorizar cada orientación base requerida; no prometer ocho vistas a partir de cinco reflejos sin comprobar las asimetrías.", "Comparar posición del apoyo, masa de cabeza y lado del equipo.", "Entregar estos invariantes junto con las decisiones de simplificación para la producción de la animación."],
       "visual_check": "Inspeccionar rotación y vistas estáticas. No exigir igual silueta en cada ángulo; sí continuidad del personaje.",
       "counterexample": "Algunos juegos aceptan intercambiar manos por economía. Debe ser una concesión explícita del proyecto.",
       "exercise": {"grid": [32, 40], "budget": 10, "brief": "Personaje original con una hombrera única y equipo en una mano.", "protected": "Lado del equipo, escala y punto de apoyo.", "comparison": "Vistas independientes de frente, perfil y espalda, no rescalados.", "question": "¿Sigue siendo el mismo personaje al girar?"},

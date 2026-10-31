@@ -1,6 +1,6 @@
 ---
 name: pixel-art-html
-description: "Author and repair exact-grid pixel art through reference study, explicit visual interpretation, shape construction, material clusters, and a single construction pass. Export editable JSON, PNG, and standalone HTML. For sprites, icons, tiles, props, scenes, and image-to-grid recovery; animation atlases belong to spritesheet-expert."
+description: "Author and repair exact-grid pixel art through reference study, explicit visual interpretation, shape construction, material clusters, and a single construction pass. Export editable JSON, PNG, and standalone HTML. For sprites, icons, tiles, props, scenes, and image-to-grid recovery; animation atlases are out of scope."
 ---
 
 # Pixel Art HTML

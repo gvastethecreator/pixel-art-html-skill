@@ -1003,7 +1003,7 @@
         "Sample a few frames to locate useful sections, then inspect chosen originals.",
         "Build a posed dummy before the costume or equipment.",
         "Preserve identity masses and action gaps when detailing the frame.",
-        "Hand exact frame masters, durations, order, and pivots to spritesheet-expert when animation is requested."
+        "When animation is requested, deliver exact frame masters, durations, order, and pivots; atlas assembly is out of scope."
       ],
       "check": "A still frame reads on its own; motion claims require playback and timing review elsewhere.",
       "failure": "A contact sheet is mistaken for full animation proof, or a mirrored frame changes the equipped hand.",

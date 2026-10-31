@@ -30,4 +30,4 @@ Adapt the scaffold to the animal. For an insect, map head, thorax, abdomen or wi
 - hair rendered as disconnected strands
 - monster features with no shared anatomy, weight, or light
 
-For later animation, hand off exact grid, contact pivot, frame action phase, order, durations, and stable identity palette to `$spritesheet-expert`.
+For later animation, deliver the exact grid, contact pivot, frame action phase, order, durations, and stable identity palette with the frame masters. Atlas assembly and playback are out of scope.
