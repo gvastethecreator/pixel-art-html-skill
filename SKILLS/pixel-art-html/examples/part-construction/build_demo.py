@@ -18,9 +18,9 @@ def camera(source, output):
     _, report = construct.compile_parts(source)
     output.mkdir(parents=True)
     spec = {k: source[k] for k in ('title', 'width', 'height', 'background', 'palette_budget')}
-    spec.update(subtitle='Estudio original: apoyos, agarres y oclusión', caption='CONSTRUCCIÓN POR PARTES',
+    spec.update(subtitle='Original study: supports, grips, and occlusion', caption='CONSTRUCTION BY PARTS',
                 assets={}, placements=[], groups=[{'id': k, 'label': v} for k, v in
-                [('ninja', 'Ninja'), ('knight', 'Caballero'), ('skeleton', 'Esqueleto')]])
+                [('ninja', 'Ninja'), ('knight', 'Knight'), ('skeleton', 'Skeleton')]])
     for depth, part in enumerate(source['parts']):
         name = part['id']
         ox, oy = report['origins'][name]

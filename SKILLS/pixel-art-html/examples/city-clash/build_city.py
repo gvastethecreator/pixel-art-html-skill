@@ -321,10 +321,10 @@ def main():
     # The scene is a frozen contact moment. Small impact clusters connect the attacks.
     impact=Art(16,16);impact.l([(2,2),(5,6)],'a',1,1);impact.l([(8,1),(8,5)],'g',1,1);impact.l([(12,4),(10,7)],'a',1,1);impact.l([(5,10),(2,12)],'H',1,1)
     save('impact',impact);put('impact',205,159,198);put('impact',324,179,215);put('impact',307,215,255)
-    manifest={'title':'La plaza de las tres sombras','subtitle':'Ninjas, caballeros y esqueletos disputan la ciudad al caer la noche.','caption':'Una noche · tres bandos',
+    manifest={'title':'The Square of Three Shadows','subtitle':'Ninjas, knights, and skeletons fight for the city as night falls.','caption':'One night · three factions',
               'width':480,'height':320,'background':P['n'],'palette_budget':32,'assets':assets,'placements':placements,
-              'groups':[{'id':'ninja','label':'Ninjas · 4','color':P['H']},{'id':'knight','label':'Caballeros · 4','color':P['C']},{'id':'skeleton','label':'Esqueletos · 4','color':P['B']}],
-              'focus_points':[{'label':'Los tejados','x':99,'y':91,'zoom':4},{'label':'La plaza','x':254,'y':199,'zoom':4},{'label':'La cripta','x':367,'y':259,'zoom':4}]}
+              'groups':[{'id':'ninja','label':'Ninjas · 4','color':P['H']},{'id':'knight','label':'Knights · 4','color':P['C']},{'id':'skeleton','label':'Skeletons · 4','color':P['B']}],
+              'focus_points':[{'label':'The rooftops','x':99,'y':91,'zoom':4},{'label':'The square','x':254,'y':199,'zoom':4},{'label':'The crypt','x':367,'y':259,'zoom':4}]}
     (root/'scene-source.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     scene=compose_scene.compile_scene(manifest,root);compose_scene.write_scene(scene,root/'view')
     print(json.dumps({'output':str(root),'assets':len(assets),'placements':len(placements),'colors':len(scene['colors'])}))

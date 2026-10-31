@@ -1,4 +1,4 @@
-# La plaza de las tres sombras
+# The Square of Three Shadows
 
 An original 480x320 still scene: four ninjas, four knights, and four skeletons in a night town. The 38 native masters share 27 colors. Six structures, streets, a drain, lanterns, and three combat encounters establish the setting. The scene is a draft example, not a game or animation.
 

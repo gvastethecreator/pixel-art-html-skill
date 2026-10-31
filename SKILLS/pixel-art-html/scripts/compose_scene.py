@@ -82,7 +82,7 @@ def compile_scene(manifest, base):
         'kind': 'scene', 'schema_version': 1, 'evidence_tier': 'draft',
         'title': manifest.get('title', 'Pixel scene'),
         'subtitle': manifest.get('subtitle', ''),
-        'caption': manifest.get('caption', 'Escena original'),
+        'caption': manifest.get('caption', 'Original scene'),
         'width': manifest.get('width'), 'height': manifest.get('height'),
         'background': core.normalize_color(manifest.get('background')),
         'palette_budget': manifest.get('palette_budget', 32),
